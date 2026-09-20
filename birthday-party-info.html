@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Party Information — Mr. Brad's Music</title>
+  <meta name="description" content="Birthday party pricing, requirements, and what to expect from Mr. Brad's interactive musical celebrations.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:     #FFF8EE;
+      --cream-2:   #FFF1DE;
+      --ink:       #241B36;
+      --ink-soft:  #4A4060;
+      --white:     #FFFFFF;
+      --coral:     #FF5A47;
+      --coral-deep:#E8412C;
+      --marigold:  #FFB930;
+      --turquoise: #13B5A6;
+      --grape:     #7B5EA7;
+      --bg: var(--cream);
+      --text: var(--ink);
+      --muted: var(--ink-soft);
+      --accent: var(--coral-deep);
+      --font-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+      --font-body: "Nunito Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --max: 1180px;
+      --gutter: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      line-height: 1.1;
+      margin: 1.2em 0 0.5em 0;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    h1 { font-size: 2.8rem; font-weight: 800; margin-top: 0; }
+    h2 { font-size: 1.8rem; font-weight: 700; }
+    h3 { font-size: 1.25rem; font-weight: 700; color: var(--accent); }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 0; padding-left: 1.5em; }
+    li { margin: 0.5em 0; }
+
+    .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+    .section { padding: 48px 0; }
+
+    header {
+      background: linear-gradient(135deg, var(--turquoise) 0%, var(--coral) 100%);
+      color: white;
+      padding: 48px 0;
+      text-align: center;
+    }
+    header h1 { color: white; margin-top: 0; }
+    header .subtitle { font-size: 1.1rem; opacity: 0.95; margin: 0; }
+
+    .info-box {
+      background: var(--cream-2);
+      border-left: 4px solid var(--accent);
+      padding: 24px;
+      margin: 24px 0;
+      border-radius: 8px;
+    }
+
+    .details-grid {
+      display: grid;
+      gap: 32px;
+      margin: 32px 0;
+    }
+
+    .detail-section {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(36, 27, 54, 0.08);
+    }
+
+    .contact-info {
+      background: var(--coral-deep);
+      color: white;
+      padding: 32px;
+      border-radius: 12px;
+      margin: 32px 0;
+      text-align: center;
+    }
+    .contact-info h3 { color: white; margin-top: 0; }
+    .contact-info a { color: white; text-decoration: underline; }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: background 0.2s ease;
+    }
+    .cta-button:hover { background: var(--coral); }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 32px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    @media print {
+      body { background: white; }
+      header { page-break-after: avoid; }
+      .detail-section { page-break-inside: avoid; }
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+      .section { padding: 32px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🎵 Birthday Party Information</h1>
+      <p class="subtitle">Mr. Brad's Music</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="info-box">
+          <p><strong>Thank you for considering The Mr. Brad Show for your child's birthday party!</strong> My goal is to provide a fun, interactive, and memorable musical experience that keeps children engaged while making the birthday child feel extra special.</p>
+        </div>
+
+        <!-- What to Expect -->
+        <div class="detail-section">
+          <h2>What to Expect</h2>
+          <p>The Mr. Brad Show is a high-energy, interactive music performance featuring singing, dancing, audience participation, and a variety of musical instruments. Children are encouraged to sing along, move, laugh, and become part of the show.</p>
+          <p>Every event is a little different, and I adjust the performance to fit the age range, size of the group, and the overall atmosphere of your celebration.</p>
+        </div>
+
+        <!-- Performance Space Requirements -->
+        <div class="detail-section">
+          <h2>Performance Space Requirements</h2>
+          <p>To provide the best possible experience, I ask that hosts provide:</p>
+          <ul>
+            <li><strong>Access to a standard power outlet</strong></li>
+            <li><strong>A firm, level surface</strong> for equipment</li>
+            <li><strong>An indoor performance space</strong> whenever possible</li>
+          </ul>
+          <p><strong>Outdoor Events:</strong> If the event is outdoors, I require substantial cover from direct sun and weather. Musical instruments and electronic equipment can be damaged by excessive heat, moisture, or unexpected weather conditions, and both performers and guests are more comfortable in a shaded environment.</p>
+        </div>
+
+        <!-- Setup and Teardown -->
+        <div class="detail-section">
+          <h2>Setup and Teardown</h2>
+          <p>I prefer to arrive approximately <strong>90 minutes before the performance</strong> to allow ample time for unloading, setup, sound checks, and preparation.</p>
+          <p>Please ensure that the performance area is available during this setup period.</p>
+          <p>Following the performance, teardown and load-out typically require approximately <strong>45–60 minutes</strong>.</p>
+        </div>
+
+        <!-- Pricing -->
+        <div class="detail-section">
+          <h2>Pricing</h2>
+          <p>Birthday party performances start at <strong>$325</strong>.</p>
+          <p>Pricing may be higher in certain situations, including:</p>
+          <ul>
+            <li>Long-distance travel</li>
+            <li>Extended performance times</li>
+            <li>Difficult load-in conditions</li>
+            <li>Special event requirements</li>
+          </ul>
+          <p><em>Any additional costs will always be discussed in advance.</em></p>
+        </div>
+
+        <!-- Special Birthday Recognition -->
+        <div class="detail-section">
+          <h2>Special Birthday Recognition</h2>
+          <p>I am happy to make the birthday child feel like the star of the day. Upon request, I can:</p>
+          <ul>
+            <li>Perform a special song for the birthday boy or girl</li>
+            <li>Lead the traditional Happy Birthday song as the cake is brought out at the end of the event</li>
+            <li>Include special recognition and audience participation moments during the show</li>
+          </ul>
+        </div>
+
+        <!-- Booking and Questions -->
+        <div class="detail-section">
+          <h2>Booking and Questions</h2>
+          <p>If you have questions about your venue, schedule, age group, or any special requests, please don't hesitate to ask. I am happy to work with families to create a fun and successful celebration.</p>
+          <p><strong>I look forward to helping make your child's birthday a memorable musical adventure!</strong></p>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-info">
+          <h3>Ready to Book?</h3>
+          <p style="font-size: 1.1rem; margin-bottom: 0;">Contact Mr. Brad today to check availability</p>
+          <div>
+            <p style="margin: 16px 0;">
+              <strong>Phone:</strong> <a href="tel:+17272594664">(727) 259-4664</a><br>
+              <strong>Email:</strong> <a href="mailto:mrbradsmusic@gmail.com">mrbradsmusic@gmail.com</a><br>
+              <strong>Location:</strong> Safety Harbor, Florida
+            </p>
+            <a class="cta-button" href="booking.html?program=Birthday%20Parties">📅 Book Your Party</a>
+          </div>
+        </div>
+
+        <a class="back-link" href="birthday-parties.html">← Back to Birthday Parties</a>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background: var(--ink); color: white; padding: 32px 0; text-align: center; margin-top: 48px;">
+    <div class="container">
+      <p style="margin: 0; opacity: 0.9;">© 2026 Mr. Brad's Music. All rights reserved.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.9rem; opacity: 0.7;">Safe to print or share with party hosts</p>
+    </div>
+  </footer>
+</body>
+</html>

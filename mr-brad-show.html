@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Mr. Brad Tour — Booking Information</title>
+  <meta name="description" content="Booking information for The Mr. Brad Show, a high-energy live music experience for children ages 0–6 and their families.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .booking-info .booking-hero { padding: 44px 0 58px; background: linear-gradient(145deg, var(--cream-2), #ffe2b7); }
+    .booking-info .booking-hero__grid { display: grid; gap: 28px; align-items: center; }
+    .booking-info .booking-hero__image { border: 8px solid var(--white); transform: rotate(1.5deg); }
+    .booking-info .booking-hero__image img { object-position: center; }
+    .booking-info .quick-facts { display: grid; gap: 12px; margin: 26px 0 0; }
+    .booking-info .quick-fact { background: rgba(255,255,255,.84); border: 2px solid rgba(232,65,44,.13); border-radius: 14px; padding: 11px 15px; font-weight: 700; }
+    .booking-info .content-grid { display: grid; gap: 24px; align-items: start; }
+    .booking-info .info-stack { display: grid; gap: 24px; }
+    .booking-info .info-card { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: clamp(24px,4vw,36px); border-top: 6px solid var(--coral); }
+    .booking-info .info-card:nth-child(4n+2) { border-top-color: var(--marigold); }
+    .booking-info .info-card:nth-child(4n+3) { border-top-color: var(--turquoise); }
+    .booking-info .info-card:nth-child(4n) { border-top-color: var(--grape); }
+    .booking-info .info-card h2 { font-size: clamp(1.45rem,3vw,2rem); }
+    .booking-info .info-card p:last-child, .booking-info .contact-panel p:last-child { margin-bottom: 0; }
+    .booking-info .emoji-line { font-size: clamp(1.35rem,4vw,2rem); letter-spacing: .18em; line-height: 1.8; }
+    .booking-info .provided-list { list-style: none; padding: 0; margin: 0 0 1em; display: grid; gap: 8px; }
+    .booking-info .contact-panel { background: linear-gradient(145deg, var(--grape), var(--coral-deep)); color: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 30px; }
+    .booking-info .contact-panel h2, .booking-info .contact-panel a { color: var(--white); }
+    .booking-info .contact-panel a { font-weight: 700; }
+    @media (min-width: 760px) { .booking-info .quick-facts { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .booking-info .booking-hero__grid { grid-template-columns: 1.18fr .82fr; } .booking-info .content-grid { grid-template-columns: minmax(0,1fr) 330px; } .booking-info .contact-panel { position: sticky; top: 100px; } }
+  </style>
+</head>
+<body>
+  <div class="tipbar"><div class="tipbar__inner"><span class="tipbar__title">🎻🎸🪕 Instrument Repair Fund</span><a class="chip chip--venmo" data-venmo href="https://venmo.com/mrbradsmusic" title="Pay Mr. Brad's Music on Venmo" aria-label="Pay on Venmo" target="_blank" rel="noopener"><span class="venmo-mark">venmo</span></a></div></div>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class='brand' href='/'><span class="note-dot" aria-hidden="true"></span>Mr. Brad's Music</a>
+      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div class="nav__backdrop"></div>
+      <div class="nav__menu" id="nav-menu"><button class="nav__close" aria-label="Close menu">&times;</button><a href='/'>Home</a><a href='/programs'>Programs</a><a href='/upcoming-events'>Upcoming Events</a><a href='/birthday-parties'>Birthday Parties</a><a href='/media'>Media</a><a href='/lessons'>Lessons</a><a href='/learning-tools'>Learning Tools</a><a href='/booking'>Booking</a></div>
+    </nav>
+  </header>
+  <main class="booking-info">
+    <section class="booking-hero">
+      <div class="container booking-hero__grid">
+        <div><p class="eyebrow">Booking information</p><h1>🎶 The Mr. Brad Tour</h1><p class="lead">A high-energy live music experience created especially for young children and families.</p>
+          <div class="quick-facts"><div class="quick-fact">👶 Ages: 0–6 and families</div><div class="quick-fact">⏱️ Program Length: 60 minutes</div><div class="quick-fact">🎟️ Performance Fee: $675</div><div class="quick-fact">🛠️ Setup Time: Approximately 1½ hours</div><div class="quick-fact">📦 Breakdown Time: Approximately 1 hour</div></div>
+        </div>
+        <div class="photo photo--hero has-image booking-hero__image"><img src="images/show-program.jpg" alt="Mr. Brad performing a live music show"></div>
+      </div>
+    </section>
+    <section class="section"><div class="container content-grid"><div class="info-stack">
+      <article class="info-card"><h2>🎵 About the Program</h2><p>The Mr. Brad Show is a high-energy live music experience created especially for young children and families.</p><p>The show combines live music, singing, movement, comedy and audience participation. Children are encouraged to sing, dance, listen, move and experience the excitement of seeing and hearing a wide variety of musical instruments performed live.</p></article>
+      <article class="info-card"><h2>🎸 Instruments</h2><p>Brad performs on guitar, violin, mandolin, banjo, flute, various drums, piano, synthesizers, glockenspiel, sitar, percussion and musical toys—to name a few.</p><p class="emoji-line" aria-label="Musical instruments">🎸 🎻 🪕 🪈 🥁 🎹 🎛️ 🔔 🪘 🎶 🧸 ✨</p></article>
+      <article class="info-card"><h2>🎯 Purpose</h2><p>The primary goal of The Mr. Brad Show is simple: give young children the opportunity to see lots of different musical instruments in action and inspire them to someday pick one up themselves.</p><p>Playing an instrument is an extraordinary combination of listening, movement, timing, coordination, memory, creativity and self-expression. Experiencing real instruments up close can open a door for a child that may stay open for the rest of their life.</p><p>Mr. Brad’s larger mission is to inspire as many people as possible to discover the joy of making music and to carry that creativity with them throughout their lives.</p><p>The show also creates a shared musical experience for children, parents and caregivers—singing, laughing, moving and making memories together. ❤️🎶</p></article>
+      <article class="info-card"><h2>👨‍👩‍👧‍👦 Audience</h2><p>The program is designed primarily for children ages 0–6 and their families or caregivers.</p><p>It works particularly well for libraries, early-childhood programs, preschools, schools, community events and family audiences.</p></article>
+      <article class="info-card"><h2>🕺 Capacity</h2><p>There is no fixed audience capacity imposed by the program.</p><p>Capacity can be determined by the venue based on the size and safety limits of the performance space. An open audience area where children have room to move, dance and participate is ideal.</p></article>
+      <article class="info-card"><h2>🔊 Production</h2><p>The Mr. Brad Show is designed to be largely self-contained.</p><p>Brad provides:</p><ul class="provided-list"><li>🎸 Instruments</li><li>🔊 Professional-quality sound system</li><li>💡 Stage lighting</li><li>🎛️ Performance equipment</li></ul><p>The venue generally only needs to provide access to electrical power and an appropriate performance space.</p></article>
+      <article class="info-card"><h2>📐 Space Requirements</h2><p>Approximately 10’ x 12’ of performance space is preferred.</p><p>Indoor performances are preferred. Outdoor spaces work well as long as there is a solid performance surface and adequate protection from the elements.</p><p>An open area in front of the performance space where children can move and dance works particularly well. 💃🕺</p></article>
+      <article class="info-card"><h2>🛠️ Setup &amp; Breakdown</h2><p>Please allow approximately 1½ hours before the performance for setup and sound check.</p><p>Breakdown takes approximately 1 hour.</p></article>
+      <article class="info-card"><h2>📦 Materials</h2><p>No materials are required from participants, and there is no materials fee.</p></article>
+      <article class="info-card"><h2>📅 Availability</h2><p>Available year-round for weekday and weekend performances.</p><p>Multiple performances in the same geographic area can often be scheduled together, including performances at several library branches or other locations during the same trip.</p></article>
+      <article class="info-card"><h2>🚐 Travel</h2><p>Travel arrangements depend on location and the number of performances scheduled.</p><p>For multi-performance engagements, travel costs can often be reduced or eliminated by grouping performances within the same trip.</p></article>
+    </div><aside class="contact-panel"><h2>📞 Contact</h2><p><strong>Brad / Mr. Brad</strong><br>The Mr. Brad Show</p><p>🌐 mrbradsmusic.com<br>✉️ <a href="mailto:mrbradsmusic@gmail.com">mrbradsmusic@gmail.com</a><br>📱 <a href="tel:+17272594664">727-259-4664</a></p></aside></div></section>
+  </main>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><div class="footer-brand">Mr. Brad's Music</div><p>Interactive live music for children, families, libraries, schools, and community events.</p><a class='btn btn--sun btn--small' href='/booking'>Book a Show</a></div><div><h4>Explore</h4><ul class="footer-nav"><li><a href='/'>Home</a></li><li><a href='/programs'>Programs</a></li><li><a href='/upcoming-events'>Upcoming Events</a></li><li><a href='/birthday-parties'>Birthday Parties</a></li><li><a href='/media'>Media</a></li><li><a href='/lessons'>Lessons</a></li><li><a href='/learning-tools'>Learning Tools</a></li><li><a href='/booking'>Booking</a></li></ul></div><div><h4>Get in touch</h4><p>Phone: <a data-phone href="tel:+17272594664">(727) 259-4664</a><br>Email: <a data-email href="mailto:#">your email</a></p><p class="muted" data-service-area></p><div class="social-links" style="margin-top: 12px; display: flex; gap: 12px;"><a data-social-facebook href="#" title="Facebook" style="text-decoration: none; color: inherit;">f</a><a data-social-instagram href="#" title="Instagram" style="text-decoration: none; color: inherit;">📷</a><a data-social-tiktok href="#" title="TikTok" style="text-decoration: none; color: inherit;">🎵</a></div></div></div><div class="footer-bottom">&copy; <span data-year></span> Mr. Brad. All rights reserved.</div></div></footer>
+  <script src="js/content.js"></script><script src="js/main.js"></script>
+</body>
+</html>

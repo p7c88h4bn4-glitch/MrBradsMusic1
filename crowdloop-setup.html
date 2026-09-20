@@ -1,0 +1,3692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CrowdLoop Setup &amp; Privacy Policy &middot; Mr. Brad's Music</title>
+<meta name="description" content="Setup guide and privacy policy for CrowdLoop. Every script, the whole recording page, and the steps to stand up your own backend from nothing.">
+<meta name="color-scheme" content="dark">
+<style>
+:root {
+  --bg: #0b0c10;
+  --surface: #14161c;
+  --surface-2: #1b1e26;
+  --line: #262a34;
+  --ink: #e9e5dd;
+  --ink-dim: #a9a49a;
+  --ink-faint: #74706a;
+  --accent: #f2a65a;
+  --accent-dim: #c9863f;
+  --good: #4dd377;
+  --bad: #f25a5a;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 var(--sans);
+  -webkit-text-size-adjust: 100%;
+}
+
+.masthead {
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, #14161c 0%, var(--bg) 100%);
+}
+
+.masthead .inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 24px 22px;
+}
+
+.masthead .back {
+  display: inline-block;
+  color: var(--ink-faint);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.masthead .back:hover { color: var(--accent); }
+
+.masthead .links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.masthead .links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+}
+
+.masthead .links a:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+
+.masthead .links a.key {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* Anything still carrying a placeholder. Loud on purpose: this page is a
+   privacy policy as well as a guide, and a published policy pointing at a
+   mailbox nobody reads is worse than no page at all. */
+.todo {
+  display: inline-block;
+  background: var(--bad);
+  color: #fff;
+  font: 620 12px/1 var(--mono);
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.masthead h1 {
+  margin: 0;
+  font-size: 27px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.masthead p {
+  margin: 7px 0 0;
+  color: var(--ink-dim);
+  font-size: 15px;
+  max-width: 62ch;
+}
+
+.layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+  display: grid;
+  grid-template-columns: 252px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+nav.toc {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 30px 0;
+  font-size: 14px;
+}
+
+nav.toc .label {
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+
+nav.toc a {
+  display: flex;
+  gap: 9px;
+  padding: 6px 10px 6px 8px;
+  color: var(--ink-dim);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 0 5px 5px 0;
+  line-height: 1.35;
+}
+
+nav.toc a:hover { color: var(--ink); background: var(--surface); }
+
+nav.toc a.here {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--surface);
+}
+
+nav.toc .n {
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  min-width: 14px;
+}
+
+nav.toc a.here .n { color: var(--accent-dim); }
+
+main { padding: 34px 0 0; min-width: 0; }
+
+main > h1:first-child { display: none; }
+
+h2 {
+  font-size: 23px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  margin: 54px 0 14px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 16px;
+}
+
+main > h2:first-of-type { border-top: 0; margin-top: 6px; padding-top: 0; }
+
+h3 {
+  font-size: 17px;
+  font-weight: 640;
+  margin: 32px 0 10px;
+  color: var(--accent);
+  scroll-margin-top: 16px;
+}
+
+h4 { font-size: 15px; margin: 22px 0 8px; }
+
+p { margin: 0 0 15px; max-width: 74ch; }
+
+ul, ol { max-width: 74ch; padding-left: 22px; margin: 0 0 15px; }
+li { margin-bottom: 7px; }
+li > ul, li > ol { margin-top: 7px; }
+
+a { color: var(--accent); text-decoration-color: rgba(242,166,90,0.35); }
+a:hover { text-decoration-color: var(--accent); }
+
+strong { color: #fff; font-weight: 620; }
+
+hr { display: none; }
+
+.headerlink {
+  opacity: 0;
+  margin-left: 9px;
+  font-weight: 400;
+  text-decoration: none;
+  color: var(--ink-faint);
+}
+
+h2:hover .headerlink, h3:hover .headerlink { opacity: 1; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #f0d8b8;
+  word-break: break-word;
+}
+
+.block {
+  position: relative;
+  margin: 0 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.block pre {
+  margin: 0;
+  padding: 15px 17px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.block pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #d8dde6;
+  font-size: inherit;
+  word-break: normal;
+}
+
+.block .bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px 7px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.block button {
+  font: 600 11px/1 var(--sans);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 6px 11px;
+  cursor: pointer;
+}
+
+.block button:hover { color: var(--ink); border-color: var(--ink-faint); }
+.block button.done { color: var(--good); border-color: var(--good); }
+
+.block.clipped pre { max-height: 300px; }
+
+.block .more {
+  display: none;
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 10px;
+  background: var(--surface-2);
+}
+
+.block.clipped .more, .block.opened .more { display: block; }
+
+.block.clipped::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 39px;
+  height: 64px;
+  background: linear-gradient(180deg, rgba(20,22,28,0) 0%, var(--surface) 100%);
+  pointer-events: none;
+}
+
+blockquote {
+  margin: 0 0 18px;
+  padding: 14px 18px;
+  max-width: 74ch;
+  border-left: 3px solid var(--accent-dim);
+  border-radius: 0 8px 8px 0;
+  background: rgba(242,166,90,0.06);
+  color: var(--ink-dim);
+}
+
+blockquote p:last-child { margin-bottom: 0; }
+
+.tablewrap { overflow-x: auto; margin: 0 0 20px; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 420px;
+  font-size: 14.5px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+th {
+  background: var(--surface-2);
+  color: var(--ink);
+  font-weight: 620;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+tr:last-child td { border-bottom: 0; }
+td code { font-size: 12.5px; }
+
+footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 24px 52px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-faint);
+  font-size: 13.5px;
+}
+
+footer a { color: var(--ink-dim); }
+
+#top {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink-dim);
+  font-size: 17px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s;
+}
+
+#top.on { opacity: 1; pointer-events: auto; }
+#top:hover { color: var(--accent); border-color: var(--accent-dim); }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 0; padding-bottom: 64px; }
+  nav.toc {
+    position: static;
+    max-height: none;
+    padding: 22px 0 0;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+  }
+  nav.toc .inner { max-height: 300px; overflow-y: auto; }
+  main { padding-top: 26px; }
+  h2 { font-size: 21px; margin-top: 42px; }
+  .masthead h1 { font-size: 23px; }
+  /* Out of the way of the copy buttons, which sit on the right. */
+  #top { right: auto; left: 16px; bottom: 16px; }
+}
+
+@media print {
+  nav.toc, #top, .block button, .masthead .back { display: none; }
+  body { background: #fff; color: #111; font-size: 11pt; }
+  .layout { display: block; padding: 0; }
+  .block, table, blockquote { border-color: #bbb; background: #f7f7f7; }
+  .block pre, .block.clipped pre { max-height: none; color: #111; }
+  .block pre code { color: #111; }
+  .block .bar { background: #eee; color: #444; }
+  .block.clipped::after { display: none; }
+  h2, h3 { color: #111; page-break-after: avoid; }
+  strong { color: #000; }
+  a { color: #111; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="inner">
+    <a class="back" href="/">&larr; Mr. Brad's Music</a>
+    <h1>CrowdLoop &mdash; Setup Guide</h1>
+    <p>CrowdLoop runs on a backend you own, so your audience's recordings stay in your account and pass through nobody else's. This is how to stand one up, start to finish, in about half an hour. No programming, and nothing to install on a computer.</p>
+    <div class="links">
+      <a class="key" href="#15-privacy-policy">&#9679;&nbsp; Privacy Policy</a>
+      <a href="#5-service-b-netlify">Recording page &mdash; full source</a>
+      <a href="#10-passwords-and-account-access">Forgotten password</a>
+      <a href="#11-troubleshooting">Troubleshooting</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="inner">
+      <div class="label">Contents</div>
+      <a href="#1-what-the-two-services-do"><span class="n">1</span>What the two services do</a>
+          <a href="#2-what-it-costs"><span class="n">2</span>What it costs</a>
+          <a href="#3-before-you-start"><span class="n">3</span>Before you start</a>
+          <a href="#4-service-a-supabase"><span class="n">4</span>Service A: Supabase</a>
+          <a href="#5-service-b-netlify"><span class="n">5</span>Service B: Netlify</a>
+          <a href="#6-setting-up-the-app"><span class="n">6</span>Setting up the app</a>
+          <a href="#7-end-to-end-test"><span class="n">7</span>End-to-end test</a>
+          <a href="#8-proving-the-security-holds"><span class="n">8</span>Proving the security holds</a>
+          <a href="#9-running-a-session"><span class="n">9</span>Running a session</a>
+          <a href="#10-passwords-and-account-access"><span class="n">10</span>Passwords and account access</a>
+          <a href="#11-troubleshooting"><span class="n">11</span>Troubleshooting</a>
+          <a href="#12-maintenance-sql"><span class="n">12</span>Maintenance SQL</a>
+          <a href="#13-using-something-other-than-supabase-or-netlify"><span class="n">13</span>Using something other than Supabase or Netlify</a>
+          <a href="#14-fixed-values"><span class="n">14</span>Fixed values</a>
+          <a href="#15-privacy-policy"><span class="n">15</span>Privacy policy</a>
+    </div>
+  </nav>
+
+  <main>
+<h2 id="1-what-the-two-services-do">1. What the two services do<a class="headerlink" href="#1-what-the-two-services-do" title="Permanent link">#</a></h2>
+<p>CrowdLoop is an iOS app and an AUv3 plugin, but neither can do its job alone.
+An audience member with a phone has to be able to reach <em>something</em> over the
+open internet, and that something cannot be your iPad. Two hosted services fill
+that gap, and they do different jobs.</p>
+<h3 id="service-a-supabase-the-audio-and-the-records">Service A, Supabase: the audio and the records<a class="headerlink" href="#service-a-supabase-the-audio-and-the-records" title="Permanent link">#</a></h3>
+<p>Holds three things:</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Where it lives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Session and submission records</td>
+<td>Postgres database</td>
+</tr>
+<tr>
+<td>The audio files themselves</td>
+<td>Private storage bucket</td>
+</tr>
+<tr>
+<td>Your performer login</td>
+<td>Supabase Auth</td>
+</tr>
+</tbody>
+</table>
+<p>This is the part that must be a real backend rather than a static file, because
+it enforces the rules: who may write, who may read, when a session is open, how
+many sounds one session accepts. Those rules live in the database as Row Level
+Security, not in any app, which is what makes them impossible to bypass by
+editing the web page.</p>
+<h3 id="service-b-netlify-the-recording-page">Service B, Netlify: the recording page<a class="headerlink" href="#service-b-netlify-the-recording-page" title="Permanent link">#</a></h3>
+<p>Serves exactly one file: a single self-contained HTML page. An audience member
+scans the QR code, that page opens, they record three seconds, and the page
+uploads straight to Supabase.</p>
+<p>Netlify is doing nothing clever here. It is a web server for one static file.
+Any host that can serve HTML over HTTPS works identically — Netlify is the
+documented path because it deploys by dragging a folder onto a web page and
+costs nothing at this scale.</p>
+<h3 id="what-talks-to-what">What talks to what<a class="headerlink" href="#what-talks-to-what" title="Permanent link">#</a></h3>
+<pre><code>  Audience phone                 Your iPhone / iPad
+        |                               |
+        | 1. opens page                 | 4. signs in, reads queue
+        v                               v
+  +--------------+              +-----------------+
+  |   NETLIFY    |              |   CrowdLoop app |
+  | one HTML file|              +-----------------+
+  +--------------+                      |
+        |                               | 5. approves, downloads audio
+        | 2. records, converts to WAV    |    via a signed URL
+        | 3. uploads direct to Supabase  |
+        v                               v
+  +-----------------------------------------------+
+  |                  SUPABASE                     |
+  |  sessions / submissions  +  private bucket    |
+  +-----------------------------------------------+
+                                        |
+                                        | 6. writes padbank.json + WAVs
+                                        v
+                                 App Group container
+                                        |
+                                        v
+                                CrowdLoop AUv3 in Loopy Pro
+</code></pre>
+<p>The audience phone never talks to your device, and the two devices never need
+to be on the same network. Step 6 is local file I/O, which is why the plugin
+keeps playing when the venue wifi dies.</p>
+<hr />
+<h2 id="2-what-it-costs">2. What it costs<a class="headerlink" href="#2-what-it-costs" title="Permanent link">#</a></h2>
+<p>Both services have free tiers that comfortably cover live use.</p>
+<p><strong>Supabase free tier:</strong> 500 MB database, 1 GB file storage, 50,000 monthly
+active users. A three-second mono WAV at 48 kHz is about 290 KB, so 1 GB is
+roughly <strong>3,400 recordings</strong>. A busy show might produce 100. You will run out
+of patience for moderation long before you run out of storage.</p>
+<p>One free-tier catch worth knowing: <strong>a Supabase project is paused after 7 days
+of inactivity.</strong> It comes back with one click from the dashboard, but it does
+not come back on its own when a request arrives. If you go a couple of weeks
+between shows, open the dashboard the day before and confirm the project is
+awake. This is the single most likely cause of a page that will not connect at
+a show.</p>
+<p><strong>Netlify free tier:</strong> 100 GB bandwidth a month. The page is around 48 KB, so
+that is about two million loads.</p>
+<p>Deleting old sessions keeps you well inside both. Section 12 has the SQL.</p>
+<hr />
+<h2 id="3-before-you-start">3. Before you start<a class="headerlink" href="#3-before-you-start" title="Permanent link">#</a></h2>
+<p>You need:</p>
+<ul>
+<li><strong>An email address you control.</strong> Both service accounts use it, and so does
+  the CrowdLoop sign-in you create in section 4.5.</li>
+<li><strong>A password manager, or somewhere you reliably keep passwords.</strong> This setup
+  produces three of them. Section 10 explains which is which and what happens
+  when one goes missing.</li>
+<li><strong>A computer with a text editor.</strong> Notepad, TextEdit in plain-text mode, or
+  anything similar. You will paste the recording page into it once and change
+  five lines.</li>
+<li><strong>A phone with a browser</strong>, for testing. A desktop browser is not a
+  substitute — the microphone and audio-routing behaviour that matters is
+  mobile behaviour.</li>
+<li><strong>Your iPad</strong>, with CrowdLoop installed.</li>
+</ul>
+<p>You do <strong>not</strong> need Xcode, a developer account, or any programming. Everything
+below is copy, paste, and filling in boxes.</p>
+<p>Budget about 30 minutes for the first run through. Do it at a desk on an
+ordinary day, not in a library car park twenty minutes before a show.</p>
+<hr />
+<h2 id="4-service-a-supabase">4. Service A: Supabase<a class="headerlink" href="#4-service-a-supabase" title="Permanent link">#</a></h2>
+<h3 id="41-create-the-account-and-project">4.1 Create the account and project<a class="headerlink" href="#41-create-the-account-and-project" title="Permanent link">#</a></h3>
+<ol>
+<li>Go to <strong>https://supabase.com</strong> and sign up.</li>
+<li><strong>New project</strong>.</li>
+<li>Fill in:
+   - <strong>Name</strong> — anything. <code>crowdloop</code> is fine.
+   - <strong>Database password</strong> — generate a strong one and save it in your password
+     manager. You will almost certainly never need it (everything in this guide
+     goes through the dashboard), but there is no way to recover it later.
+   - <strong>Region</strong> — pick the one nearest the places you perform. This is the
+     latency an audience member feels while their recording uploads.</li>
+<li>Create it, and wait. Provisioning takes a minute or two.</li>
+</ol>
+<h3 id="42-run-the-schema">4.2 Run the schema<a class="headerlink" href="#42-run-the-schema" title="Permanent link">#</a></h3>
+<p>This creates the tables, the security policies, the helper functions, and the
+private storage bucket, in one pass. It is idempotent — running it twice is
+harmless, and re-running it is the correct first move whenever the backend
+misbehaves.</p>
+<p>Dashboard → <strong>SQL Editor</strong> → <strong>New query</strong>. Paste the whole block below and
+press <strong>Run</strong>.</p>
+<blockquote>
+<p>Supabase may interrupt with <em>"Potential issue detected — this query creates a
+table without enabling Row Level Security."</em> Choose <strong>Run and enable RLS</strong>
+(the green button). The warning comes from a static check that stops reading
+before it reaches the part of this script that enables RLS itself; the green
+button is redundant with what the script already does, and harmless.</p>
+<p>Never choose <em>Run without RLS</em> on this project. RLS is the entire security
+model.</p>
+</blockquote>
+<pre><code class="language-sql">-- ============================================================================
+-- CrowdLoop Phase 2 — schema, security, storage
+-- Run this once in the Supabase SQL Editor (Dashboard -&gt; SQL Editor -&gt; New query).
+-- Safe to re-run: everything is idempotent.
+-- ============================================================================
+
+-- ---------------------------------------------------------------------------
+-- SECURITY MODEL
+--
+-- Audience members are never authenticated. They hold only the publishable
+-- key, which is public by design, so the database itself has to be the
+-- boundary. Three rules follow from that:
+--
+--   1. anon has NO direct read on sessions. It can only call one function,
+--      get_open_session(code), which returns a single open session and only
+--      the fields a recording page needs. Without this, holding the
+--      publishable key would let anyone enumerate every open session.
+--
+--   2. anon can INSERT a submission but never SELECT, UPDATE or DELETE one.
+--      An audience member cannot read back their own upload, cannot see
+--      anyone else's, and cannot approve anything. Moderation is the
+--      performer's alone.
+--
+--   3. anon can write into storage but never read. Audio comes back out only
+--      through a signed URL minted for the authenticated owner.
+--
+-- The insert policies need to check &quot;is this session open?&quot;, but anon cannot
+-- read sessions. That is what session_is_open() is for: SECURITY DEFINER, so
+-- the check runs with the owner's rights while the caller stays blind.
+-- ---------------------------------------------------------------------------
+
+-- ============================================================================
+-- TABLES
+-- ============================================================================
+
+create table if not exists public.sessions (
+    id                      uuid primary key default gen_random_uuid(),
+    owner_id                uuid not null references auth.users(id) on delete cascade,
+    title                   text not null,
+    prompt                  text not null default '',
+    status                  text not null default 'draft',
+    -- Short code carried by the QR image. Also typeable by hand, which
+    -- matters when a phone camera will not focus in a dark room.
+    public_code             text not null unique,
+    max_duration_seconds    integer not null default 3,
+    -- Abuse ceiling per session. Cheap, and it bounds a flood without
+    -- needing per-IP tracking.
+    max_submissions         integer not null default 300,
+    created_at              timestamptz not null default now(),
+    closes_at               timestamptz,
+
+    constraint sessions_status_valid
+        check (status in ('draft', 'open', 'closed')),
+    constraint sessions_duration_sane
+        check (max_duration_seconds between 1 and 10),
+    constraint sessions_code_shape
+        check (public_code ~ '^[A-Z0-9]{4,12}$')
+);
+
+create table if not exists public.submissions (
+    id              uuid primary key default gen_random_uuid(),
+    session_id      uuid not null references public.sessions(id) on delete cascade,
+    status          text not null default 'pending',
+    label           text not null default '',
+    duration        real not null default 0,
+    -- Path inside the private 'submissions' bucket: &lt;session_id&gt;/&lt;id&gt;.wav
+    storage_path    text,
+    mime_type       text,
+    file_size       integer,
+    -- 0..15, or null when approved but not yet placed on a pad.
+    assigned_pad    integer,
+    created_at      timestamptz not null default now(),
+
+    constraint submissions_status_valid
+        check (status in ('pending', 'approved', 'rejected')),
+    constraint submissions_pad_range
+        check (assigned_pad is null or assigned_pad between 0 and 15),
+    constraint submissions_duration_sane
+        check (duration &gt;= 0 and duration &lt;= 10)
+);
+
+-- One sound per pad per session.
+create unique index if not exists submissions_one_per_pad
+    on public.submissions (session_id, assigned_pad)
+    where assigned_pad is not null;
+
+create index if not exists submissions_by_session
+    on public.submissions (session_id, created_at desc);
+
+create index if not exists sessions_by_owner
+    on public.sessions (owner_id, created_at desc);
+
+-- ============================================================================
+-- HELPERS
+-- ============================================================================
+
+-- Ambiguity-free alphabet: no O/0, no I/1, no S/5. A code read aloud from a
+-- stage, or squinted at from the back of a room, should not need a retry.
+create or replace function public.generate_session_code()
+returns text
+language plpgsql
+as $$
+declare
+    alphabet constant text := 'ABCDEFGHJKLMNPQRTUVWXYZ23456789';
+    candidate text;
+    attempt integer := 0;
+begin
+    loop
+        candidate := '';
+        for i in 1..6 loop
+            candidate := candidate ||
+                substr(alphabet, 1 + floor(random() * length(alphabet))::int, 1);
+        end loop;
+
+        exit when not exists (
+            select 1 from public.sessions where public_code = candidate
+        );
+
+        attempt := attempt + 1;
+        if attempt &gt; 50 then
+            raise exception 'Could not allocate a unique session code';
+        end if;
+    end loop;
+
+    return candidate;
+end;
+$$;
+
+-- SECURITY DEFINER so RLS policies can ask this question on behalf of a
+-- caller that has no read access to sessions at all.
+create or replace function public.session_is_open(target uuid)
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+    select exists (
+        select 1
+        from public.sessions
+        where id = target
+          and status = 'open'
+          and (closes_at is null or closes_at &gt; now())
+    );
+$$;
+
+-- The only window anon has onto sessions. Takes a code, returns at most one
+-- row, and never exposes owner_id or anything else internal.
+create or replace function public.get_open_session(code text)
+returns table (
+    id uuid,
+    title text,
+    prompt text,
+    max_duration_seconds integer
+)
+language sql
+security definer
+set search_path = public
+stable
+as $$
+    select s.id, s.title, s.prompt, s.max_duration_seconds
+    from public.sessions s
+    where s.public_code = upper(trim(code))
+      and s.status = 'open'
+      and (s.closes_at is null or s.closes_at &gt; now())
+    limit 1;
+$$;
+
+-- Enforces the per-session ceiling at write time.
+create or replace function public.enforce_submission_cap()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+    ceiling integer;
+    current_total integer;
+begin
+    select max_submissions into ceiling
+    from public.sessions
+    where id = new.session_id;
+
+    select count(*) into current_total
+    from public.submissions
+    where session_id = new.session_id;
+
+    if current_total &gt;= coalesce(ceiling, 300) then
+        raise exception 'This session has reached its submission limit'
+            using errcode = 'check_violation';
+    end if;
+
+    return new;
+end;
+$$;
+
+drop trigger if exists submissions_cap on public.submissions;
+create trigger submissions_cap
+    before insert on public.submissions
+    for each row execute function public.enforce_submission_cap();
+
+-- ============================================================================
+-- ROW LEVEL SECURITY
+-- ============================================================================
+
+alter table public.sessions    enable row level security;
+alter table public.submissions enable row level security;
+
+-- --- sessions: owner only, in every direction ---
+
+drop policy if exists &quot;owner reads own sessions&quot; on public.sessions;
+create policy &quot;owner reads own sessions&quot;
+    on public.sessions for select
+    to authenticated
+    using (owner_id = auth.uid());
+
+drop policy if exists &quot;owner creates own sessions&quot; on public.sessions;
+create policy &quot;owner creates own sessions&quot;
+    on public.sessions for insert
+    to authenticated
+    with check (owner_id = auth.uid());
+
+drop policy if exists &quot;owner updates own sessions&quot; on public.sessions;
+create policy &quot;owner updates own sessions&quot;
+    on public.sessions for update
+    to authenticated
+    using (owner_id = auth.uid())
+    with check (owner_id = auth.uid());
+
+drop policy if exists &quot;owner deletes own sessions&quot; on public.sessions;
+create policy &quot;owner deletes own sessions&quot;
+    on public.sessions for delete
+    to authenticated
+    using (owner_id = auth.uid());
+
+-- Note: no anon policy on sessions at all. get_open_session() is the door.
+
+-- --- submissions: anon writes, owner reads and moderates ---
+
+drop policy if exists &quot;anon submits to open sessions&quot; on public.submissions;
+create policy &quot;anon submits to open sessions&quot;
+    on public.submissions for insert
+    to anon
+    with check (
+        public.session_is_open(session_id)
+        -- An audience member cannot pre-approve their own sound or park it
+        -- straight onto a pad.
+        and status = 'pending'
+        and assigned_pad is null
+    );
+
+-- A signed-in performer submitting into their own session, e.g. testing.
+drop policy if exists &quot;owner submits to own sessions&quot; on public.submissions;
+create policy &quot;owner submits to own sessions&quot;
+    on public.submissions for insert
+    to authenticated
+    with check (
+        exists (
+            select 1 from public.sessions s
+            where s.id = session_id and s.owner_id = auth.uid()
+        )
+    );
+
+drop policy if exists &quot;owner reads own submissions&quot; on public.submissions;
+create policy &quot;owner reads own submissions&quot;
+    on public.submissions for select
+    to authenticated
+    using (
+        exists (
+            select 1 from public.sessions s
+            where s.id = session_id and s.owner_id = auth.uid()
+        )
+    );
+
+drop policy if exists &quot;owner moderates own submissions&quot; on public.submissions;
+create policy &quot;owner moderates own submissions&quot;
+    on public.submissions for update
+    to authenticated
+    using (
+        exists (
+            select 1 from public.sessions s
+            where s.id = session_id and s.owner_id = auth.uid()
+        )
+    )
+    with check (
+        exists (
+            select 1 from public.sessions s
+            where s.id = session_id and s.owner_id = auth.uid()
+        )
+    );
+
+drop policy if exists &quot;owner deletes own submissions&quot; on public.submissions;
+create policy &quot;owner deletes own submissions&quot;
+    on public.submissions for delete
+    to authenticated
+    using (
+        exists (
+            select 1 from public.sessions s
+            where s.id = session_id and s.owner_id = auth.uid()
+        )
+    );
+
+-- ============================================================================
+-- STORAGE
+-- ============================================================================
+
+-- Private bucket. 'public' false means no URL works without a signature.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+    'submissions',
+    'submissions',
+    false,
+    2097152,                        -- 2 MB ceiling; a 3 s mono WAV is ~290 KB
+    array['audio/wav', 'audio/x-wav', 'audio/wave']
+)
+on conflict (id) do update
+set public = false,
+    file_size_limit = 2097152,
+    allowed_mime_types = array['audio/wav', 'audio/x-wav', 'audio/wave'];
+
+drop policy if exists &quot;anon uploads to open sessions&quot; on storage.objects;
+create policy &quot;anon uploads to open sessions&quot;
+    on storage.objects for insert
+    to anon
+    with check (
+        bucket_id = 'submissions'
+        -- First path segment is the session id: &lt;session_id&gt;/&lt;submission_id&gt;.wav
+        and public.session_is_open(((storage.foldername(name))[1])::uuid)
+    );
+
+drop policy if exists &quot;owner reads own session audio&quot; on storage.objects;
+create policy &quot;owner reads own session audio&quot;
+    on storage.objects for select
+    to authenticated
+    using (
+        bucket_id = 'submissions'
+        and exists (
+            select 1 from public.sessions s
+            where s.id = ((storage.foldername(name))[1])::uuid
+              and s.owner_id = auth.uid()
+        )
+    );
+
+drop policy if exists &quot;owner deletes own session audio&quot; on storage.objects;
+create policy &quot;owner deletes own session audio&quot;
+    on storage.objects for delete
+    to authenticated
+    using (
+        bucket_id = 'submissions'
+        and exists (
+            select 1 from public.sessions s
+            where s.id = ((storage.foldername(name))[1])::uuid
+              and s.owner_id = auth.uid()
+        )
+    );
+
+-- ============================================================================
+-- GRANTS
+-- ============================================================================
+
+grant usage on schema public to anon, authenticated;
+
+grant select, insert, update, delete on public.sessions    to authenticated;
+grant select, insert, update, delete on public.submissions to authenticated;
+grant insert                          on public.submissions to anon;
+
+grant execute on function public.get_open_session(text)  to anon, authenticated;
+grant execute on function public.session_is_open(uuid)   to anon, authenticated;
+grant execute on function public.generate_session_code() to authenticated;
+
+-- anon deliberately gets nothing on sessions.
+revoke all on public.sessions from anon;
+</code></pre>
+<h3 id="43-add-the-column-defaults">4.3 Add the column defaults<a class="headerlink" href="#43-add-the-column-defaults" title="Permanent link">#</a></h3>
+<p>Run this as a <strong>separate query</strong>, after the schema.</p>
+<p>Without it the iOS app cannot create a session. It would have to invent a
+<code>public_code</code> itself, and it cannot check that code is unique — RLS lets a
+performer see only their own sessions, so the client has no way to know whether
+a code is already taken. Generating it inside the database is the only place
+that check is possible.</p>
+<pre><code class="language-sql">-- ============================================================================
+-- CrowdLoop — column defaults so the iOS app can create sessions
+--
+-- Run this once, after 01_schema.sql.
+--
+-- Without these the app would have to invent a public_code itself, and it
+-- cannot: RLS lets a performer see only their own sessions, so the client has
+-- no way to check a code is globally unique. Generating it in the database is
+-- the only place that check is possible.
+-- ============================================================================
+
+alter table public.sessions
+    alter column public_code set default public.generate_session_code();
+
+alter table public.sessions
+    alter column owner_id set default auth.uid();
+
+-- Confirm
+select
+    column_name,
+    column_default
+from information_schema.columns
+where table_schema = 'public'
+  and table_name = 'sessions'
+  and column_name in ('public_code', 'owner_id')
+order by column_name;
+</code></pre>
+<p>You should get two rows back, showing <code>public_code</code> and <code>owner_id</code> now have
+defaults.</p>
+<h3 id="44-verify">4.4 Verify<a class="headerlink" href="#44-verify" title="Permanent link">#</a></h3>
+<p>New query. Every row must say <strong>PASS</strong>.</p>
+<pre><code class="language-sql">-- ============================================================================
+-- CrowdLoop Phase 2 — verification
+-- Run AFTER 01_schema.sql. Each block should print PASS.
+-- ============================================================================
+
+-- 1. Tables exist with RLS on
+select
+    case when count(*) = 2 then 'PASS: both tables exist with RLS enabled'
+         else 'FAIL: expected 2 RLS-enabled tables, found ' || count(*)
+    end as result
+from pg_tables
+where schemaname = 'public'
+  and tablename in ('sessions', 'submissions')
+  and rowsecurity = true;
+
+-- 2. anon has no read path into sessions
+select
+    case when count(*) = 0 then 'PASS: anon has no policy on sessions'
+         else 'FAIL: anon can reach sessions directly through ' || count(*) || ' policy'
+    end as result
+from pg_policies
+where schemaname = 'public'
+  and tablename = 'sessions'
+  and 'anon' = any(roles);
+
+-- 3. anon can insert submissions but nothing else
+select
+    case when count(*) filter (where cmd = 'INSERT') = 1
+          and count(*) filter (where cmd &lt;&gt; 'INSERT') = 0
+         then 'PASS: anon on submissions is insert-only'
+         else 'FAIL: anon has unexpected access to submissions'
+    end as result
+from pg_policies
+where schemaname = 'public'
+  and tablename = 'submissions'
+  and 'anon' = any(roles);
+
+-- 4. Bucket is private
+select
+    case when not public then 'PASS: submissions bucket is private'
+         else 'FAIL: submissions bucket is PUBLIC — audio is world-readable'
+    end as result
+from storage.buckets
+where id = 'submissions';
+
+-- 5. anon can write to storage but not read it
+select
+    case when count(*) filter (where cmd = 'INSERT') &gt;= 1
+          and count(*) filter (where cmd = 'SELECT') = 0
+         then 'PASS: anon can upload but not download'
+         else 'FAIL: check anon storage policies'
+    end as result
+from pg_policies
+where schemaname = 'storage'
+  and tablename = 'objects'
+  and 'anon' = any(roles);
+
+-- 6. Helper functions are SECURITY DEFINER
+select
+    case when count(*) = 2 then 'PASS: helper functions are SECURITY DEFINER'
+         else 'FAIL: expected 2 definer functions, found ' || count(*)
+    end as result
+from pg_proc p
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public'
+  and p.proname in ('get_open_session', 'session_is_open')
+  and p.prosecdef = true;
+
+-- 7. Code generator produces a valid code
+select
+    case when public.generate_session_code() ~ '^[A-Z0-9]{6}$'
+         then 'PASS: session codes generate correctly'
+         else 'FAIL: generate_session_code() returned an unexpected shape'
+    end as result;
+</code></pre>
+<p>If any row says FAIL, stop. A FAIL here means the security model is wrong, and
+that matters more than anything else in this setup. Re-run section 4.2 in full
+and verify again.</p>
+<h3 id="45-create-your-performer-account">4.5 Create your performer account<a class="headerlink" href="#45-create-your-performer-account" title="Permanent link">#</a></h3>
+<p>Dashboard → <strong>Authentication</strong> → <strong>Users</strong> → <strong>Add user</strong> → <strong>Create new
+user</strong>.</p>
+<p>Use a real email and a password you will keep. Tick <strong>Auto Confirm User</strong> so
+you are not waiting on a confirmation email.</p>
+<p>This is the account the iOS app signs in as. Audience members never get an
+account, never sign in, and never see anything that requires one.</p>
+<p><strong>Put this password in your password manager now.</strong> It is not the same as the
+database password from section 4.1, and it is not your supabase.com login.
+Section 10 covers all three, how to change this one from inside the app, and
+what to do when it is gone.</p>
+<h3 id="46-collect-your-two-values">4.6 Collect your two values<a class="headerlink" href="#46-collect-your-two-values" title="Permanent link">#</a></h3>
+<p>Dashboard → <strong>Project Settings</strong> (the gear) → <strong>API</strong>.</p>
+<p>Copy these two, and keep them somewhere you can paste from:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Looks like</th>
+<th>Where it goes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Project URL</strong></td>
+<td><code>https://abcdefghijklm.supabase.co</code></td>
+<td>the recording page (section 5.2) and the app (section 6)</td>
+</tr>
+<tr>
+<td><strong>Publishable key</strong> (also labelled <code>anon</code> / <code>public</code>)</td>
+<td><code>sb_publishable_…</code> or a long <code>eyJ…</code> JWT</td>
+<td>the same two places</td>
+</tr>
+</tbody>
+</table>
+<p>Email them to yourself, or put them in a note you can paste from on both the
+computer and the iPad. You will type each one twice.</p>
+<p><strong>The publishable key is meant to be public.</strong> It ships inside the app binary
+and inside the web page, where anyone can read it. It grants nothing on its
+own — every restriction is enforced by Row Level Security on the server, so a
+copy of this key lets an attacker do exactly what an audience member can do:
+insert a pending submission into a session that is currently open. Nothing else.</p>
+<p><strong>The <code>service_role</code> key on that same page is the opposite.</strong> It bypasses RLS
+entirely. Never put it in the app, the web page, a git repository, or anything
+you paste into an AI tool. You do not need it for anything in this guide.</p>
+<hr />
+<h2 id="5-service-b-netlify">5. Service B: Netlify<a class="headerlink" href="#5-service-b-netlify" title="Permanent link">#</a></h2>
+<h3 id="51-the-recording-page">5.1 The recording page<a class="headerlink" href="#51-the-recording-page" title="Permanent link">#</a></h3>
+<p>Here is the entire page. It is one file with no dependencies: no frameworks,
+no fonts, no analytics, nothing fetched from anywhere. What you see is what
+runs.</p>
+<p>Use the <strong>Download</strong> button on the block below and you get <code>index.html</code> ready
+to edit. <strong>Copy</strong> puts the same text on your clipboard if you would rather
+paste it into your own editor and save it yourself.</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1&quot;&gt;
+&lt;meta name=&quot;theme-color&quot; content=&quot;#14100c&quot;&gt;
+&lt;meta property=&quot;og:title&quot; content=&quot;CrowdLoop &amp;mdash; Record a Sound&quot;&gt;
+&lt;meta property=&quot;og:description&quot; content=&quot;Record a sound and send it to the show&quot;&gt;
+&lt;!-- Optional: drop a square og-image.png beside this file for link previews. --&gt;
+&lt;meta property=&quot;og:image&quot; content=&quot;og-image.png&quot;&gt;
+&lt;meta property=&quot;og:image:width&quot; content=&quot;1200&quot;&gt;
+&lt;meta property=&quot;og:image:height&quot; content=&quot;1200&quot;&gt;
+&lt;meta property=&quot;og:type&quot; content=&quot;website&quot;&gt;
+&lt;title&gt;Record a Sound&lt;/title&gt;
+&lt;style&gt;
+  /* ------------------------------------------------------------------
+     PALETTE — every colour on the page comes from here. Change these
+     nine values and the whole page follows; nothing else hardcodes a
+     colour.
+     ------------------------------------------------------------------ */
+  :root {
+    --bg: #14100c;          /* page background — warm dark, not blue-black */
+    --surface: #201a14;     /* cards */
+    --surface-2: #2b241b;   /* inputs, meter track */
+    --amber: #e8a33d;       /* primary accent */
+    --green: #5fbf6a;       /* go / success */
+    --red: #d9563f;         /* recording / errors */
+    --text: #f7f2ea;
+    --muted: #a2968a;
+    --venmo: #3d95ce;       /* Venmo brand blue */
+    --on-amber: #1a1206;    /* text on amber fills */
+    --on-green: #06220f;    /* text on green fills */
+    --border: #3a3025;      /* input outlines */
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .wrap { width: 100%; max-width: 460px; margin: auto 0; }
+
+  .brand {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    font-weight: 800;
+    margin: 0 0 10px;
+    text-align: center;
+  }
+
+  .prompt {
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--amber);
+    text-align: center;
+    margin: 0 0 30px;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 26px 22px;
+    text-align: center;
+  }
+
+  .hint { font-size: 14px; color: var(--muted); line-height: 1.5; margin: 16px 0 0; }
+
+  /* Record button: one large target, reachable one-handed while holding a child. */
+  .record-btn {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    border: none;
+    background: var(--amber);
+    color: var(--on-amber);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease, background 0.2s ease;
+    touch-action: manipulation;
+  }
+  .record-btn:active { transform: scale(0.95); }
+  .record-btn:disabled { opacity: 0.45; cursor: default; }
+  .record-btn.recording { background: var(--red); color: #fff; animation: pulse 1.15s ease-in-out infinite; }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(242, 90, 90, 0.55); }
+    50%      { box-shadow: 0 0 0 22px rgba(242, 90, 90, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .record-btn.recording { animation: none; }
+  }
+
+  .timer {
+    font-variant-numeric: tabular-nums;
+    font-size: 42px;
+    font-weight: 800;
+    margin: 18px 0 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .meter {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    overflow: hidden;
+    margin: 18px 0 4px;
+  }
+  .meter &gt; span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--amber);
+    transition: width 0.08s linear;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 17px 20px;
+    border-radius: 13px;
+    border: none;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 11px;
+    touch-action: manipulation;
+  }
+  .btn:active { transform: scale(0.985); }
+  .btn-primary { background: var(--green); color: var(--on-green); }
+  .btn-secondary { background: var(--surface-2); color: var(--text); }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+
+  input[type=&quot;text&quot;] {
+    width: 100%;
+    padding: 16px;
+    border-radius: 13px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-family: inherit;
+  }
+  input[type=&quot;text&quot;]:focus { outline: 2px solid var(--amber); outline-offset: 1px; }
+
+  .status {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 1.4em;
+  }
+  .status.error { color: var(--red); }
+  .status.ok { color: var(--green); }
+
+  .big-icon { font-size: 60px; line-height: 1; margin-bottom: 14px; }
+
+  #audio-trace {
+    margin: 12px 0 0;
+    padding: 10px;
+    background: var(--surface-2);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+  #audio-trace:empty { display: none; }
+
+  #fatal {
+    display: none;
+    margin: 16px 0 0;
+    padding: 12px;
+    background: rgba(217, 86, 63, 0.14);
+    border: 1px solid var(--red);
+    border-radius: 10px;
+    color: var(--red);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  .spinner {
+    width: 34px; height: 34px;
+    border: 3px solid var(--surface-2);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: spin 0.85s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+
+  /* Off-screen rather than display:none — a hidden file input still has to be
+     focusable and clickable for the button to trigger it. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .field-label {
+    display: block;
+    margin: 18px 0 6px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: left;
+  }
+
+  .text-field {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-size: 16px; /* 16px or iOS zooms the page on focus */
+    font-family: inherit;
+    -webkit-appearance: none;
+  }
+  .text-field:focus {
+    outline: none;
+    border-color: var(--amber);
+  }
+
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 4px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .or-divider::before,
+  .or-divider::after {
+    content: &quot;&quot;;
+    flex: 1;
+    height: 1px;
+    background: var(--surface-2);
+  }
+
+  /* Venmo. Placed where it reads as a thank-you rather than a toll: large on
+     the confirmation screen, quiet everywhere else. Nothing about recording
+     or sending is gated behind it. */
+  .venmo-btn {
+    display: block;
+    width: 100%;
+    padding: 17px 20px;
+    border-radius: 13px;
+    background: var(--venmo);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 18px;
+    touch-action: manipulation;
+  }
+  .venmo-btn:active { transform: scale(0.985); }
+  .venmo-btn small {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.85;
+    margin-top: 3px;
+  }
+
+  .venmo-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 9px 16px;
+    border: 1px solid var(--surface-2);
+    border-radius: 999px;
+    color: var(--amber);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .footer {
+    margin-top: 26px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- og:image preview --&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+
+  &lt;div class=&quot;brand&quot; id=&quot;brand&quot;&gt;&lt;/div&gt;
+
+  &lt;!-- Looking up the code --&gt;
+  &lt;section id=&quot;view-loading&quot; class=&quot;card&quot;&gt;
+    &lt;div class=&quot;spinner&quot;&gt;&lt;/div&gt;
+    &lt;p class=&quot;hint&quot;&gt;Finding the session…&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Manual code entry --&gt;
+  &lt;section id=&quot;view-code&quot; class=&quot;card hidden&quot;&gt;
+    &lt;h1&gt;Enter the code&lt;/h1&gt;
+    &lt;p class=&quot;hint&quot; style=&quot;margin-bottom:20px&quot;&gt;&lt;/p&gt;
+    &lt;input type=&quot;text&quot; id=&quot;code-input&quot; maxlength=&quot;6&quot; inputmode=&quot;latin&quot;
+           autocomplete=&quot;off&quot; autocorrect=&quot;off&quot; autocapitalize=&quot;characters&quot;
+           spellcheck=&quot;false&quot; placeholder=&quot;ABC123&quot; aria-label=&quot;Session code&quot;&gt;
+    &lt;button class=&quot;btn btn-primary&quot; id=&quot;code-go&quot;&gt;Continue&lt;/button&gt;
+    &lt;div class=&quot;status&quot; id=&quot;code-status&quot; role=&quot;status&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Ready / recording --&gt;
+  &lt;section id=&quot;view-record&quot; class=&quot;hidden&quot;&gt;
+    &lt;h1 id=&quot;session-title&quot;&gt;&lt;/h1&gt;
+    &lt;p class=&quot;prompt&quot; id=&quot;session-prompt&quot;&gt;&lt;/p&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;button class=&quot;record-btn&quot; id=&quot;record-btn&quot; aria-label=&quot;Start recording&quot;&gt;Record&lt;/button&gt;
+      &lt;div class=&quot;timer hidden&quot; id=&quot;timer&quot;&gt;0.0s&lt;/div&gt;
+      &lt;div class=&quot;meter hidden&quot; id=&quot;meter&quot;&gt;&lt;span id=&quot;meter-fill&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+      &lt;p class=&quot;hint&quot; id=&quot;record-hint&quot;&gt;Tap to record. Recording stops on its own.&lt;/p&gt;
+
+      &lt;div class=&quot;or-divider&quot;&gt;&lt;span&gt;or&lt;/span&gt;&lt;/div&gt;
+
+      &lt;button class=&quot;btn btn-secondary&quot; id=&quot;file-btn&quot;&gt;Choose a sound file&lt;/button&gt;
+      &lt;input type=&quot;file&quot; id=&quot;file-input&quot; accept=&quot;audio/*&quot;
+             class=&quot;visually-hidden&quot; aria-label=&quot;Choose a sound file&quot;&gt;
+
+      &lt;div class=&quot;status&quot; id=&quot;record-status&quot; role=&quot;status&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Listen back and send --&gt;
+  &lt;section id=&quot;view-review&quot; class=&quot;hidden&quot;&gt;
+    &lt;h1&gt;Sound good?&lt;/h1&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;big-icon&quot; aria-hidden=&quot;true&quot;&gt;🎵&lt;/div&gt;
+      &lt;div class=&quot;timer&quot; id=&quot;review-duration&quot;&gt;0.0s&lt;/div&gt;
+      &lt;button class=&quot;btn btn-secondary&quot; id=&quot;play-btn&quot;&gt;Play it back&lt;/button&gt;
+      &lt;button class=&quot;btn btn-secondary hidden&quot; id=&quot;tone-btn&quot;&gt;Play a test tone&lt;/button&gt;
+      &lt;pre id=&quot;audio-trace&quot;&gt;&lt;/pre&gt;
+
+      &lt;label class=&quot;field-label&quot; for=&quot;label-input&quot;&gt;Name it (optional)&lt;/label&gt;
+      &lt;input type=&quot;text&quot; id=&quot;label-input&quot; class=&quot;text-field&quot;
+             maxlength=&quot;40&quot; autocomplete=&quot;off&quot;
+             autocapitalize=&quot;words&quot; spellcheck=&quot;false&quot;
+             placeholder=&quot;Leave blank if you like&quot;&gt;
+      &lt;button class=&quot;btn btn-primary&quot; id=&quot;send-btn&quot;&gt;Send it in&lt;/button&gt;
+      &lt;button class=&quot;btn btn-secondary&quot; id=&quot;redo-btn&quot;&gt;Record again&lt;/button&gt;
+      &lt;div class=&quot;status&quot; id=&quot;review-status&quot; role=&quot;status&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Done --&gt;
+  &lt;section id=&quot;view-done&quot; class=&quot;card hidden&quot;&gt;
+    &lt;div class=&quot;big-icon&quot; aria-hidden=&quot;true&quot;&gt;✅&lt;/div&gt;
+    &lt;h1&gt;Sent!&lt;/h1&gt;
+    &lt;p class=&quot;hint&quot; id=&quot;done-note&quot;&gt;&lt;/p&gt;
+
+    &lt;!-- Shown only when VENMO_HANDLE is set. Stays hidden otherwise. --&gt;
+    &lt;a class=&quot;venmo-btn hidden&quot; id=&quot;venmo-btn&quot;
+       href=&quot;#&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;
+      &lt;span id=&quot;venmo-title&quot;&gt;&lt;/span&gt;
+      &lt;small id=&quot;venmo-sub&quot;&gt;&lt;/small&gt;
+    &lt;/a&gt;
+
+    &lt;button class=&quot;btn btn-secondary&quot; id=&quot;again-btn&quot;&gt;Send another&lt;/button&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Terminal error --&gt;
+  &lt;section id=&quot;view-error&quot; class=&quot;card hidden&quot;&gt;
+    &lt;div class=&quot;big-icon&quot; aria-hidden=&quot;true&quot;&gt;😕&lt;/div&gt;
+    &lt;h1 id=&quot;error-title&quot;&gt;Something went wrong&lt;/h1&gt;
+    &lt;p class=&quot;hint&quot; id=&quot;error-detail&quot;&gt;&lt;/p&gt;
+    &lt;button class=&quot;btn btn-secondary&quot; id=&quot;retry-btn&quot;&gt;Try again&lt;/button&gt;
+  &lt;/section&gt;
+
+  &lt;pre id=&quot;fatal&quot;&gt;&lt;/pre&gt;
+
+  &lt;p class=&quot;footer&quot; id=&quot;page-footer&quot;&gt;&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+(function () {
+  &quot;use strict&quot;;
+
+  // Installed first, deliberately. If anything below throws at load, the page
+  // would otherwise sit on its loading spinner forever with only &quot;Script
+  // error.&quot; in a console that cannot be opened on a phone.
+  window.addEventListener(&quot;error&quot;, function (event) {
+    var box = document.getElementById(&quot;fatal&quot;);
+    if (!box) { return; }
+    if (/[?&amp;]debug=1/.test(window.location.search)) {
+      var detail = event.message || &quot;Unknown error&quot;;
+      if (event.filename) {
+        detail += &quot;\n&quot; + String(event.filename).split(&quot;/&quot;).pop() +
+                  &quot; line &quot; + event.lineno + &quot;:&quot; + event.colno;
+      }
+      box.textContent = &quot;Startup error\n&quot; + detail;
+    } else {
+      box.textContent = &quot;Something went wrong loading this page. &quot; +
+                        &quot;Please reload, or ask for the code again.&quot;;
+    }
+    box.style.display = &quot;block&quot;;
+  });
+
+  window.addEventListener(&quot;unhandledrejection&quot;, function (event) {
+    var box = document.getElementById(&quot;fatal&quot;);
+    if (!box) { return; }
+    if (!/[?&amp;]debug=1/.test(window.location.search)) { return; }
+    var reason = event.reason;
+    box.textContent = &quot;Unhandled rejection\n&quot; +
+      (reason &amp;&amp; reason.message ? reason.message : String(reason));
+    box.style.display = &quot;block&quot;;
+  });
+
+  // -------------------------------------------------------------------------
+  // Configuration
+  // -------------------------------------------------------------------------
+
+  // =========================================================================
+  // YOUR DETAILS — this block is the only part of the file you edit.
+  // =========================================================================
+
+  // From Supabase: Project Settings -&gt; API. Section 4.6 of the guide.
+  var SUPABASE_URL = &quot;https://YOUR-PROJECT.supabase.co&quot;;
+  var SUPABASE_KEY = &quot;YOUR-PUBLISHABLE-KEY&quot;;
+
+  // Shown at the top of the page and on the confirmation screen.
+  var PERFORMER_NAME = &quot;Your Show Name&quot;;
+
+  // What the confirmation screen says you will do with the recording.
+  // &quot;{name}&quot; is replaced with PERFORMER_NAME.
+  var DONE_NOTE = &quot;{name} will listen to it and may play it during the show.&quot;;
+
+  // Tip button. Leave VENMO_HANDLE as &quot;&quot; and no button appears at all.
+  var VENMO_HANDLE = &quot;&quot;;
+  var VENMO_TITLE = &quot;\uD83C\uDFBB\uD83C\uDFB8\uD83E\uDE95 Instrument Repair Fund&quot;;
+  var VENMO_SUBTITLE = &quot;Chip in on Venmo&quot;;
+
+  // The line in small print at the bottom. Keep it true: the page collects
+  // no name, email or location, and saying so is the point of the line.
+  var PRIVACY_LINE = &quot;Your recording is sent to {name} for musical purposes.&quot;;
+
+  // =========================================================================
+  // Nothing below here needs editing.
+  // =========================================================================
+
+  function fill(id, text) {
+    var el = document.getElementById(id);
+    if (el) { el.textContent = text; }
+  }
+
+  function applyBranding() {
+    var name = PERFORMER_NAME || &quot;the show&quot;;
+
+    fill(&quot;brand&quot;, name);
+    fill(&quot;done-note&quot;, DONE_NOTE.replace(&quot;{name}&quot;, name));
+
+    if (document.title === &quot;Record a Sound&quot; &amp;&amp; PERFORMER_NAME) {
+      document.title = &quot;Record a Sound \u2014 &quot; + name;
+    }
+
+    var footer = document.getElementById(&quot;page-footer&quot;);
+    if (footer) {
+      footer.appendChild(
+        document.createTextNode(PRIVACY_LINE.replace(&quot;{name}&quot;, name))
+      );
+      footer.appendChild(document.createElement(&quot;br&quot;));
+      footer.appendChild(
+        document.createTextNode(&quot;No name, email, or location is collected.&quot;)
+      );
+    }
+
+    var handle = String(VENMO_HANDLE || &quot;&quot;).replace(/^@/, &quot;&quot;).trim();
+    var button = document.getElementById(&quot;venmo-btn&quot;);
+    if (button &amp;&amp; handle) {
+      button.href = &quot;https://venmo.com/&quot; + encodeURIComponent(handle);
+      fill(&quot;venmo-title&quot;, VENMO_TITLE);
+      fill(&quot;venmo-sub&quot;, VENMO_SUBTITLE + &quot; \u00B7 @&quot; + handle);
+      button.className = &quot;venmo-btn&quot;;
+    }
+  }
+
+  applyBranding();
+
+  // Uploads are normalised to this before they leave the phone, so the app
+  // only ever decodes one format. See encodeWav() below for why that matters.
+  var TARGET_SAMPLE_RATE = 48000;
+  var HARD_MAX_SECONDS = 10;
+
+  // -------------------------------------------------------------------------
+  // State
+  // -------------------------------------------------------------------------
+
+  var session = null;          // { id, title, prompt, max_duration_seconds }
+  var mediaStream = null;
+  var recorder = null;
+  var chunks = [];
+  var recordedWav = null;      // Blob
+  var recordedSeconds = 0;
+  var previewUrl = null;
+  var previewAudio = null;
+  var stopTimer = null;
+  var tickTimer = null;
+  var levelRaf = null;
+  // One AudioContext for the whole page. iOS caps how many a document may
+  // create, and an unlocked context is the thing that survives between
+  // recording and playback, so it is never closed.
+  var sharedCtx = null;
+  var analyser = null;
+  var meterSource = null;
+  var playbackSource = null;
+  var sending = false;
+
+  // Diagnostics are off unless the URL asks for them: ?debug=1
+  // Everything below still runs; it just says nothing. Worth keeping, because
+  // the alternative on a phone at a venue is guessing.
+  var DEBUG = /[?&amp;]debug=1/.test(window.location.search);
+
+  // -------------------------------------------------------------------------
+  // Small helpers
+  // -------------------------------------------------------------------------
+
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    var views = [&quot;loading&quot;, &quot;code&quot;, &quot;record&quot;, &quot;review&quot;, &quot;done&quot;, &quot;error&quot;];
+    views.forEach(function (v) {
+      var el = $(&quot;view-&quot; + v);
+      if (el) { el.classList.toggle(&quot;hidden&quot;, v !== name); }
+    });
+  }
+
+  function setStatus(id, message, kind) {
+    var el = $(id);
+    if (!el) { return; }
+    el.textContent = message || &quot;&quot;;
+    el.className = &quot;status&quot; + (kind ? &quot; &quot; + kind : &quot;&quot;);
+  }
+
+  // Turns an exception into something readable on a phone screen. The status
+  // code is the whole diagnosis: 401/403 means the key or policies, 404 means
+  // the function is missing, a TypeError means the request never left.
+  function describeError(error) {
+    var message = String(error &amp;&amp; error.message ? error.message : error);
+
+    if (message.indexOf(&quot;(404)&quot;) !== -1) {
+      return &quot;The server is reachable but get_open_session is missing. Re-run 01_schema.sql.&quot;;
+    }
+    if (message.indexOf(&quot;(401)&quot;) !== -1 || message.indexOf(&quot;(403)&quot;) !== -1) {
+      return &quot;The server refused the key. Check the publishable key and the anon grants.&quot;;
+    }
+    if (message.indexOf(&quot;TIMEOUT&quot;) !== -1) {
+      return message + &quot; Usually a service worker or extension intercepting &quot; +
+             &quot;the request. Try a private window.&quot;;
+    }
+    if (message.indexOf(&quot;Failed to fetch&quot;) !== -1 ||
+        message.indexOf(&quot;Load failed&quot;) !== -1 ||
+        message.indexOf(&quot;NetworkError&quot;) !== -1) {
+      return &quot;The request never reached the server — offline, or blocked before sending.&quot;;
+    }
+    return message.slice(0, 300);
+  }
+
+  function fail(title, detail) {
+    $(&quot;error-title&quot;).textContent = title;
+    $(&quot;error-detail&quot;).textContent = detail || &quot;&quot;;
+    show(&quot;error&quot;);
+  }
+
+  function uuid() {
+    if (window.crypto &amp;&amp; typeof window.crypto.randomUUID === &quot;function&quot;) {
+      return window.crypto.randomUUID();
+    }
+    // Fallback for older Safari. Still uses a CSPRNG.
+    var bytes = new Uint8Array(16);
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    bytes[6] = (bytes[6] &amp; 0x0f) | 0x40;
+    bytes[8] = (bytes[8] &amp; 0x3f) | 0x80;
+    var hex = [];
+    for (var i = 0; i &lt; 16; i++) {
+      hex.push((bytes[i] + 0x100).toString(16).slice(1));
+    }
+    return hex.slice(0, 4).join(&quot;&quot;) + &quot;-&quot; +
+           hex.slice(4, 6).join(&quot;&quot;) + &quot;-&quot; +
+           hex.slice(6, 8).join(&quot;&quot;) + &quot;-&quot; +
+           hex.slice(8, 10).join(&quot;&quot;) + &quot;-&quot; +
+           hex.slice(10, 16).join(&quot;&quot;);
+  }
+
+  function AudioContextClass() {
+    return window.AudioContext || window.webkitAudioContext;
+  }
+
+  // iOS decides where audio comes out based on the page's audio session. Once
+  // getUserMedia runs, the session goes into record mode and output routes to
+  // the earpiece receiver rather than the speaker — and the ring/silent switch
+  // mutes it. Both are inaudible with the phone in your hand, and neither shows
+  // up as an error: the context still reports &quot;running&quot; and playback still
+  // completes normally.
+  //
+  // Declaring &quot;playback&quot; before making sound forces speaker output and opts out
+  // of the silent switch. Safari 16.4+ only; harmless where it is missing.
+  function setAudioSession(type) {
+    try {
+      if (navigator.audioSession) {
+        navigator.audioSession.type = type;
+        return type;
+      }
+    } catch (e) { /* not supported */ }
+    return null;
+  }
+
+  function describeSession() {
+    if (!navigator.audioSession) { return &quot;audioSession unsupported&quot;; }
+    try {
+      return &quot;audioSession=&quot; + navigator.audioSession.type;
+    } catch (e) {
+      return &quot;audioSession unreadable&quot;;
+    }
+  }
+
+  // Must be called synchronously from inside a click handler. iOS starts every
+  // AudioContext suspended and will only resume one in response to a real
+  // gesture, so deferring this into a callback silently breaks playback.
+  function unlockAudio() {
+    try {
+      if (!sharedCtx) {
+        var Ctx = AudioContextClass();
+        if (!Ctx) { return null; }
+        sharedCtx = new Ctx();
+      }
+      if (sharedCtx.state === &quot;suspended&quot; &amp;&amp; typeof sharedCtx.resume === &quot;function&quot;) {
+        sharedCtx.resume();
+      }
+      return sharedCtx;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Supabase REST
+  // -------------------------------------------------------------------------
+
+  // fetch() has no default timeout: a request that never settles leaves the
+  // page on its spinner indefinitely. Twelve seconds is long enough for a
+  // slow phone on bad wifi and short enough to tell someone something.
+  function fetchWithTimeout(url, options, seconds) {
+    var limit = (seconds || 12) * 1000;
+
+    if (typeof AbortController === &quot;undefined&quot;) {
+      return fetch(url, options);
+    }
+
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, limit);
+
+    options = options || {};
+    options.signal = controller.signal;
+
+    return fetch(url, options).then(function (response) {
+      clearTimeout(timer);
+      return response;
+    }).catch(function (error) {
+      clearTimeout(timer);
+      if (error &amp;&amp; error.name === &quot;AbortError&quot;) {
+        throw new Error(&quot;TIMEOUT after &quot; + (limit / 1000) + &quot;s — the request &quot; +
+                        &quot;was sent but nothing came back.&quot;);
+      }
+      throw error;
+    });
+  }
+
+  function supabaseHeaders(extra) {
+    var headers = {
+      &quot;apikey&quot;: SUPABASE_KEY,
+      &quot;Authorization&quot;: &quot;Bearer &quot; + SUPABASE_KEY
+    };
+    if (extra) {
+      Object.keys(extra).forEach(function (k) { headers[k] = extra[k]; });
+    }
+    return headers;
+  }
+
+  // The only session lookup anon is allowed. Everything else about sessions
+  // is invisible to this page by design.
+  function lookupSession(code) {
+    return fetchWithTimeout(SUPABASE_URL + &quot;/rest/v1/rpc/get_open_session&quot;, {
+      method: &quot;POST&quot;,
+      headers: supabaseHeaders({ &quot;Content-Type&quot;: &quot;application/json&quot; }),
+      body: JSON.stringify({ code: code })
+    }, 12).then(function (response) {
+      if (!response.ok) {
+        return response.text().then(function (body) {
+          throw new Error(&quot;Lookup failed (&quot; + response.status + &quot;): &quot; + body);
+        });
+      }
+      return response.json();
+    }).then(function (rows) {
+      if (!rows || rows.length === 0) { return null; }
+      return rows[0];
+    });
+  }
+
+  function uploadAudio(sessionId, submissionId, blob) {
+    var path = sessionId + &quot;/&quot; + submissionId + &quot;.wav&quot;;
+    return fetchWithTimeout(SUPABASE_URL + &quot;/storage/v1/object/submissions/&quot; + path, {
+      method: &quot;POST&quot;,
+      headers: supabaseHeaders({
+        &quot;Content-Type&quot;: &quot;audio/wav&quot;,
+        &quot;x-upsert&quot;: &quot;false&quot;,
+        &quot;cache-control&quot;: &quot;3600&quot;
+      }),
+      body: blob
+    }, 30).then(function (response) {
+      if (!response.ok) {
+        return response.text().then(function (body) {
+          throw new Error(&quot;Upload failed (&quot; + response.status + &quot;): &quot; + body);
+        });
+      }
+      return path;
+    });
+  }
+
+  // Audio is uploaded first, then the row is written. A row that exists
+  // therefore always has audio behind it; a failed send leaves at most an
+  // unreferenced file, which is harmless.
+  // Free text from an anonymous stranger, so it is bounded and flattened here
+  // as well as by maxlength: newlines and control characters would otherwise
+  // break the layout of the moderation queue.
+  function cleanLabel(raw) {
+    if (!raw) { return &quot;&quot;; }
+    return String(raw)
+      .replace(/[\u0000-\u001F\u007F]/g, &quot; &quot;)
+      .replace(/\s+/g, &quot; &quot;)
+      .trim()
+      .slice(0, 40);
+  }
+
+  function createSubmission(submissionId, sessionId, storagePath, seconds, bytes, label) {
+    return fetchWithTimeout(SUPABASE_URL + &quot;/rest/v1/submissions&quot;, {
+      method: &quot;POST&quot;,
+      headers: supabaseHeaders({
+        &quot;Content-Type&quot;: &quot;application/json&quot;,
+        // anon has no SELECT on submissions, so asking for the row back
+        // would fail the request. Minimal is correct here.
+        &quot;Prefer&quot;: &quot;return=minimal&quot;
+      }),
+      body: JSON.stringify({
+        id: submissionId,
+        session_id: sessionId,
+        status: &quot;pending&quot;,
+        label: cleanLabel(label),
+        duration: seconds,
+        storage_path: storagePath,
+        mime_type: &quot;audio/wav&quot;,
+        file_size: bytes
+      })
+    }, 12).then(function (response) {
+      if (!response.ok) {
+        return response.text().then(function (body) {
+          throw new Error(&quot;Save failed (&quot; + response.status + &quot;): &quot; + body);
+        });
+      }
+      return true;
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Audio conversion
+  //
+  // MediaRecorder gives WebM/Opus on Android and MP4/AAC on iOS. AVFoundation
+  // in the app cannot decode WebM at all, so rather than transcode on a
+  // server we decode here and emit 16-bit mono WAV at a fixed sample rate.
+  // One format reaches the sampler, whatever the phone produced.
+  // -------------------------------------------------------------------------
+
+  function decodeToBuffer(blob) {
+    return blob.arrayBuffer().then(function (data) {
+      var Ctx = AudioContextClass();
+      var ctx = new Ctx();
+      return new Promise(function (resolve, reject) {
+        // Callback form: older Safari does not return a promise here.
+        var maybe = ctx.decodeAudioData(data, function (buffer) {
+          resolve({ buffer: buffer, ctx: ctx });
+        }, function (err) {
+          reject(err || new Error(&quot;Could not decode the recording&quot;));
+        });
+        if (maybe &amp;&amp; typeof maybe.then === &quot;function&quot;) {
+          maybe.then(function (buffer) {
+            resolve({ buffer: buffer, ctx: ctx });
+          }).catch(reject);
+        }
+      });
+    });
+  }
+
+  function resampleToMono(buffer, maxSeconds) {
+    var seconds = Math.min(buffer.duration, maxSeconds);
+    var frames = Math.max(1, Math.ceil(seconds * TARGET_SAMPLE_RATE));
+
+    var Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    var offline = new Offline(1, frames, TARGET_SAMPLE_RATE);
+
+    var source = offline.createBufferSource();
+    source.buffer = buffer;
+
+    // Trim first, then let the offline context do the rate conversion.
+    source.connect(offline.destination);
+    source.start(0, 0, seconds);
+
+    var rendered = offline.startRendering();
+    if (rendered &amp;&amp; typeof rendered.then === &quot;function&quot;) {
+      return rendered;
+    }
+    return new Promise(function (resolve) {
+      offline.oncomplete = function (event) { resolve(event.renderedBuffer); };
+    });
+  }
+
+  function encodeWav(audioBuffer) {
+    var samples = audioBuffer.getChannelData(0);
+    var frameCount = samples.length;
+    var bytesPerSample = 2;
+    var dataBytes = frameCount * bytesPerSample;
+    var buffer = new ArrayBuffer(44 + dataBytes);
+    var view = new DataView(buffer);
+
+    function writeString(offset, text) {
+      for (var i = 0; i &lt; text.length; i++) {
+        view.setUint8(offset + i, text.charCodeAt(i));
+      }
+    }
+
+    writeString(0, &quot;RIFF&quot;);
+    view.setUint32(4, 36 + dataBytes, true);
+    writeString(8, &quot;WAVE&quot;);
+    writeString(12, &quot;fmt &quot;);
+    view.setUint32(16, 16, true);                       // PCM chunk size
+    view.setUint16(20, 1, true);                        // format = PCM
+    view.setUint16(22, 1, true);                        // channels = mono
+    view.setUint32(24, TARGET_SAMPLE_RATE, true);
+    view.setUint32(28, TARGET_SAMPLE_RATE * bytesPerSample, true);
+    view.setUint16(32, bytesPerSample, true);           // block align
+    view.setUint16(34, 16, true);                       // bits per sample
+    writeString(36, &quot;data&quot;);
+    view.setUint32(40, dataBytes, true);
+
+    // Find the loudest point so quiet recordings are not inaudible over a PA.
+    // Capped so a near-silent take is not amplified into pure noise.
+    var peak = 0;
+    for (var p = 0; p &lt; frameCount; p++) {
+      var magnitude = samples[p] &lt; 0 ? -samples[p] : samples[p];
+      if (magnitude &gt; peak) { peak = magnitude; }
+    }
+    var gain = 1;
+    if (peak &gt; 0.0001) {
+      gain = Math.min(0.89 / peak, 8);
+    }
+
+    var offset = 44;
+    for (var i = 0; i &lt; frameCount; i++) {
+      var value = samples[i] * gain;
+      if (value &gt; 1) { value = 1; } else if (value &lt; -1) { value = -1; }
+      view.setInt16(offset, Math.round(value * 32767), true);
+      offset += 2;
+    }
+
+    return new Blob([buffer], { type: &quot;audio/wav&quot; });
+  }
+
+  function convertRecording(blob, maxSeconds) {
+    var context = null;
+    return decodeToBuffer(blob).then(function (result) {
+      context = result.ctx;
+      return resampleToMono(result.buffer, maxSeconds);
+    }).then(function (rendered) {
+      if (context &amp;&amp; typeof context.close === &quot;function&quot;) { context.close(); }
+      return {
+        wav: encodeWav(rendered),
+        seconds: rendered.length / TARGET_SAMPLE_RATE
+      };
+    }).catch(function (error) {
+      if (context &amp;&amp; typeof context.close === &quot;function&quot;) { context.close(); }
+      throw error;
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Recording
+  // -------------------------------------------------------------------------
+
+  function pickMimeType() {
+    if (typeof MediaRecorder === &quot;undefined&quot; ||
+        typeof MediaRecorder.isTypeSupported !== &quot;function&quot;) {
+      return &quot;&quot;;
+    }
+    var candidates = [
+      &quot;audio/webm;codecs=opus&quot;,
+      &quot;audio/webm&quot;,
+      &quot;audio/mp4&quot;,
+      &quot;audio/aac&quot;,
+      &quot;audio/ogg;codecs=opus&quot;
+    ];
+    for (var i = 0; i &lt; candidates.length; i++) {
+      if (MediaRecorder.isTypeSupported(candidates[i])) { return candidates[i]; }
+    }
+    return &quot;&quot;;
+  }
+
+  function startLevelMeter(stream) {
+    try {
+      var ctx = unlockAudio();
+      if (!ctx) { return; }
+      meterSource = ctx.createMediaStreamSource(stream);
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 512;
+      meterSource.connect(analyser);
+
+      var data = new Uint8Array(analyser.frequencyBinCount);
+      var fill = $(&quot;meter-fill&quot;);
+
+      var draw = function () {
+        analyser.getByteTimeDomainData(data);
+        var peak = 0;
+        for (var i = 0; i &lt; data.length; i++) {
+          var deviation = Math.abs(data[i] - 128);
+          if (deviation &gt; peak) { peak = deviation; }
+        }
+        fill.style.width = Math.min(100, (peak / 128) * 140) + &quot;%&quot;;
+        levelRaf = requestAnimationFrame(draw);
+      };
+      draw();
+    } catch (e) {
+      // A missing level meter is cosmetic; recording still works.
+    }
+  }
+
+  function stopLevelMeter() {
+    if (levelRaf) { cancelAnimationFrame(levelRaf); levelRaf = null; }
+    if (meterSource) {
+      try { meterSource.disconnect(); } catch (e) { /* already gone */ }
+      meterSource = null;
+    }
+    if (analyser) {
+      try { analyser.disconnect(); } catch (e) { /* already gone */ }
+      analyser = null;
+    }
+    // sharedCtx is intentionally left open and unlocked for playback.
+  }
+
+  function clearTimers() {
+    if (stopTimer) { clearTimeout(stopTimer); stopTimer = null; }
+    if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+  }
+
+  function releaseStream() {
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(function (track) { track.stop(); });
+      mediaStream = null;
+    }
+  }
+
+  function startRecording() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setStatus(&quot;record-status&quot;,
+        &quot;This browser cannot record audio. Try Safari or Chrome.&quot;, &quot;error&quot;);
+      return;
+    }
+
+    setStatus(&quot;record-status&quot;, &quot;&quot;);
+    setAudioSession(&quot;play-and-record&quot;);
+
+    var button = $(&quot;record-btn&quot;);
+    button.disabled = true;
+
+    navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: true
+      }
+    }).then(function (stream) {
+      mediaStream = stream;
+      chunks = [];
+
+      var mimeType = pickMimeType();
+      recorder = mimeType ? new MediaRecorder(stream, { mimeType: mimeType })
+                          : new MediaRecorder(stream);
+
+      recorder.ondataavailable = function (event) {
+        if (event.data &amp;&amp; event.data.size &gt; 0) { chunks.push(event.data); }
+      };
+
+      recorder.onstop = function () {
+        clearTimers();
+        stopLevelMeter();
+        releaseStream();
+        handleRecordingFinished();
+      };
+
+      recorder.start();
+
+      var limit = Math.min(session.max_duration_seconds || 3, HARD_MAX_SECONDS);
+      var startedAt = Date.now();
+
+      button.classList.add(&quot;recording&quot;);
+      button.textContent = &quot;Stop&quot;;
+      button.setAttribute(&quot;aria-label&quot;, &quot;Stop recording&quot;);
+      button.disabled = false;
+      $(&quot;timer&quot;).classList.remove(&quot;hidden&quot;);
+      $(&quot;meter&quot;).classList.remove(&quot;hidden&quot;);
+      $(&quot;record-hint&quot;).textContent = &quot;Recording… tap to stop early.&quot;;
+
+      startLevelMeter(stream);
+
+      tickTimer = setInterval(function () {
+        var elapsed = (Date.now() - startedAt) / 1000;
+        var remaining = Math.max(0, limit - elapsed);
+        $(&quot;timer&quot;).textContent = remaining.toFixed(1) + &quot;s&quot;;
+      }, 80);
+
+      stopTimer = setTimeout(function () {
+        if (recorder &amp;&amp; recorder.state === &quot;recording&quot;) { recorder.stop(); }
+      }, limit * 1000);
+
+    }).catch(function (error) {
+      button.disabled = false;
+      var name = error &amp;&amp; error.name ? error.name : &quot;&quot;;
+      if (name === &quot;NotAllowedError&quot; || name === &quot;SecurityError&quot;) {
+        setStatus(&quot;record-status&quot;,
+          &quot;Microphone access was blocked. Allow it in your browser settings, then tap Record again.&quot;,
+          &quot;error&quot;);
+      } else if (name === &quot;NotFoundError&quot;) {
+        setStatus(&quot;record-status&quot;, &quot;No microphone was found on this device.&quot;, &quot;error&quot;);
+      } else {
+        setStatus(&quot;record-status&quot;, &quot;Could not start recording. &quot; + (error.message || &quot;&quot;), &quot;error&quot;);
+      }
+    });
+  }
+
+  function stopRecording() {
+    if (recorder &amp;&amp; recorder.state === &quot;recording&quot;) {
+      recorder.stop();
+    }
+  }
+
+  function resetRecordButton() {
+    var button = $(&quot;record-btn&quot;);
+    button.classList.remove(&quot;recording&quot;);
+    button.textContent = &quot;Record&quot;;
+    button.setAttribute(&quot;aria-label&quot;, &quot;Start recording&quot;);
+    button.disabled = false;
+    $(&quot;timer&quot;).classList.add(&quot;hidden&quot;);
+    $(&quot;meter&quot;).classList.add(&quot;hidden&quot;);
+    $(&quot;meter-fill&quot;).style.width = &quot;0%&quot;;
+    $(&quot;record-hint&quot;).textContent = &quot;Tap to record. Recording stops on its own.&quot;;
+  }
+
+  function handleRecordingFinished() {
+    var button = $(&quot;record-btn&quot;);
+    button.disabled = true;
+    button.textContent = &quot;…&quot;;
+    setStatus(&quot;record-status&quot;, &quot;Getting it ready…&quot;);
+
+    var limit = Math.min(session.max_duration_seconds || 3, HARD_MAX_SECONDS);
+    var raw = new Blob(chunks, { type: chunks.length &amp;&amp; chunks[0].type ? chunks[0].type : &quot;audio/webm&quot; });
+
+    if (raw.size === 0) {
+      resetRecordButton();
+      setStatus(&quot;record-status&quot;, &quot;Nothing was recorded. Try once more.&quot;, &quot;error&quot;);
+      return;
+    }
+
+    convertRecording(raw, limit).then(function (result) {
+      recordedWav = result.wav;
+      recordedSeconds = result.seconds;
+      resetRecordButton();
+      setStatus(&quot;record-status&quot;, &quot;&quot;);
+
+      $(&quot;review-duration&quot;).textContent = recordedSeconds.toFixed(1) + &quot;s&quot;;
+      setStatus(&quot;review-status&quot;, &quot;&quot;);
+      $(&quot;send-btn&quot;).disabled = false;
+      show(&quot;review&quot;);
+    }).catch(function (error) {
+      resetRecordButton();
+      setStatus(&quot;record-status&quot;,
+        &quot;Could not process that recording. Please try again.&quot;, &quot;error&quot;);
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Choosing an existing file
+  //
+  // Goes through exactly the same conversion as a live recording, so whatever
+  // the phone hands over becomes 48 kHz mono WAV like everything else and the
+  // sampler never learns the difference.
+  // -------------------------------------------------------------------------
+
+  // Generous for a phone recording, small enough that decoding it will not
+  // stall an older device. A three-second sound never approaches this.
+  var MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+
+  function handleChosenFile(file) {
+    if (!file) { return; }
+
+    trace(&quot;file: &quot; + file.name + &quot;, &quot; + file.size + &quot; bytes, type &quot; + (file.type || &quot;(none)&quot;));
+
+    if (file.size &gt; MAX_UPLOAD_BYTES) {
+      setStatus(&quot;record-status&quot;,
+        &quot;That file is too big. Please pick one under 25 MB.&quot;, &quot;error&quot;);
+      return;
+    }
+
+    if (file.size === 0) {
+      setStatus(&quot;record-status&quot;, &quot;That file seems to be empty.&quot;, &quot;error&quot;);
+      return;
+    }
+
+    var limit = Math.min(session.max_duration_seconds || 3, HARD_MAX_SECONDS);
+    setStatus(&quot;record-status&quot;, &quot;Getting it ready\u2026&quot;);
+    $(&quot;file-btn&quot;).disabled = true;
+    $(&quot;record-btn&quot;).disabled = true;
+
+    convertRecording(file, limit).then(function (result) {
+      recordedWav = result.wav;
+      recordedSeconds = result.seconds;
+
+      $(&quot;file-btn&quot;).disabled = false;
+      $(&quot;record-btn&quot;).disabled = false;
+      setStatus(&quot;record-status&quot;, &quot;&quot;);
+
+      $(&quot;review-duration&quot;).textContent = recordedSeconds.toFixed(1) + &quot;s&quot;;
+      setStatus(&quot;review-status&quot;, &quot;&quot;);
+      $(&quot;send-btn&quot;).disabled = false;
+      show(&quot;review&quot;);
+    }).catch(function (error) {
+      $(&quot;file-btn&quot;).disabled = false;
+      $(&quot;record-btn&quot;).disabled = false;
+      trace(&quot;file: FAILED &quot; + (error &amp;&amp; error.message ? error.message : error));
+      setStatus(&quot;record-status&quot;,
+        &quot;That file could not be read. Try a different one, or record instead.&quot;,
+        &quot;error&quot;);
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Review and send
+  // -------------------------------------------------------------------------
+
+  function stopPlayback() {
+    if (playbackSource) {
+      try { playbackSource.stop(); } catch (e) { /* already finished */ }
+      try { playbackSource.disconnect(); } catch (e) { /* already gone */ }
+      playbackSource = null;
+    }
+    if (previewAudio) {
+      try { previewAudio.pause(); } catch (e) { /* not playing */ }
+      previewAudio = null;
+    }
+    if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
+  }
+
+  // Playback is instrumented because it has failed twice for reasons that were
+  // invisible on a phone. Every stage reports to #audio-trace so the failing
+  // step is visible on screen instead of only in a console nobody can open.
+  function trace(line) {
+    if (window.console &amp;&amp; window.console.log) { window.console.log(&quot;[crowdloop] &quot; + line); }
+    if (!DEBUG) { return; }
+    var el = $(&quot;audio-trace&quot;);
+    if (!el) { return; }
+    el.textContent += (el.textContent ? &quot;\n&quot; : &quot;&quot;) + line;
+  }
+
+  function clearTrace() {
+    var el = $(&quot;audio-trace&quot;);
+    if (el) { el.textContent = &quot;&quot;; }
+  }
+
+  function describeCtx(ctx) {
+    if (!ctx) { return &quot;no AudioContext&quot;; }
+    return &quot;ctx state=&quot; + ctx.state + &quot; rate=&quot; + ctx.sampleRate + &quot;Hz&quot;;
+  }
+
+  // Same context and same output as playBack, but nothing is decoded. If this
+  // is audible and the recording is not, the problem is the audio data. If
+  // neither is audible, the problem is the context or the output route.
+  function playTestTone() {
+    clearTrace();
+    setAudioSession(&quot;playback&quot;);
+    var ctx = unlockAudio();
+    trace(&quot;tone: &quot; + describeCtx(ctx));
+    trace(&quot;tone: &quot; + describeSession());
+
+    if (!ctx) {
+      trace(&quot;tone: FAILED, no Web Audio on this browser&quot;);
+      return;
+    }
+
+    try {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.frequency.value = 440;
+      gain.gain.value = 0.2;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.6);
+      trace(&quot;tone: started 440Hz for 0.6s&quot;);
+      osc.onended = function () { trace(&quot;tone: finished, state=&quot; + ctx.state); };
+    } catch (error) {
+      trace(&quot;tone: THREW &quot; + (error.message || error));
+    }
+  }
+
+  function playBack() {
+    clearTrace();
+
+    if (!recordedWav) {
+      trace(&quot;play: nothing recorded yet&quot;);
+      return;
+    }
+    trace(&quot;play: blob &quot; + recordedWav.size + &quot; bytes, type &quot; + (recordedWav.type || &quot;(none)&quot;));
+
+    stopPlayback();
+    setAudioSession(&quot;playback&quot;);
+    var ctx = unlockAudio();
+    trace(&quot;play: &quot; + describeCtx(ctx));
+    trace(&quot;play: &quot; + describeSession());
+
+    if (!ctx) {
+      trace(&quot;play: no Web Audio, using &lt;audio&gt; fallback&quot;);
+      playBackFallback();
+      return;
+    }
+
+    recordedWav.arrayBuffer().then(function (data) {
+      trace(&quot;play: read &quot; + data.byteLength + &quot; bytes&quot;);
+      return new Promise(function (resolve, reject) {
+        var maybe = ctx.decodeAudioData(data, resolve, reject);
+        if (maybe &amp;&amp; typeof maybe.then === &quot;function&quot;) {
+          maybe.then(resolve).catch(reject);
+        }
+      });
+    }).then(function (buffer) {
+      trace(&quot;play: decoded &quot; + buffer.duration.toFixed(2) + &quot;s, &quot; +
+            buffer.numberOfChannels + &quot;ch @ &quot; + buffer.sampleRate + &quot;Hz&quot;);
+
+      var source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.onended = function () {
+        playbackSource = null;
+        trace(&quot;play: finished&quot;);
+      };
+      source.start(0);
+      playbackSource = source;
+
+      trace(&quot;play: started, ctx state=&quot; + ctx.state);
+      if (ctx.state !== &quot;running&quot;) {
+        trace(&quot;play: context is NOT running — no sound will come out&quot;);
+      }
+    }).catch(function (error) {
+      trace(&quot;play: FAILED &quot; + (error &amp;&amp; error.message ? error.message : error));
+      trace(&quot;play: trying &lt;audio&gt; fallback&quot;);
+      if (window.console) { console.error(error); }
+      playBackFallback();
+    });
+  }
+
+  // Only reached if Web Audio is unavailable or the decode fails.
+  function playBackFallback() {
+    if (!recordedWav) { return; }
+    if (previewUrl) { URL.revokeObjectURL(previewUrl); }
+    previewUrl = URL.createObjectURL(recordedWav);
+    previewAudio = new Audio(previewUrl);
+    previewAudio.setAttribute(&quot;playsinline&quot;, &quot;&quot;);
+    previewAudio.playsInline = true;
+
+    previewAudio.onerror = function () {
+      trace(&quot;fallback: &lt;audio&gt; could not load the blob&quot;);
+    };
+    previewAudio.onplaying = function () {
+      trace(&quot;fallback: &lt;audio&gt; is playing&quot;);
+    };
+
+    previewAudio.play().then(function () {
+      trace(&quot;fallback: play() resolved&quot;);
+    }).catch(function (error) {
+      trace(&quot;fallback: play() rejected — &quot; + (error &amp;&amp; error.name ? error.name : error));
+      setStatus(&quot;review-status&quot;,
+        &quot;Could not play it back here. You can still send it.&quot;, &quot;error&quot;);
+    });
+  }
+
+  function send() {
+    if (!recordedWav || !session || sending) { return; }
+    sending = true;
+
+    stopPlayback();
+
+    var sendButton = $(&quot;send-btn&quot;);
+    sendButton.disabled = true;
+    $(&quot;redo-btn&quot;).disabled = true;
+    setStatus(&quot;review-status&quot;, &quot;Sending\u2026&quot;);
+
+    var submissionId = uuid();
+    var bytes = recordedWav.size;
+    var chosenLabel = $(&quot;label-input&quot;).value;
+
+    // Audio first, then the row. A row that exists therefore always has audio
+    // behind it; a failed send leaves at most an unreferenced file.
+    uploadAudio(session.id, submissionId, recordedWav).then(function (path) {
+      return createSubmission(submissionId, session.id, path,
+                              recordedSeconds, bytes, chosenLabel);
+    }).then(function () {
+      sending = false;
+      $(&quot;redo-btn&quot;).disabled = false;
+      recordedWav = null;
+      show(&quot;done&quot;);
+    }).catch(function (error) {
+      sending = false;
+      sendButton.disabled = false;
+      $(&quot;redo-btn&quot;).disabled = false;
+
+      var message = String(error &amp;&amp; error.message ? error.message : error);
+      if (message.indexOf(&quot;submission limit&quot;) !== -1) {
+        setStatus(&quot;review-status&quot;,
+          &quot;This session has reached its limit. Nothing more can be sent.&quot;, &quot;error&quot;);
+      } else if (message.indexOf(&quot;(403)&quot;) !== -1 || message.indexOf(&quot;(401)&quot;) !== -1) {
+        setStatus(&quot;review-status&quot;,
+          &quot;This session has closed, so it is not taking sounds any more.&quot;, &quot;error&quot;);
+      } else {
+        setStatus(&quot;review-status&quot;, describeError(error), &quot;error&quot;);
+      }
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Session resolution
+  // -------------------------------------------------------------------------
+
+  function enterSession(found) {
+    session = found;
+    $(&quot;session-title&quot;).textContent = found.title || &quot;Record a sound&quot;;
+    $(&quot;session-prompt&quot;).textContent = found.prompt || &quot;&quot;;
+    var limit = Math.min(found.max_duration_seconds || 3, HARD_MAX_SECONDS);
+    $(&quot;record-hint&quot;).textContent =
+      &quot;Tap to record up to &quot; + limit + &quot; seconds. It stops on its own.&quot;;
+    $(&quot;file-btn&quot;).textContent =
+      &quot;Choose a sound file (first &quot; + limit + &quot; seconds)&quot;;
+    show(&quot;record&quot;);
+  }
+
+  function tryCode(code, statusId) {
+    if (!code) {
+      setStatus(statusId, &quot;Enter the code first.&quot;, &quot;error&quot;);
+      return;
+    }
+
+    setStatus(statusId, &quot;Checking…&quot;);
+
+    lookupSession(code).then(function (found) {
+      if (!found) {
+        setStatus(statusId,
+          &quot;No open session with that code. Check the code, or the session may have closed.&quot;,
+          &quot;error&quot;);
+        return;
+      }
+      enterSession(found);
+    }).catch(function (error) {
+      setStatus(statusId, describeError(error), &quot;error&quot;);
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  function boot() {
+    var params = new URLSearchParams(window.location.search);
+    var code = (params.get(&quot;c&quot;) || params.get(&quot;code&quot;) || &quot;&quot;).toUpperCase().trim();
+
+    if (!code) {
+      show(&quot;code&quot;);
+      return;
+    }
+
+    show(&quot;loading&quot;);
+    lookupSession(code).then(function (found) {
+      if (!found) {
+        $(&quot;code-input&quot;).value = code;
+        show(&quot;code&quot;);
+        setStatus(&quot;code-status&quot;,
+          &quot;That session is not open right now. Double-check the code.&quot;, &quot;error&quot;);
+        return;
+      }
+      enterSession(found);
+    }).catch(function (error) {
+      fail(&quot;Could not connect&quot;, describeError(error));
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Wiring
+  // -------------------------------------------------------------------------
+
+  $(&quot;record-btn&quot;).addEventListener(&quot;click&quot;, function () {
+    unlockAudio();
+    if (recorder &amp;&amp; recorder.state === &quot;recording&quot;) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  });
+
+  $(&quot;file-btn&quot;).addEventListener(&quot;click&quot;, function () {
+    setStatus(&quot;record-status&quot;, &quot;&quot;);
+    $(&quot;file-input&quot;).click();
+  });
+
+  $(&quot;file-input&quot;).addEventListener(&quot;change&quot;, function (event) {
+    var file = event.target.files &amp;&amp; event.target.files[0];
+    // Reset so picking the same file twice still fires a change event.
+    event.target.value = &quot;&quot;;
+    handleChosenFile(file);
+  });
+
+  $(&quot;play-btn&quot;).addEventListener(&quot;click&quot;, playBack);
+  $(&quot;tone-btn&quot;).addEventListener(&quot;click&quot;, playTestTone);
+  $(&quot;send-btn&quot;).addEventListener(&quot;click&quot;, send);
+
+  $(&quot;redo-btn&quot;).addEventListener(&quot;click&quot;, function () {
+    stopPlayback();
+    $(&quot;label-input&quot;).value = &quot;&quot;;
+    recordedWav = null;
+    setStatus(&quot;review-status&quot;, &quot;&quot;);
+    show(&quot;record&quot;);
+  });
+
+  $(&quot;again-btn&quot;).addEventListener(&quot;click&quot;, function () {
+    stopPlayback();
+    $(&quot;label-input&quot;).value = &quot;&quot;;
+    recordedWav = null;
+    setStatus(&quot;record-status&quot;, &quot;&quot;);
+    setStatus(&quot;review-status&quot;, &quot;&quot;);
+    $(&quot;send-btn&quot;).disabled = false;
+    show(&quot;record&quot;);
+  });
+
+  $(&quot;retry-btn&quot;).addEventListener(&quot;click&quot;, function () {
+    window.location.reload();
+  });
+
+  $(&quot;code-go&quot;).addEventListener(&quot;click&quot;, function () {
+    tryCode($(&quot;code-input&quot;).value.toUpperCase().trim(), &quot;code-status&quot;);
+  });
+
+  $(&quot;code-input&quot;).addEventListener(&quot;keydown&quot;, function (event) {
+    if (event.key === &quot;Enter&quot;) {
+      tryCode($(&quot;code-input&quot;).value.toUpperCase().trim(), &quot;code-status&quot;);
+    }
+  });
+
+  if (DEBUG) {
+    $(&quot;tone-btn&quot;).classList.remove(&quot;hidden&quot;);
+  }
+
+  window.addEventListener(&quot;pagehide&quot;, function () {
+    clearTimers();
+    stopLevelMeter();
+    stopPlayback();
+    releaseStream();
+  });
+
+  boot();
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="52-put-your-details-in-the-page">5.2 Put your details in the page<a class="headerlink" href="#52-put-your-details-in-the-page" title="Permanent link">#</a></h3>
+<p>Open the file in a plain text editor and find the block near the top of the
+script marked <strong>YOUR DETAILS</strong>. It is the only part you edit:</p>
+<pre><code class="language-javascript">  // From Supabase: Project Settings -&gt; API. Section 4.6 of the guide.
+  var SUPABASE_URL = &quot;https://YOUR-PROJECT.supabase.co&quot;;
+  var SUPABASE_KEY = &quot;YOUR-PUBLISHABLE-KEY&quot;;
+
+  // Shown at the top of the page and on the confirmation screen.
+  var PERFORMER_NAME = &quot;Your Show Name&quot;;
+
+  // What the confirmation screen says you will do with the recording.
+  // &quot;{name}&quot; is replaced with PERFORMER_NAME.
+  var DONE_NOTE = &quot;{name} will listen to it and may play it during the show.&quot;;
+
+  // Tip button. Leave VENMO_HANDLE as &quot;&quot; and no button appears at all.
+  var VENMO_HANDLE = &quot;&quot;;
+  var VENMO_TITLE = &quot;🎻🎸🪕 Instrument Repair Fund&quot;;
+  var VENMO_SUBTITLE = &quot;Chip in on Venmo&quot;;
+
+  // The line in small print at the bottom. Keep it true: the page collects
+  // no name, email or location, and saying so is the point of the line.
+  var PRIVACY_LINE = &quot;Your recording is sent to {name} for musical purposes.&quot;;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What to put</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SUPABASE_URL</code></td>
+<td>Project URL from section 4.6</td>
+</tr>
+<tr>
+<td><code>SUPABASE_KEY</code></td>
+<td>Publishable key from section 4.6</td>
+</tr>
+<tr>
+<td><code>PERFORMER_NAME</code></td>
+<td>Your name as the audience knows it</td>
+</tr>
+<tr>
+<td><code>DONE_NOTE</code></td>
+<td>Leave it, or say what you actually do with recordings</td>
+</tr>
+<tr>
+<td><code>VENMO_HANDLE</code></td>
+<td>Your Venmo username without the <code>@</code>, or <code>""</code> for no button</td>
+</tr>
+<tr>
+<td><code>VENMO_TITLE</code></td>
+<td>What the button is for. Give people a reason</td>
+</tr>
+<tr>
+<td><code>VENMO_SUBTITLE</code></td>
+<td>Leave it</td>
+</tr>
+<tr>
+<td><code>PRIVACY_LINE</code></td>
+<td>Leave it unless you change what the page does</td>
+</tr>
+</tbody>
+</table>
+<p>Keep the quotes and the semicolons. Change nothing outside this block.</p>
+<p><strong>The tip button is off until you switch it on.</strong> With <code>VENMO_HANDLE</code> left as
+<code>""</code> the button is not hidden by CSS — it is never given a link and never
+shown. Set it to your own handle, or leave it empty and the page simply does
+not ask anybody for money.</p>
+<p><strong>Check <code>SUPABASE_KEY</code> before you save.</strong> It must be the one labelled <em>anon</em>
+or <em>publishable</em>. If what you pasted begins <code>sb_secret</code> or decodes to
+<code>service_role</code>, stop: that key bypasses every rule protecting your recordings,
+and this page is readable by anyone who opens it. Go back to section 4.6.</p>
+<h3 id="53-create-the-site">5.3 Create the site<a class="headerlink" href="#53-create-the-site" title="Permanent link">#</a></h3>
+<ol>
+<li>Go to <strong>https://netlify.com</strong> and sign up.</li>
+<li>On the dashboard, find the drag-and-drop deploy area (<strong>Sites</strong> → <strong>Add new
+   site</strong> → <strong>Deploy manually</strong>).</li>
+<li>Put your edited file in a folder. The file must be named <strong><code>index.html</code></strong>
+   and the folder <strong><code>crowdloop</code></strong>. (If you used the Download button it is
+   already called <code>index.html</code>.)</li>
+<li>Drag the folder onto the deploy area.</li>
+</ol>
+<p>Renaming to <code>index.html</code> is what lets the URL end in a tidy <code>/crowdloop/</code>
+rather than <code>/crowdloop.html</code>. That matters more than it sounds: the URL goes
+on a QR code and sometimes gets read aloud.</p>
+<p>Your page is now live at:</p>
+<pre><code>https://&lt;random-name&gt;.netlify.app/crowdloop/
+</code></pre>
+<p>Netlify assigns something like <code>keen-pastry-4a91b2</code>. Rename it under <strong>Site
+configuration → Change site name</strong>, or attach your own domain under <strong>Domain
+management</strong> if you have one.</p>
+<p>Pick a name you would not mind reading aloud into a microphone. It ends up on
+a QR code, and sooner or later somebody at the back asks you to just say it.</p>
+<p>Either way, note the final URL — section 6 needs it.</p>
+<h3 id="54-confirm-it-loads">5.4 Confirm it loads<a class="headerlink" href="#54-confirm-it-loads" title="Permanent link">#</a></h3>
+<p>Open the URL on a <strong>phone</strong>. You should see the CrowdLoop page asking for a
+code. It will not accept one yet — you have not created a session. That is the
+expected state.</p>
+<p>You should also see your own name at the top. If it still says <em>Your Show
+Name</em>, the file you deployed is not the one you edited.</p>
+<p>If you see anything else, jump to section 11.</p>
+<h3 id="55-updating-the-page-later">5.5 Updating the page later<a class="headerlink" href="#55-updating-the-page-later" title="Permanent link">#</a></h3>
+<p>To deploy a change, drag the folder again. The old version is replaced.</p>
+<p><strong>If you use Netlify's AI assistant to edit the file, be specific about leaving
+it alone.</strong> Left to its own judgment it will reformat, "modernise", or split
+the file, and any of those will break it — the page is deliberately ES5-style
+for older mobile browsers, and deliberately one self-contained file with no
+external dependencies. Use a prompt like this:</p>
+<pre><code>Replace the entire contents of /crowdloop/index.html with the HTML below.
+Delete everything currently in that file first — do not merge, do not rewrite
+or reformat any of it, and do not extract the script or style into separate
+files. Paste it exactly as given. It must remain one self-contained HTML
+document with the CSS and JavaScript inline. Change no other file on the site.
+
+[paste the full file]
+</code></pre>
+<p>Then check the reported file size against the file you sent. A meaningful
+difference means it rewrote something.</p>
+<hr />
+<h2 id="6-setting-up-the-app">6. Setting up the app<a class="headerlink" href="#6-setting-up-the-app" title="Permanent link">#</a></h2>
+<p>No Xcode, no editing anything. The app asks for the three values itself.</p>
+<p>Open CrowdLoop on the iPad. Because it does not know where its backend is yet,
+the first screen is <strong>One-time setup</strong> rather than a sign-in form — a password
+box in front of an app with nowhere to send it produces a wrong-looking error
+for a right-looking reason.</p>
+<p>Tap <strong>Enter My Backend Details</strong> and fill in three fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+<th>From</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Supabase project URL</strong></td>
+<td><code>https://abcdefghijklm.supabase.co</code></td>
+<td>section 4.6</td>
+</tr>
+<tr>
+<td><strong>Publishable key</strong></td>
+<td><code>sb_publishable_…</code> or a long <code>eyJ…</code></td>
+<td>section 4.6</td>
+</tr>
+<tr>
+<td><strong>Recording page URL</strong></td>
+<td><code>https://your-site/crowdloop/</code></td>
+<td>section 5.3</td>
+</tr>
+</tbody>
+</table>
+<p>The app checks each one as you type and says what it thinks. A green line
+means it looks right. An amber line means it is unusual but allowed — a
+project URL that is not on <code>supabase.co</code>, for example, which is correct if you
+self-host and worth a second look if you do not. A red line blocks saving.</p>
+<p><strong>It refuses a <code>service_role</code> key outright</strong>, and that check is the most useful
+thing on the screen. That key bypasses every rule protecting your recordings,
+and anything typed into an app can be read back out of it. The guide warns
+about this in prose twice; here it can actually stop you.</p>
+<p>Small things the app forgives, so do not fight them: a missing <code>https://</code>, a
+stray space from a sloppy paste, a trailing slash on the project URL, and a
+<strong>missing</strong> trailing slash on the recording page URL. That last one matters —
+the QR code is built by sticking <code>?c=CODE</code> onto the end of that address, and
+without the slash it encodes something broken. The app adds it for you.</p>
+<p>Tap <strong>Test These Values</strong>. It takes about eight seconds and asks both services
+whether they are really there, which is worth knowing now rather than in front
+of forty children.</p>
+<p><strong>Save</strong>, then quit CrowdLoop from the app switcher and open it again so every
+part of the app picks up the change.</p>
+<p>Now sign in with the email and password from section 4.5.</p>
+<p>To point the app somewhere else later: <strong>Settings → Backend → Change Backend</strong>.
+Your sessions and recordings live on the server, so they stay exactly where
+they are — you are signed out and sign in to the new project.</p>
+<hr />
+<h2 id="7-end-to-end-test">7. End-to-end test<a class="headerlink" href="#7-end-to-end-test" title="Permanent link">#</a></h2>
+<p>Do this once before trusting it at a show.</p>
+<p><strong>1. Create a session.</strong> In the app, Sessions tab → new session. Note the
+six-character code it shows.</p>
+<p>If the app is not built yet, create one from the SQL Editor instead:</p>
+<pre><code class="language-sql">insert into public.sessions (owner_id, title, prompt, status, max_duration_seconds)
+select
+    (select id from auth.users order by created_at desc limit 1),
+    'Record a Sound',
+    'Make any sound you like!',
+    'open',
+    3
+returning
+    public_code as &quot;CODE TO TYPE&quot;,
+    id          as &quot;Session id&quot;,
+    status;
+</code></pre>
+<p><strong>2. Record from a phone.</strong> Open your uploader URL with the code appended:</p>
+<pre><code>https://your-site/crowdloop/?c=YOURCODE
+</code></pre>
+<p>You should get the session title, a large record button, a countdown and level
+meter while recording, then a playback screen. Tap <strong>Play it back</strong> — with the
+phone's ring/silent switch <strong>on silent</strong>, deliberately. It should still be
+audible. Then <strong>Send it in</strong>, and you should get a confirmation screen.</p>
+<p><strong>3. Confirm it arrived.</strong> Dashboard → <strong>Table Editor</strong> → <strong>submissions</strong>. One
+row, status <code>pending</code>. Then <strong>Storage</strong> → <strong>submissions</strong> → a folder named for
+the session id, containing one <code>.wav</code>.</p>
+<p><strong>4. Moderate it.</strong> In the app's Inbox, the submission appears within about
+eight seconds. Tap the play icon to hear it, then tap the <strong>PAD 1</strong> button to
+approve it onto the first pad.</p>
+<p><strong>5. Play it in Loopy.</strong> Open Loopy Pro, add the CrowdLoop AUv3, and confirm
+the sound is on pad 1. Tap it. Send MIDI note 36 and confirm it triggers.</p>
+<p><strong>6. Pull the plug.</strong> Put the iPad in airplane mode. Pad 1 must still play —
+the audio is cached in the App Group and the plugin never needs the network.</p>
+<p>If all six pass, the system works.</p>
+<hr />
+<h2 id="8-proving-the-security-holds">8. Proving the security holds<a class="headerlink" href="#8-proving-the-security-holds" title="Permanent link">#</a></h2>
+<p>Worth doing once, because this is the part that protects your audience. Each
+check should <em>fail</em> to return data.</p>
+<p><strong>Closed sessions reject uploads.</strong> In Table Editor, set your session's
+<code>status</code> to <code>closed</code>. Reload the recording page and try to send. It should be
+refused. Set it back to <code>open</code>.</p>
+<p><strong>The publishable key does not leak your sessions.</strong> Paste this into a browser,
+substituting your own project URL and key:</p>
+<pre><code>https://YOUR-PROJECT.supabase.co/rest/v1/sessions?apikey=YOUR-PUBLISHABLE-KEY
+</code></pre>
+<p>Expected: an empty array <code>[]</code> or a permission error. <strong>Not</strong> a list of your
+sessions. If you can see your sessions there, RLS is not working — re-run
+section 4.2 and re-verify before using this at an event.</p>
+<p><strong>Audio is not world-readable.</strong> In Storage, click an uploaded <code>.wav</code>, copy its
+URL, and open it in a private browsing window. It must be denied. Audio comes
+out only through a short-lived signed URL minted for your signed-in account.</p>
+<p><strong>Submissions cannot be read back.</strong> Same idea as the sessions check:</p>
+<pre><code>https://YOUR-PROJECT.supabase.co/rest/v1/submissions?apikey=YOUR-PUBLISHABLE-KEY
+</code></pre>
+<p>Expected: empty or denied. An audience member cannot read back even their own
+upload, let alone anyone else's.</p>
+<h3 id="what-the-model-actually-guarantees">What the model actually guarantees<a class="headerlink" href="#what-the-model-actually-guarantees" title="Permanent link">#</a></h3>
+<ul>
+<li>An audience member can <strong>insert</strong> a submission into a session that is
+  currently open. That is the whole of their access.</li>
+<li>They cannot list sessions, read submissions, download audio, approve
+  anything, or assign a pad. The insert policy explicitly refuses a row that
+  arrives pre-approved or already pointed at a pad.</li>
+<li>Nothing plays anywhere until you approve it by hand. There is no code path
+  that moves a sound onto a pad without a moderation action.</li>
+<li>Per-session caps (300 submissions, 2 MB per file) are enforced by a database
+  trigger and a bucket setting, not by the web page, so editing the HTML cannot
+  raise them.</li>
+</ul>
+<hr />
+<h2 id="9-running-a-session">9. Running a session<a class="headerlink" href="#9-running-a-session" title="Permanent link">#</a></h2>
+<p><strong>Keep exactly one session open at a time.</strong> This is the single most common
+self-inflicted problem. Two open sessions means submissions silently land in
+whichever one the audience member's link pointed at, while you watch the other
+one stay empty. Nothing errors. To close everything but the newest:</p>
+<pre><code class="language-sql">update public.sessions set status = 'closed' where status = 'open';
+</code></pre>
+<p><strong>The code and the link are interchangeable.</strong> The QR encodes
+<code>https://your-site/crowdloop/?c=CODE</code>, which skips the code entry screen. The
+same six characters can also be typed by hand, which matters when a phone
+camera will not focus in a dark room.</p>
+<p><strong>Codes avoid ambiguous characters.</strong> The alphabet excludes O/0, I/1 and S/5,
+so a code survives being read aloud from a stage.</p>
+<p><strong>Closing a session is instant.</strong> New uploads are refused from the moment
+<code>status</code> changes. Already-approved sounds keep working on your pads — closing
+affects intake, not playback.</p>
+<p><strong>Audio format is fixed at the door.</strong> The page decodes whatever the phone
+recorded (WebM/Opus on Android, MP4/AAC on iOS) and re-encodes to 16-bit mono
+WAV at 48 kHz before uploading. The bucket only accepts <code>audio/wav</code>, so this is
+enforced server-side too. One format reaches the sampler regardless of phone.</p>
+<p><strong>Levels are normalised.</strong> Each recording is peak-normalised to about −1 dBFS,
+capped at 8× gain, so a quiet phone at the back of a room still comes through a
+PA while a near-silent take is not amplified into hiss.</p>
+<p><strong>Diagnostics are one URL parameter away.</strong> Add <code>&amp;debug=1</code> to the recording
+page URL to reveal a test-tone button and a stage-by-stage trace of the audio
+pipeline. Without it the page stays clean for the audience. Every trace line
+also goes to <code>console.log</code> prefixed <code>[crowdloop]</code> regardless.</p>
+<hr />
+<h2 id="10-passwords-and-account-access">10. Passwords and account access<a class="headerlink" href="#10-passwords-and-account-access" title="Permanent link">#</a></h2>
+<p>This setup hands you three passwords in about twenty minutes, and they are
+easy to confuse. They open different things and only one of them is recoverable
+without effort.</p>
+<table>
+<thead>
+<tr>
+<th>Password</th>
+<th>Opens</th>
+<th>Made in</th>
+<th>If you lose it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>supabase.com login</strong></td>
+<td>The Supabase dashboard</td>
+<td>4.1</td>
+<td>Reset by email from supabase.com</td>
+</tr>
+<tr>
+<td><strong>Database password</strong></td>
+<td>Direct Postgres connections</td>
+<td>4.1</td>
+<td>Reset in Project Settings → Database. You will likely never use this password at all</td>
+</tr>
+<tr>
+<td><strong>Performer account</strong></td>
+<td>Sign-in in the CrowdLoop app</td>
+<td>4.5</td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<p>The one the app asks for is the third. It is also the one protecting every
+recording your audience has ever made, so it is worth eight characters of
+thought rather than four of habit.</p>
+<h3 id="changing-it-from-the-app">Changing it from the app<a class="headerlink" href="#changing-it-from-the-app" title="Permanent link">#</a></h3>
+<p><strong>Settings → Account → Change Password.</strong> Current password once, new one twice.</p>
+<p>The app asks for your current password even though the server does not insist
+on it. The iPad stays signed in between shows, so without that check anyone
+holding an unlocked iPad could change the password and lock you out of your
+own project.</p>
+<p>The minimum is eight characters. Supabase's own floor is six, but six is a
+floor rather than a recommendation. A few ordinary words in a row beat a short
+scramble and survive being typed on a tablet in a dark room.</p>
+<p>Afterwards the iPad stays signed in. Any <strong>other</strong> device signed in to the same
+account will ask for the new password the next time it needs the server.</p>
+<blockquote>
+<p><strong>If the change is refused with a message about re-authentication</strong>, your
+project has <em>Secure password change</em> switched on. That setting requires a
+code emailed at the moment of the change, which the app cannot do. Change the
+password from the dashboard instead, or turn the setting off under
+<strong>Authentication → Providers → Email</strong>.</p>
+</blockquote>
+<h3 id="if-you-have-forgotten-it">If you have forgotten it<a class="headerlink" href="#if-you-have-forgotten-it" title="Permanent link">#</a></h3>
+<p>The app cannot help you here, and that is deliberate — a "change password"
+screen that does not require the old one is just a lock with the key taped to
+it. Recover from the dashboard instead.</p>
+<p><strong>The direct way.</strong> Dashboard → <strong>Authentication</strong> → <strong>Users</strong> → the row for
+your email → the <strong>⋯</strong> menu. Depending on your Supabase version you will see
+either an option to set a new password on the spot, or <strong>Send password
+recovery</strong>, which emails a link.</p>
+<p><strong>When email will not cooperate</strong>, set the password directly in SQL. Dashboard
+→ <strong>SQL Editor</strong> → <strong>New query</strong>:</p>
+<pre><code class="language-sql">-- Sets the CrowdLoop sign-in password directly. No email involved.
+-- Replace both values. The password must be at least 6 characters, and
+-- the app will want 8 next time you change it from Settings.
+create extension if not exists pgcrypto with schema extensions;
+
+update auth.users
+set encrypted_password = extensions.crypt('YOUR-NEW-PASSWORD', extensions.gen_salt('bf')),
+    updated_at = now()
+where email = 'you@example.com';
+</code></pre>
+<p>Confirm it landed:</p>
+<pre><code class="language-sql">select email, updated_at from auth.users where email = 'you@example.com';
+</code></pre>
+<p>Then sign in on the iPad with the new password. This bypasses the email system
+entirely, which is exactly why it is here.</p>
+<h3 id="email-rate-limits">Email rate limits<a class="headerlink" href="#email-rate-limits" title="Permanent link">#</a></h3>
+<p>Supabase's built-in email service is throttled hard, and the free tier is
+throttled hardest. Ask for two recovery emails in quick succession and you get:</p>
+<pre><code>For security purposes, you can only request this after 9 seconds.
+</code></pre>
+<p>Keep going and it becomes:</p>
+<pre><code>email rate limit exceeded
+</code></pre>
+<p>At that point nothing you do will send an email for roughly an hour. Stop
+asking — every extra attempt restarts the clock without sending anything. Use
+the SQL above, which sends no email at all.</p>
+<h3 id="a-recovery-link-that-will-not-connect">A recovery link that will not connect<a class="headerlink" href="#a-recovery-link-that-will-not-connect" title="Permanent link">#</a></h3>
+<p>Recovery links point at your own project's address. If the project is paused —
+which free-tier projects do after 7 days of no activity — the link has nowhere
+to resolve to and the browser reports that it cannot reach the server.</p>
+<p>Resume the project from the dashboard first, then request the link. Or skip
+the link and use the SQL.</p>
+<h3 id="before-a-show">Before a show<a class="headerlink" href="#before-a-show" title="Permanent link">#</a></h3>
+<p>Sign out and back in once, on the iPad, the day before. It costs ten seconds
+and it is the only way to find out that a password is wrong at a time when
+finding out is cheap.</p>
+<hr />
+<h2 id="11-troubleshooting">11. Troubleshooting<a class="headerlink" href="#11-troubleshooting" title="Permanent link">#</a></h2>
+<h3 id="could-not-connect-the-page-spins-forever">"Could not connect" / the page spins forever<a class="headerlink" href="#could-not-connect-the-page-spins-forever" title="Permanent link">#</a></h3>
+<p>In order of likelihood:</p>
+<ol>
+<li><strong>The Supabase project is paused.</strong> Free-tier projects pause after 7 days
+   idle. Open the dashboard and resume it. This is the most common cause after
+   a gap between shows.</li>
+<li><strong>The credentials in the page are wrong.</strong> Check the <strong>YOUR DETAILS</strong> block
+   in the deployed file against section 4.6.</li>
+<li><strong>The schema is missing.</strong> Run section 12's diagnostic.</li>
+<li><strong>You are looking at a cached copy.</strong> See below.</li>
+</ol>
+<p>Add <code>&amp;debug=1</code> to the URL — the page will name the actual failure instead of a
+generic message.</p>
+<h3 id="no-open-session-with-that-code">"No open session with that code"<a class="headerlink" href="#no-open-session-with-that-code" title="Permanent link">#</a></h3>
+<p>The connection is fine; the lookup returned nothing. Either the code is wrong,
+or that session is closed. Check:</p>
+<pre><code class="language-sql">select public_code, status, title from public.sessions order by created_at desc;
+</code></pre>
+<h3 id="the-page-looks-old-after-deploying">The page looks old after deploying<a class="headerlink" href="#the-page-looks-old-after-deploying" title="Permanent link">#</a></h3>
+<p>Both Netlify and mobile Safari cache aggressively, and you can spend a long
+time debugging a file that is not the one you deployed. On iPhone: <strong>Settings →
+Safari → Clear History and Website Data</strong>, then reload. A private window also
+bypasses the cache and is faster for a quick check.</p>
+<h3 id="multiple-commands-produce-in-xcode">"Multiple commands produce…" in Xcode<a class="headerlink" href="#multiple-commands-produce-in-xcode" title="Permanent link">#</a></h3>
+<p>Two targets are writing the same build artifact. Check that the app target and
+the AUv3 extension target have <strong>different</strong> Product Names. Product Name is the
+filename of the built artifact; it is not what Loopy displays. The display name
+lives in the extension's Info tab under <code>NSExtension → NSExtensionAttributes →
+AudioComponents → Item 0 → name</code>.</p>
+<h3 id="playback-works-on-desktop-but-not-on-iphone">Playback works on desktop but not on iPhone<a class="headerlink" href="#playback-works-on-desktop-but-not-on-iphone" title="Permanent link">#</a></h3>
+<p>Almost always the iOS audio session. Once a page uses the microphone, iOS
+routes output to the earpiece receiver and the ring/silent switch mutes it —
+with no error, and with the audio pipeline reporting complete success. The page
+already handles this by declaring <code>navigator.audioSession.type = "playback"</code>
+before making sound. If you have modified the page and playback goes silent,
+that declaration is the first thing to check.</p>
+<h3 id="direct-deletion-from-storage-tables-is-not-allowed">Direct deletion from storage tables is not allowed<a class="headerlink" href="#direct-deletion-from-storage-tables-is-not-allowed" title="Permanent link">#</a></h3>
+<p>Supabase blocks <code>delete from storage.objects</code> in SQL (error 42501). Delete
+audio through the dashboard instead: <strong>Storage → submissions →</strong> select folders
+<strong>→ Delete</strong>. Do that <em>before</em> deleting the database rows, or you lose the
+folder names that tell you what to delete.</p>
+<h3 id="a-submission-uploaded-but-never-appeared-in-the-app">A submission uploaded but never appeared in the app<a class="headerlink" href="#a-submission-uploaded-but-never-appeared-in-the-app" title="Permanent link">#</a></h3>
+<p>The uploader's confirmation screen only shows after <em>both</em> the file upload and
+the row insert have succeeded, so the submission almost certainly exists. Check
+which session it landed in:</p>
+<pre><code class="language-sql">select
+    sub.created_at,
+    s.public_code as landed_in_code,
+    sub.status,
+    round(sub.duration::numeric, 2) as seconds
+from public.submissions sub
+join public.sessions s on s.id = sub.session_id
+order by sub.created_at desc
+limit 10;
+</code></pre>
+<p>If the code is not the one your app has selected, you had two sessions open.</p>
+<hr />
+<h2 id="12-maintenance-sql">12. Maintenance SQL<a class="headerlink" href="#12-maintenance-sql" title="Permanent link">#</a></h2>
+<h3 id="diagnose-a-backend-that-is-misbehaving">Diagnose a backend that is misbehaving<a class="headerlink" href="#diagnose-a-backend-that-is-misbehaving" title="Permanent link">#</a></h3>
+<p>Run the whole block. Each part answers one question.</p>
+<pre><code class="language-sql">-- ============================================================================
+-- CrowdLoop — what state is the backend actually in?
+-- Run this whole file in the SQL Editor. Four answers come back.
+-- ============================================================================
+
+-- 1. Does the lookup function the uploader calls still exist?
+select
+    case when count(*) = 1
+         then 'PASS: get_open_session exists'
+         else 'FAIL: get_open_session is MISSING — re-run 01_schema.sql'
+    end as check_1_function
+from pg_proc p
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public' and p.proname = 'get_open_session';
+
+-- 2. Can anon execute it? Without this the call returns 403.
+select
+    case when has_function_privilege('anon', p.oid, 'execute')
+         then 'PASS: anon may call get_open_session'
+         else 'FAIL: anon cannot execute it — re-run the GRANTS section'
+    end as check_2_grant
+from pg_proc p
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public' and p.proname = 'get_open_session';
+
+-- 3. What sessions exist, and is any of them actually open?
+select
+    public_code as code,
+    status,
+    title,
+    closes_at,
+    case
+        when status &lt;&gt; 'open' then 'NOT OPEN — the uploader will reject this code'
+        when closes_at is not null and closes_at &lt;= now() then 'EXPIRED'
+        else 'USABLE — type this code into the uploader'
+    end as verdict
+from public.sessions
+order by created_at desc;
+
+-- 4. Does the function actually return a row for your newest open session?
+--    This is the exact call the web page makes.
+select
+    coalesce(
+        (select 'PASS: lookup returned &quot;' || title || '&quot;'
+         from public.get_open_session(
+             (select public_code from public.sessions
+              where status = 'open' order by created_at desc limit 1)
+         )),
+        'FAIL: no open session for the function to return'
+    ) as check_4_end_to_end;
+</code></pre>
+<h3 id="create-a-fresh-session-and-close-the-rest">Create a fresh session and close the rest<a class="headerlink" href="#create-a-fresh-session-and-close-the-rest" title="Permanent link">#</a></h3>
+<p>Prints the current state, closes anything still open, then creates one new open
+session and hands you the code and the full URL.</p>
+<pre><code class="language-sql">-- ============================================================================
+-- CrowdLoop — show what exists, then create one open session
+--
+-- Run the whole file. It prints the current state first, then creates a fresh
+-- OPEN session and gives you the code and the full URL to open on a phone.
+-- ============================================================================
+
+-- What is actually there right now.
+select
+    coalesce(public_code, '(none)') as existing_code,
+    status,
+    title
+from public.sessions
+order by created_at desc;
+
+-- Close anything still open, so there is exactly one live code and no repeat
+-- of submissions landing in a session the app is not watching.
+update public.sessions set status = 'closed' where status = 'open';
+
+-- Create the new one. Generic title and prompt: no themed suggestion, so the
+-- same session works for any show.
+insert into public.sessions (owner_id, title, prompt, status, max_duration_seconds)
+select
+    (select id from auth.users order by created_at desc limit 1),
+    'Record a Sound',
+    'Make any sound you like!',
+    'open',
+    3
+returning
+    public_code as &quot;CODE TO TYPE&quot;,
+    'https://mrbradsmusic.com/crowdloop/?c=' || public_code as &quot;URL FOR THE PHONE&quot;,
+    status;
+</code></pre>
+<h3 id="cap-the-submission-title-length">Cap the submission title length<a class="headerlink" href="#cap-the-submission-title-length" title="Permanent link">#</a></h3>
+<p>The optional title on the recording page is free text typed by a stranger. The
+browser's <code>maxlength</code> is a convenience, not a control — anyone can post to the
+API directly. Run this once.</p>
+<pre><code class="language-sql">-- ============================================================================
+-- CrowdLoop — bound the submission title
+--
+-- The 'label' column already exists, so the uploader's optional title needs no
+-- new column. It does need a length limit: the field is free text typed by an
+-- anonymous stranger, and the browser's maxlength is a convenience, not a
+-- control — anyone can post to the API directly.
+-- ============================================================================
+
+-- Trim anything already over the limit so the constraint can be added.
+update public.submissions
+set label = left(label, 60)
+where char_length(label) &gt; 60;
+
+alter table public.submissions
+    drop constraint if exists submissions_label_length;
+
+alter table public.submissions
+    add constraint submissions_label_length
+    check (char_length(label) &lt;= 60);
+
+select
+    case when count(*) = 1
+         then 'PASS: label is capped at 60 characters'
+         else 'FAIL: constraint not applied'
+    end as result
+from pg_constraint
+where conname = 'submissions_label_length';
+</code></pre>
+<h3 id="clear-out-test-data">Clear out test data<a class="headerlink" href="#clear-out-test-data" title="Permanent link">#</a></h3>
+<p>Delete the <strong>audio first</strong>, in the dashboard (Storage → submissions → select
+folders → Delete), then run this. Doing it the other way round leaves orphaned
+files whose folder names no longer match anything.</p>
+<pre><code class="language-sql">-- ============================================================================
+-- CrowdLoop — wipe test data
+--
+-- Clears sessions and submissions but leaves the schema, policies and your
+-- account intact.
+--
+-- NOTE: audio files are NOT removed here. Supabase blocks direct deletion
+-- from storage.objects in SQL (error 42501, storage.protect_delete) to stop
+-- rows being removed while the underlying files remain. Delete the audio in
+-- the dashboard instead: Storage -&gt; submissions -&gt; select folders -&gt; Delete.
+-- Do that BEFORE running this, or the folder names no longer match anything.
+-- ============================================================================
+
+delete from public.submissions;
+delete from public.sessions;
+
+select 'Rows cleared. Now delete the audio in Storage -&gt; submissions.' as result;
+</code></pre>
+<h3 id="delete-one-old-session-and-everything-in-it">Delete one old session and everything in it<a class="headerlink" href="#delete-one-old-session-and-everything-in-it" title="Permanent link">#</a></h3>
+<p><code>on delete cascade</code> removes its submissions automatically. The audio still has
+to go through the dashboard.</p>
+<pre><code class="language-sql">delete from public.sessions where public_code = 'OLDCODE';
+</code></pre>
+<hr />
+<h2 id="13-using-something-other-than-supabase-or-netlify">13. Using something other than Supabase or Netlify<a class="headerlink" href="#13-using-something-other-than-supabase-or-netlify" title="Permanent link">#</a></h2>
+<p>Supabase and Netlify are the documented path, not a requirement. What CrowdLoop
+actually depends on is narrower than either product.</p>
+<p><strong>From the database service it needs:</strong></p>
+<ul>
+<li>A way to authenticate one performer account and hand back a bearer token.</li>
+<li>Two tables reachable over HTTPS with <code>select</code>/<code>insert</code>/<code>update</code>/<code>delete</code>,
+  filtered per-user on the server.</li>
+<li>A private file store with signed, expiring download URLs.</li>
+<li>The ability to let an unauthenticated caller insert a row and upload a file
+  <strong>without</strong> being able to read anything back.</li>
+</ul>
+<p>That last point is the one that is hard to replace casually. It is why the
+schema uses <code>SECURITY DEFINER</code> functions: the insert policy needs to ask "is
+this session open?" on behalf of a caller who has no permission to read
+sessions at all. Any substitute needs an equivalent mechanism, or the whole
+security model collapses into "trust the client".</p>
+<p>The app talks to Supabase through <code>App/SupabaseClient.swift</code>, a hand-rolled
+URLSession client with no SDK dependency. It uses three REST surfaces —
+<code>/auth/v1</code>, <code>/rest/v1</code> (PostgREST), and <code>/storage/v1</code>. Pointing it somewhere
+else means reimplementing those three against the new service, in that one
+file. The rest of the app does not know where the data comes from.</p>
+<p><strong>From the web host it needs:</strong> the ability to serve one static HTML file over
+HTTPS. That is genuinely all. GitHub Pages, Cloudflare Pages, Vercel, or a
+folder on any web server you already own will do it. Two constraints only:</p>
+<ul>
+<li><strong>HTTPS is mandatory.</strong> Browsers refuse microphone access on plain HTTP.</li>
+<li>The file must be served <strong>as-is</strong>, not through a build step that minifies or
+  transforms it.</li>
+</ul>
+<hr />
+<h2 id="14-fixed-values">14. Fixed values<a class="headerlink" href="#14-fixed-values" title="Permanent link">#</a></h2>
+<p>These are identical in every install and nothing above asks you to change
+them. They are here so you can check a value rather than guess at one.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage bucket</td>
+<td><code>submissions</code> (private)</td>
+</tr>
+<tr>
+<td>Session code alphabet</td>
+<td><code>ABCDEFGHJKLMNPQRTUVWXYZ23456789</code> — no O/0, I/1 or S/5</td>
+</tr>
+<tr>
+<td>Session code length</td>
+<td>6 characters</td>
+</tr>
+<tr>
+<td>Recording format on upload</td>
+<td>16-bit mono WAV, 48 kHz</td>
+</tr>
+<tr>
+<td>Peak normalisation</td>
+<td>about −1 dBFS, capped at 8× gain</td>
+</tr>
+<tr>
+<td>Maximum recording length</td>
+<td>10 seconds (per-session limit is 1–10)</td>
+</tr>
+<tr>
+<td>Submissions per session</td>
+<td>300 by default</td>
+</tr>
+<tr>
+<td>App bundle ID</td>
+<td><code>com.mrbradsmusic.CrowdLoop</code></td>
+</tr>
+<tr>
+<td>AUv3 bundle ID</td>
+<td><code>com.mrbradsmusic.CrowdLoop.AudioUnit</code></td>
+</tr>
+<tr>
+<td>App Group</td>
+<td><code>group.com.mrbradsmusic.CrowdLoop</code></td>
+</tr>
+<tr>
+<td>AU manufacturer code</td>
+<td><code>MrBd</code></td>
+</tr>
+<tr>
+<td>AU subtype code</td>
+<td><code>samp</code></td>
+</tr>
+<tr>
+<td>MIDI notes</td>
+<td>36–51 → pads 1–16</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Your own project URL and publishable key are not listed here</strong>, and no
+example of either appears anywhere in this guide that you could paste by
+mistake. They are yours, they come from section 4.6, and the only places they
+belong are the recording page and the app's setup screen.</p>
+<p>Your publishable key being readable is fine and expected — it ships inside the
+recording page where anyone can view-source it, and it grants exactly what an
+audience member can do: add one pending recording to a session that is open
+right now. Nothing else.</p>
+<p>The <code>service_role</code> key is the opposite of that in every respect, is needed
+nowhere in this guide, and must never be typed into the app, the page, a
+repository, or an AI tool.</p>
+<hr />
+<h2 id="15-privacy-policy">15. Privacy policy<a class="headerlink" href="#15-privacy-policy" title="Permanent link">#</a></h2>
+<blockquote>
+<p><strong>Before you publish this page:</strong> replace <code>mrbradsmusic@gmail.com</code> in <em>Contact</em> below
+with an address you actually read, and check that the effective date is the
+day you put it online. Apple asks for a privacy policy URL, and an address
+nobody answers is worse than no page at all.</p>
+</blockquote>
+<p><strong>Effective 19 September 2026.</strong></p>
+<p>This policy covers the CrowdLoop iOS app and the CrowdLoop recording page.</p>
+<h3 id="the-short-version">The short version<a class="headerlink" href="#the-short-version" title="Permanent link">#</a></h3>
+<p>CrowdLoop collects no personal information from audience members. A sound, and
+an optional short name for it, is everything that leaves the phone. It goes to
+the performer's own server and nowhere else. There is no analytics, no
+advertising, no tracking, and no third-party SDK in either the app or the page.</p>
+<h3 id="who-holds-what">Who holds what<a class="headerlink" href="#who-holds-what" title="Permanent link">#</a></h3>
+<p>This matters more here than in most apps, because of how CrowdLoop is built:
+<strong>every performer runs their own backend.</strong> Recordings never pass through the
+developer's servers, because there are no developer servers.</p>
+<ul>
+<li><strong>Mr. Brad's Music</strong>, who makes CrowdLoop, receives nothing. No recordings,
+  no accounts, no usage data, no crash reports, no analytics.</li>
+<li><strong>The performer</strong> holds the recordings, in a Supabase project on their own
+  account, under their own control.</li>
+<li><strong>Supabase</strong> stores and serves that data on the performer's behalf.</li>
+</ul>
+<p>If you are a performer reading this: for your own audience's recordings, you
+are the one holding the data. This policy describes what the software does. What
+you then do at your events is yours to stand behind.</p>
+<h3 id="what-the-recording-page-collects">What the recording page collects<a class="headerlink" href="#what-the-recording-page-collects" title="Permanent link">#</a></h3>
+<p>When an audience member sends a sound, these are submitted:</p>
+<ul>
+<li>the audio recording</li>
+<li>an optional label they typed, up to 40 characters</li>
+<li>the length of the recording, its size and its format</li>
+<li>the time it was sent</li>
+</ul>
+<p>That is the complete list. No name, no email address, no phone number, no
+location, no contacts, no photos, no advertising identifier, no device
+fingerprint, no cookies, and no account of any kind. The page asks the browser
+for microphone permission at the moment of recording and for no other
+permission at any time.</p>
+<p><strong>Network-level data.</strong> Like every request on the internet, an upload arrives
+at Supabase carrying the IP address it came from, and Supabase may record that
+in its own service logs. CrowdLoop does not read those logs, does not store IP
+addresses in its database, and never associates one with a recording.</p>
+<h3 id="what-the-app-collects">What the app collects<a class="headerlink" href="#what-the-app-collects" title="Permanent link">#</a></h3>
+<p>From the performer only:</p>
+<ul>
+<li><strong>Email and password</strong> for the performer's own Supabase project. These are
+  held by Supabase. The password is never stored on the device; the sign-in
+  token is kept in the iOS Keychain.</li>
+<li><strong>Backend coordinates</strong> — project URL, publishable key, recording page
+  address — kept in app settings on the device.</li>
+</ul>
+<p>None of it is sent to the developer.</p>
+<h3 id="children">Children<a class="headerlink" href="#children" title="Permanent link">#</a></h3>
+<p>CrowdLoop is used at family shows. A recording may well be made by a child,
+usually on a parent's phone, with a parent standing right there.</p>
+<p>The recording page is built so that this collects nothing personal. There is no
+sign-in, no account, no contact field, no location, and no identifier of any
+kind. A voice and an optional label is all there is, and the performer can edit
+or delete the label. The app itself is a performer's tool and is not directed
+at children as users.</p>
+<p>Performers: how you use recordings of children at your own events is your
+responsibility, not the software's. Say what you are doing, and treat consent
+the way you already do for photographs.</p>
+<h3 id="how-recordings-are-used">How recordings are used<a class="headerlink" href="#how-recordings-are-used" title="Permanent link">#</a></h3>
+<p>Every submission arrives <strong>pending</strong>. Nothing plays automatically and nothing
+reaches a pad until the performer approves it by hand. Approved sounds may be
+played during that performer's show. Recordings are not sold, published,
+shared, or used for anything outside the show they were made for.</p>
+<h3 id="keeping-and-deleting">Keeping and deleting<a class="headerlink" href="#keeping-and-deleting" title="Permanent link">#</a></h3>
+<p>Recordings stay in the performer's Supabase project until the performer removes
+them. Deleting a session in the app removes that session and every recording in
+it, from the server and from the device.</p>
+<p>Audience members: a recording carries nothing that identifies you, which also
+means there is nothing to look you up by. If you want a sound removed, ask the
+performer — they can find it by when it arrived and what it sounds like.</p>
+<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">#</a></h3>
+<ul>
+<li>All traffic uses HTTPS.</li>
+<li>The audio bucket is private. Sound comes back out only through a temporary
+  signed link issued to the signed-in performer.</li>
+<li>Row Level Security means the key inside the public page can add one pending
+  recording to a currently-open session and do nothing else. It cannot read,
+  change, approve or delete anything — not even the recording it just made.</li>
+<li>The performer's sign-in token is stored in the iOS Keychain.</li>
+</ul>
+<h3 id="other-services">Other services<a class="headerlink" href="#other-services" title="Permanent link">#</a></h3>
+<ul>
+<li><strong>Supabase</strong> — database, file storage and sign-in, on the performer's own
+  account. <a href="https://supabase.com/privacy">supabase.com/privacy</a></li>
+<li><strong>Netlify</strong>, or whichever host the performer chose, serves the recording
+  page. <a href="https://www.netlify.com/privacy/">netlify.com/privacy</a></li>
+<li><strong>Venmo</strong>, only if the performer switched the tip button on, and only if
+  somebody taps it. That opens Venmo's own site, and anything that happens
+  there is between the payer and Venmo. CrowdLoop sees none of it.</li>
+</ul>
+<p>There is no analytics service, no advertising network, no crash reporter and
+no marketing tool in either the app or the page.</p>
+<h3 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">#</a></h3>
+<p>Any change appears on this page with a new effective date.</p>
+<h3 id="contact">Contact<a class="headerlink" href="#contact" title="Permanent link">#</a></h3>
+<p>Questions about this policy, or about a recording: <strong>mrbradsmusic@gmail.com</strong></p>
+  </main>
+</div>
+
+<footer>
+  <p>Setup guide and privacy policy for CrowdLoop, an app by
+  <a href="/">Mr. Brad's Music</a>. The two services this guide sets up are
+  yours, on your own accounts &mdash; nothing routes through me, and I never
+  see your recordings.</p>
+  <p>The app's own Help screen carries the show-day version of this, and runs
+  live checks against your services, which a page like this cannot.</p>
+</footer>
+
+<button id="top" type="button" title="Back to top">&uarr;</button>
+
+<script>
+(function () {
+  "use strict";
+
+  var LABELS = { sql: "SQL", javascript: "JavaScript", swift: "Swift" };
+
+  // Wrap every fenced block so it can carry a copy button and, when it is long
+  // enough to bury the prose after it, a height clip.
+  Array.prototype.forEach.call(document.querySelectorAll("pre"), function (pre) {
+    var code = pre.querySelector("code");
+    if (!code) { return; }
+
+    var lang = "";
+    var classes = (code.className || "").split(/\s+/);
+    for (var i = 0; i < classes.length; i++) {
+      if (classes[i].indexOf("language-") === 0) {
+        lang = classes[i].slice(9);
+      }
+    }
+
+    var block = document.createElement("div");
+    block.className = "block";
+    pre.parentNode.insertBefore(block, pre);
+
+    var bar = document.createElement("div");
+    bar.className = "bar";
+
+    var name = document.createElement("span");
+    var lines = code.textContent.replace(/\n$/, "").split("\n").length;
+    name.textContent = (LABELS[lang] || lang || "Text") + " · " + lines +
+      (lines === 1 ? " line" : " lines");
+    bar.appendChild(name);
+
+    var copy = document.createElement("button");
+    copy.type = "button";
+    copy.textContent = "Copy";
+    copy.addEventListener("click", function () {
+      var text = code.textContent;
+      var settle = function (ok) {
+        copy.textContent = ok ? "Copied" : "Select it";
+        copy.className = ok ? "done" : "";
+        setTimeout(function () {
+          copy.textContent = "Copy";
+          copy.className = "";
+        }, 1600);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          settle(true);
+        }, function () {
+          settle(false);
+        });
+        return;
+      }
+
+      // Older mobile Safari.
+      var scratch = document.createElement("textarea");
+      scratch.value = text;
+      scratch.setAttribute("readonly", "");
+      scratch.style.position = "fixed";
+      scratch.style.opacity = "0";
+      document.body.appendChild(scratch);
+      scratch.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(scratch);
+      settle(ok);
+    });
+    // The recording page is the one block a reader needs as a file rather
+    // than as text on a clipboard, so it gets a download button built from
+    // its own contents. Nothing is fetched; the file is already on the page.
+    if (code.textContent.slice(0, 15).toUpperCase() === "<!DOCTYPE HTML>") {
+      var save = document.createElement("button");
+      save.type = "button";
+      save.textContent = "Download index.html";
+      save.addEventListener("click", function () {
+        var blob = new Blob([code.textContent], { type: "text/html" });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "index.html";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+        save.textContent = "Saved";
+        save.className = "done";
+        setTimeout(function () {
+          save.textContent = "Download index.html";
+          save.className = "";
+        }, 2200);
+      });
+      bar.appendChild(save);
+    }
+
+    bar.appendChild(copy);
+
+    block.appendChild(bar);
+    block.appendChild(pre);
+
+    // Only long code gets clipped. The unlabelled blocks are diagrams and
+    // sample output, which are no use with the bottom cut off.
+    if (lang && lines > 20) {
+      block.className = "block clipped";
+      var more = document.createElement("button");
+      more.type = "button";
+      more.className = "more";
+      more.textContent = "Show all " + lines + " lines";
+      more.addEventListener("click", function () {
+        if (block.className.indexOf("clipped") !== -1) {
+          block.className = "block opened";
+          more.textContent = "Collapse";
+        } else {
+          block.className = "block clipped";
+          more.textContent = "Show all " + lines + " lines";
+          block.scrollIntoView({ block: "nearest" });
+        }
+      });
+      block.appendChild(more);
+    }
+  });
+
+  // Any placeholder left in the text gets marked where it sits, so it cannot
+  // be published by accident.
+  (function () {
+    var TOKEN = "mrbradsmusic@gmail.com";
+    var walker = document.createTreeWalker(
+      document.body, NodeFilter.SHOW_TEXT, null, false
+    );
+    var hits = [];
+    var node;
+    while ((node = walker.nextNode())) {
+      // This very script contains the token, and it sits inside <body>.
+      // Marking it would push an element into a <script> element.
+      var parent = node.parentNode ? node.parentNode.nodeName : "";
+      if (parent === "SCRIPT" || parent === "STYLE") { continue; }
+      if (node.nodeValue.indexOf(TOKEN) !== -1) { hits.push(node); }
+    }
+    hits.forEach(function (text) {
+      var parts = text.nodeValue.split(TOKEN);
+      var frag = document.createDocumentFragment();
+      parts.forEach(function (part, i) {
+        if (i) {
+          var mark = document.createElement("span");
+          mark.className = "todo";
+          mark.textContent = TOKEN;
+          frag.appendChild(mark);
+        }
+        frag.appendChild(document.createTextNode(part));
+      });
+      text.parentNode.replaceChild(frag, text);
+    });
+  }());
+
+  // Tables scroll sideways on a phone rather than forcing the page to.
+  Array.prototype.forEach.call(document.querySelectorAll("table"), function (table) {
+    var wrap = document.createElement("div");
+    wrap.className = "tablewrap";
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
+  });
+
+  // Mark the section being read.
+  var links = Array.prototype.slice.call(document.querySelectorAll("nav.toc a"));
+  var targets = [];
+  links.forEach(function (link) {
+    var el = document.getElementById(link.getAttribute("href").slice(1));
+    if (el) { targets.push({ link: link, el: el }); }
+  });
+
+  var top = document.getElementById("top");
+  var ticking = false;
+
+  function update() {
+    ticking = false;
+    var current = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].el.getBoundingClientRect().top <= 90) {
+        current = targets[i];
+      }
+    }
+    links.forEach(function (link) { link.className = ""; });
+    if (current) {
+      current.link.className = "here";
+    }
+    if (top) {
+      top.className = window.pageYOffset > 700 ? "on" : "";
+    }
+  }
+
+  window.addEventListener("scroll", function () {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+  }, { passive: true });
+
+  if (top) {
+    top.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  update();
+}());
+</script>
+</body>
+</html>

@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#14100c">
+<meta property="og:title" content="CrowdLoop &mdash; Record a Sound">
+<meta property="og:description" content="Record a sound and send it to the show">
+<!-- Optional: drop a square og-image.png beside this file for link previews. -->
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:type" content="website">
+<title>Record a Sound</title>
+<style>
+  /* ------------------------------------------------------------------
+     PALETTE — every colour on the page comes from here. Change these
+     nine values and the whole page follows; nothing else hardcodes a
+     colour.
+     ------------------------------------------------------------------ */
+  :root {
+    --bg: #14100c;          /* page background — warm dark, not blue-black */
+    --surface: #201a14;     /* cards */
+    --surface-2: #2b241b;   /* inputs, meter track */
+    --amber: #e8a33d;       /* primary accent */
+    --green: #5fbf6a;       /* go / success */
+    --red: #d9563f;         /* recording / errors */
+    --text: #f7f2ea;
+    --muted: #a2968a;
+    --venmo: #3d95ce;       /* Venmo brand blue */
+    --on-amber: #1a1206;    /* text on amber fills */
+    --on-green: #06220f;    /* text on green fills */
+    --border: #3a3025;      /* input outlines */
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .wrap { width: 100%; max-width: 460px; margin: auto 0; }
+
+  .brand {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    font-weight: 800;
+    margin: 0 0 10px;
+    text-align: center;
+  }
+
+  .prompt {
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--amber);
+    text-align: center;
+    margin: 0 0 30px;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 26px 22px;
+    text-align: center;
+  }
+
+  .hint { font-size: 14px; color: var(--muted); line-height: 1.5; margin: 16px 0 0; }
+
+  /* Record button: one large target, reachable one-handed while holding a child. */
+  .record-btn {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    border: none;
+    background: var(--amber);
+    color: var(--on-amber);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease, background 0.2s ease;
+    touch-action: manipulation;
+  }
+  .record-btn:active { transform: scale(0.95); }
+  .record-btn:disabled { opacity: 0.45; cursor: default; }
+  .record-btn.recording { background: var(--red); color: #fff; animation: pulse 1.15s ease-in-out infinite; }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(242, 90, 90, 0.55); }
+    50%      { box-shadow: 0 0 0 22px rgba(242, 90, 90, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .record-btn.recording { animation: none; }
+  }
+
+  .timer {
+    font-variant-numeric: tabular-nums;
+    font-size: 42px;
+    font-weight: 800;
+    margin: 18px 0 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .meter {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    overflow: hidden;
+    margin: 18px 0 4px;
+  }
+  .meter > span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--amber);
+    transition: width 0.08s linear;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 17px 20px;
+    border-radius: 13px;
+    border: none;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 11px;
+    touch-action: manipulation;
+  }
+  .btn:active { transform: scale(0.985); }
+  .btn-primary { background: var(--green); color: var(--on-green); }
+  .btn-secondary { background: var(--surface-2); color: var(--text); }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 16px;
+    border-radius: 13px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-family: inherit;
+  }
+  input[type="text"]:focus { outline: 2px solid var(--amber); outline-offset: 1px; }
+
+  .status {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 1.4em;
+  }
+  .status.error { color: var(--red); }
+  .status.ok { color: var(--green); }
+
+  .big-icon { font-size: 60px; line-height: 1; margin-bottom: 14px; }
+
+  #audio-trace {
+    margin: 12px 0 0;
+    padding: 10px;
+    background: var(--surface-2);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+  #audio-trace:empty { display: none; }
+
+  #fatal {
+    display: none;
+    margin: 16px 0 0;
+    padding: 12px;
+    background: rgba(217, 86, 63, 0.14);
+    border: 1px solid var(--red);
+    border-radius: 10px;
+    color: var(--red);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  .spinner {
+    width: 34px; height: 34px;
+    border: 3px solid var(--surface-2);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: spin 0.85s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+
+  /* Off-screen rather than display:none — a hidden file input still has to be
+     focusable and clickable for the button to trigger it. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .field-label {
+    display: block;
+    margin: 18px 0 6px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: left;
+  }
+
+  .text-field {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-size: 16px; /* 16px or iOS zooms the page on focus */
+    font-family: inherit;
+    -webkit-appearance: none;
+  }
+  .text-field:focus {
+    outline: none;
+    border-color: var(--amber);
+  }
+
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 4px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .or-divider::before,
+  .or-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--surface-2);
+  }
+
+  /* Venmo. Placed where it reads as a thank-you rather than a toll: large on
+     the confirmation screen, quiet everywhere else. Nothing about recording
+     or sending is gated behind it. */
+  .venmo-btn {
+    display: block;
+    width: 100%;
+    padding: 17px 20px;
+    border-radius: 13px;
+    background: var(--venmo);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 18px;
+    touch-action: manipulation;
+  }
+  .venmo-btn:active { transform: scale(0.985); }
+  .venmo-btn small {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.85;
+    margin-top: 3px;
+  }
+
+  .venmo-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 9px 16px;
+    border: 1px solid var(--surface-2);
+    border-radius: 999px;
+    color: var(--amber);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .footer {
+    margin-top: 26px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<!-- og:image preview -->
+<div class="wrap">
+
+  <div class="brand" id="brand"></div>
+
+  <!-- Looking up the code -->
+  <section id="view-loading" class="card">
+    <div class="spinner"></div>
+    <p class="hint">Finding the session…</p>
+  </section>
+
+  <!-- Manual code entry -->
+  <section id="view-code" class="card hidden">
+    <h1>Enter the code</h1>
+    <p class="hint" style="margin-bottom:20px"></p>
+    <input type="text" id="code-input" maxlength="6" inputmode="latin"
+           autocomplete="off" autocorrect="off" autocapitalize="characters"
+           spellcheck="false" placeholder="ABC123" aria-label="Session code">
+    <button class="btn btn-primary" id="code-go">Continue</button>
+    <div class="status" id="code-status" role="status" aria-live="polite"></div>
+  </section>
+
+  <!-- Ready / recording -->
+  <section id="view-record" class="hidden">
+    <h1 id="session-title"></h1>
+    <p class="prompt" id="session-prompt"></p>
+    <div class="card">
+      <button class="record-btn" id="record-btn" aria-label="Start recording">Record</button>
+      <div class="timer hidden" id="timer">0.0s</div>
+      <div class="meter hidden" id="meter"><span id="meter-fill"></span></div>
+      <p class="hint" id="record-hint">Tap to record. Recording stops on its own.</p>
+
+      <div class="or-divider"><span>or</span></div>
+
+      <button class="btn btn-secondary" id="file-btn">Choose a sound file</button>
+      <input type="file" id="file-input" accept="audio/*"
+             class="visually-hidden" aria-label="Choose a sound file">
+
+      <div class="status" id="record-status" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Listen back and send -->
+  <section id="view-review" class="hidden">
+    <h1>Sound good?</h1>
+    <div class="card">
+      <div class="big-icon" aria-hidden="true">🎵</div>
+      <div class="timer" id="review-duration">0.0s</div>
+      <button class="btn btn-secondary" id="play-btn">Play it back</button>
+      <button class="btn btn-secondary hidden" id="tone-btn">Play a test tone</button>
+      <pre id="audio-trace"></pre>
+
+      <label class="field-label" for="label-input">Name it (optional)</label>
+      <input type="text" id="label-input" class="text-field"
+             maxlength="40" autocomplete="off"
+             autocapitalize="words" spellcheck="false"
+             placeholder="Leave blank if you like">
+      <button class="btn btn-primary" id="send-btn">Send it in</button>
+      <button class="btn btn-secondary" id="redo-btn">Record again</button>
+      <div class="status" id="review-status" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Done -->
+  <section id="view-done" class="card hidden">
+    <div class="big-icon" aria-hidden="true">✅</div>
+    <h1>Sent!</h1>
+    <p class="hint" id="done-note"></p>
+
+    <!-- Shown only when VENMO_HANDLE is set. Stays hidden otherwise. -->
+    <a class="venmo-btn hidden" id="venmo-btn"
+       href="#" target="_blank" rel="noopener noreferrer">
+      <span id="venmo-title"></span>
+      <small id="venmo-sub"></small>
+    </a>
+
+    <button class="btn btn-secondary" id="again-btn">Send another</button>
+  </section>
+
+  <!-- Terminal error -->
+  <section id="view-error" class="card hidden">
+    <div class="big-icon" aria-hidden="true">😕</div>
+    <h1 id="error-title">Something went wrong</h1>
+    <p class="hint" id="error-detail"></p>
+    <button class="btn btn-secondary" id="retry-btn">Try again</button>
+  </section>
+
+  <pre id="fatal"></pre>
+
+  <p class="footer" id="page-footer"></p>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Installed first, deliberately. If anything below throws at load, the page
+  // would otherwise sit on its loading spinner forever with only "Script
+  // error." in a console that cannot be opened on a phone.
+  window.addEventListener("error", function (event) {
+    var box = document.getElementById("fatal");
+    if (!box) { return; }
+    if (/[?&]debug=1/.test(window.location.search)) {
+      var detail = event.message || "Unknown error";
+      if (event.filename) {
+        detail += "\n" + String(event.filename).split("/").pop() +
+                  " line " + event.lineno + ":" + event.colno;
+      }
+      box.textContent = "Startup error\n" + detail;
+    } else {
+      box.textContent = "Something went wrong loading this page. " +
+                        "Please reload, or ask for the code again.";
+    }
+    box.style.display = "block";
+  });
+
+  window.addEventListener("unhandledrejection", function (event) {
+    var box = document.getElementById("fatal");
+    if (!box) { return; }
+    if (!/[?&]debug=1/.test(window.location.search)) { return; }
+    var reason = event.reason;
+    box.textContent = "Unhandled rejection\n" +
+      (reason && reason.message ? reason.message : String(reason));
+    box.style.display = "block";
+  });
+
+  // -------------------------------------------------------------------------
+  // Configuration
+  // -------------------------------------------------------------------------
+
+  // =========================================================================
+  // YOUR DETAILS — this block is the only part of the file you edit.
+  // =========================================================================
+
+  // From Supabase: Project Settings -> API. Section 4.6 of the guide.
+  var SUPABASE_URL = "https://YOUR-PROJECT.supabase.co";
+  var SUPABASE_KEY = "YOUR-PUBLISHABLE-KEY";
+
+  // Shown at the top of the page and on the confirmation screen.
+  var PERFORMER_NAME = "Your Show Name";
+
+  // What the confirmation screen says you will do with the recording.
+  // "{name}" is replaced with PERFORMER_NAME.
+  var DONE_NOTE = "{name} will listen to it and may play it during the show.";
+
+  // Tip button. Leave VENMO_HANDLE as "" and no button appears at all.
+  var VENMO_HANDLE = "";
+  var VENMO_TITLE = "\uD83C\uDFBB\uD83C\uDFB8\uD83E\uDE95 Instrument Repair Fund";
+  var VENMO_SUBTITLE = "Chip in on Venmo";
+
+  // The line in small print at the bottom. Keep it true: the page collects
+  // no name, email or location, and saying so is the point of the line.
+  var PRIVACY_LINE = "Your recording is sent to {name} for musical purposes.";
+
+  // =========================================================================
+  // Nothing below here needs editing.
+  // =========================================================================
+
+  function fill(id, text) {
+    var el = document.getElementById(id);
+    if (el) { el.textContent = text; }
+  }
+
+  function applyBranding() {
+    var name = PERFORMER_NAME || "the show";
+
+    fill("brand", name);
+    fill("done-note", DONE_NOTE.replace("{name}", name));
+
+    if (document.title === "Record a Sound" && PERFORMER_NAME) {
+      document.title = "Record a Sound \u2014 " + name;
+    }
+
+    var footer = document.getElementById("page-footer");
+    if (footer) {
+      footer.appendChild(
+        document.createTextNode(PRIVACY_LINE.replace("{name}", name))
+      );
+      footer.appendChild(document.createElement("br"));
+      footer.appendChild(
+        document.createTextNode("No name, email, or location is collected.")
+      );
+    }
+
+    var handle = String(VENMO_HANDLE || "").replace(/^@/, "").trim();
+    var button = document.getElementById("venmo-btn");
+    if (button && handle) {
+      button.href = "https://venmo.com/" + encodeURIComponent(handle);
+      fill("venmo-title", VENMO_TITLE);
+      fill("venmo-sub", VENMO_SUBTITLE + " \u00B7 @" + handle);
+      button.className = "venmo-btn";
+    }
+  }
+
+  applyBranding();
+
+  // Uploads are normalised to this before they leave the phone, so the app
+  // only ever decodes one format. See encodeWav() below for why that matters.
+  var TARGET_SAMPLE_RATE = 48000;
+  var HARD_MAX_SECONDS = 10;
+
+  // -------------------------------------------------------------------------
+  // State
+  // -------------------------------------------------------------------------
+
+  var session = null;          // { id, title, prompt, max_duration_seconds }
+  var mediaStream = null;
+  var recorder = null;
+  var chunks = [];
+  var recordedWav = null;      // Blob
+  var recordedSeconds = 0;
+  var previewUrl = null;
+  var previewAudio = null;
+  var stopTimer = null;
+  var tickTimer = null;
+  var levelRaf = null;
+  // One AudioContext for the whole page. iOS caps how many a document may
+  // create, and an unlocked context is the thing that survives between
+  // recording and playback, so it is never closed.
+  var sharedCtx = null;
+  var analyser = null;
+  var meterSource = null;
+  var playbackSource = null;
+  var sending = false;
+
+  // Diagnostics are off unless the URL asks for them: ?debug=1
+  // Everything below still runs; it just says nothing. Worth keeping, because
+  // the alternative on a phone at a venue is guessing.
+  var DEBUG = /[?&]debug=1/.test(window.location.search);
+
+  // -------------------------------------------------------------------------
+  // Small helpers
+  // -------------------------------------------------------------------------
+
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    var views = ["loading", "code", "record", "review", "done", "error"];
+    views.forEach(function (v) {
+      var el = $("view-" + v);
+      if (el) { el.classList.toggle("hidden", v !== name); }
+    });
+  }
+
+  function setStatus(id, message, kind) {
+    var el = $(id);
+    if (!el) { return; }
+    el.textContent = message || "";
+    el.className = "status" + (kind ? " " + kind : "");
+  }
+
+  // Turns an exception into something readable on a phone screen. The status
+  // code is the whole diagnosis: 401/403 means the key or policies, 404 means
+  // the function is missing, a TypeError means the request never left.
+  function describeError(error) {
+    var message = String(error && error.message ? error.message : error);
+
+    if (message.indexOf("(404)") !== -1) {
+      return "The server is reachable but get_open_session is missing. Re-run 01_schema.sql.";
+    }
+    if (message.indexOf("(401)") !== -1 || message.indexOf("(403)") !== -1) {
+      return "The server refused the key. Check the publishable key and the anon grants.";
+    }
+    if (message.indexOf("TIMEOUT") !== -1) {
+      return message + " Usually a service worker or extension intercepting " +
+             "the request. Try a private window.";
+    }
+    if (message.indexOf("Failed to fetch") !== -1 ||
+        message.indexOf("Load failed") !== -1 ||
+        message.indexOf("NetworkError") !== -1) {
+      return "The request never reached the server — offline, or blocked before sending.";
+    }
+    return message.slice(0, 300);
+  }
+
+  function fail(title, detail) {
+    $("error-title").textContent = title;
+    $("error-detail").textContent = detail || "";
+    show("error");
+  }
+
+  function uuid() {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      return window.crypto.randomUUID();
+    }
+    // Fallback for older Safari. Still uses a CSPRNG.
+    var bytes = new Uint8Array(16);
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    var hex = [];
+    for (var i = 0; i < 16; i++) {
+      hex.push((bytes[i] + 0x100).toString(16).slice(1));
+    }
+    return hex.slice(0, 4).join("") + "-" +
+           hex.slice(4, 6).join("") + "-" +
+           hex.slice(6, 8).join("") + "-" +
+           hex.slice(8, 10).join("") + "-" +
+           hex.slice(10, 16).join("");
+  }
+
+  function AudioContextClass() {
+    return window.AudioContext || window.webkitAudioContext;
+  }
+
+  // iOS decides where audio comes out based on the page's audio session. Once
+  // getUserMedia runs, the session goes into record mode and output routes to
+  // the earpiece receiver rather than the speaker — and the ring/silent switch
+  // mutes it. Both are inaudible with the phone in your hand, and neither shows
+  // up as an error: the context still reports "running" and playback still
+  // completes normally.
+  //
+  // Declaring "playback" before making sound forces speaker output and opts out
+  // of the silent switch. Safari 16.4+ only; harmless where it is missing.
+  function setAudioSession(type) {
+    try {
+      if (navigator.audioSession) {
+        navigator.audioSession.type = type;
+        return type;
+      }
+    } catch (e) { /* not supported */ }
+    return null;
+  }
+
+  function describeSession() {
+    if (!navigator.audioSession) { return "audioSession unsupported"; }
+    try {
+      return "audioSession=" + navigator.audioSession.type;
+    } catch (e) {
+      return "audioSession unreadable";
+    }
+  }
+
+  // Must be called synchronously from inside a click handler. iOS starts every
+  // AudioContext suspended and will only resume one in response to a real
+  // gesture, so deferring this into a callback silently breaks playback.
+  function unlockAudio() {
+    try {
+      if (!sharedCtx) {
+        var Ctx = AudioContextClass();
+        if (!Ctx) { return null; }
+        sharedCtx = new Ctx();
+      }
+      if (sharedCtx.state === "suspended" && typeof sharedCtx.resume === "function") {
+        sharedCtx.resume();
+      }
+      return sharedCtx;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Supabase REST
+  // -------------------------------------------------------------------------
+
+  // fetch() has no default timeout: a request that never settles leaves the
+  // page on its spinner indefinitely. Twelve seconds is long enough for a
+  // slow phone on bad wifi and short enough to tell someone something.
+  function fetchWithTimeout(url, options, seconds) {
+    var limit = (seconds || 12) * 1000;
+
+    if (typeof AbortController === "undefined") {
+      return fetch(url, options);
+    }
+
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, limit);
+
+    options = options || {};
+    options.signal = controller.signal;
+
+    return fetch(url, options).then(function (response) {
+      clearTimeout(timer);
+      return response;
+    }).catch(function (error) {
+      clearTimeout(timer);
+      if (error && error.name === "AbortError") {
+        throw new Error("TIMEOUT after " + (limit / 1000) + "s — the request " +
+                        "was sent but nothing came back.");
+      }
+      throw error;
+    });
+  }
+
+  function supabaseHeaders(extra) {
+    var headers = {
+      "apikey": SUPABASE_KEY,
+      "Authorization": "Bearer " + SUPABASE_KEY
+    };
+    if (extra) {
+      Object.keys(extra).forEach(function (k) { headers[k] = extra[k]; });
+    }
+    return headers;
+  }
+
+  // The only session lookup anon is allowed. Everything else about sessions
+  // is invisible to this page by design.
+  function lookupSession(code) {
+    return fetchWithTimeout(SUPABASE_URL + "/rest/v1/rpc/get_open_session", {
+      method: "POST",
+      headers: supabaseHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ code: code })
+    }, 12).then(function (response) {
+      if (!response.ok) {
+        return response.text().then(function (body) {
+          throw new Error("Lookup failed (" + response.status + "): " + body);
+        });
+      }
+      return response.json();
+    }).then(function (rows) {
+      if (!rows || rows.length === 0) { return null; }
+      return rows[0];
+    });
+  }
+
+  function uploadAudio(sessionId, submissionId, blob) {
+    var path = sessionId + "/" + submissionId + ".wav";
+    return fetchWithTimeout(SUPABASE_URL + "/storage/v1/object/submissions/" + path, {
+      method: "POST",
+      headers: supabaseHeaders({
+        "Content-Type": "audio/wav",
+        "x-upsert": "false",
+        "cache-control": "3600"
+      }),
+      body: blob
+    }, 30).then(function (response) {
+      if (!response.ok) {
+        return response.text().then(function (body) {
+          throw new Error("Upload failed (" + response.status + "): " + body);
+        });
+      }
+      return path;
+    });
+  }
+
+  // Audio is uploaded first, then the row is written. A row that exists
+  // therefore always has audio behind it; a failed send leaves at most an
+  // unreferenced file, which is harmless.
+  // Free text from an anonymous stranger, so it is bounded and flattened here
+  // as well as by maxlength: newlines and control characters would otherwise
+  // break the layout of the moderation queue.
+  function cleanLabel(raw) {
+    if (!raw) { return ""; }
+    return String(raw)
+      .replace(/[\u0000-\u001F\u007F]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 40);
+  }
+
+  function createSubmission(submissionId, sessionId, storagePath, seconds, bytes, label) {
+    return fetchWithTimeout(SUPABASE_URL + "/rest/v1/submissions", {
+      method: "POST",
+      headers: supabaseHeaders({
+        "Content-Type": "application/json",
+        // anon has no SELECT on submissions, so asking for the row back
+        // would fail the request. Minimal is correct here.
+        "Prefer": "return=minimal"
+      }),
+      body: JSON.stringify({
+        id: submissionId,
+        session_id: sessionId,
+        status: "pending",
+        label: cleanLabel(label),
+        duration: seconds,
+        storage_path: storagePath,
+        mime_type: "audio/wav",
+        file_size: bytes
+      })
+    }, 12).then(function (response) {
+      if (!response.ok) {
+        return response.text().then(function (body) {
+          throw new Error("Save failed (" + response.status + "): " + body);
+        });
+      }
+      return true;
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Audio conversion
+  //
+  // MediaRecorder gives WebM/Opus on Android and MP4/AAC on iOS. AVFoundation
+  // in the app cannot decode WebM at all, so rather than transcode on a
+  // server we decode here and emit 16-bit mono WAV at a fixed sample rate.
+  // One format reaches the sampler, whatever the phone produced.
+  // -------------------------------------------------------------------------
+
+  function decodeToBuffer(blob) {
+    return blob.arrayBuffer().then(function (data) {
+      var Ctx = AudioContextClass();
+      var ctx = new Ctx();
+      return new Promise(function (resolve, reject) {
+        // Callback form: older Safari does not return a promise here.
+        var maybe = ctx.decodeAudioData(data, function (buffer) {
+          resolve({ buffer: buffer, ctx: ctx });
+        }, function (err) {
+          reject(err || new Error("Could not decode the recording"));
+        });
+        if (maybe && typeof maybe.then === "function") {
+          maybe.then(function (buffer) {
+            resolve({ buffer: buffer, ctx: ctx });
+          }).catch(reject);
+        }
+      });
+    });
+  }
+
+  function resampleToMono(buffer, maxSeconds) {
+    var seconds = Math.min(buffer.duration, maxSeconds);
+    var frames = Math.max(1, Math.ceil(seconds * TARGET_SAMPLE_RATE));
+
+    var Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    var offline = new Offline(1, frames, TARGET_SAMPLE_RATE);
+
+    var source = offline.createBufferSource();
+    source.buffer = buffer;
+
+    // Trim first, then let the offline context do the rate conversion.
+    source.connect(offline.destination);
+    source.start(0, 0, seconds);
+
+    var rendered = offline.startRendering();
+    if (rendered && typeof rendered.then === "function") {
+      return rendered;
+    }
+    return new Promise(function (resolve) {
+      offline.oncomplete = function (event) { resolve(event.renderedBuffer); };
+    });
+  }
+
+  function encodeWav(audioBuffer) {
+    var samples = audioBuffer.getChannelData(0);
+    var frameCount = samples.length;
+    var bytesPerSample = 2;
+    var dataBytes = frameCount * bytesPerSample;
+    var buffer = new ArrayBuffer(44 + dataBytes);
+    var view = new DataView(buffer);
+
+    function writeString(offset, text) {
+      for (var i = 0; i < text.length; i++) {
+        view.setUint8(offset + i, text.charCodeAt(i));
+      }
+    }
+
+    writeString(0, "RIFF");
+    view.setUint32(4, 36 + dataBytes, true);
+    writeString(8, "WAVE");
+    writeString(12, "fmt ");
+    view.setUint32(16, 16, true);                       // PCM chunk size
+    view.setUint16(20, 1, true);                        // format = PCM
+    view.setUint16(22, 1, true);                        // channels = mono
+    view.setUint32(24, TARGET_SAMPLE_RATE, true);
+    view.setUint32(28, TARGET_SAMPLE_RATE * bytesPerSample, true);
+    view.setUint16(32, bytesPerSample, true);           // block align
+    view.setUint16(34, 16, true);                       // bits per sample
+    writeString(36, "data");
+    view.setUint32(40, dataBytes, true);
+
+    // Find the loudest point so quiet recordings are not inaudible over a PA.
+    // Capped so a near-silent take is not amplified into pure noise.
+    var peak = 0;
+    for (var p = 0; p < frameCount; p++) {
+      var magnitude = samples[p] < 0 ? -samples[p] : samples[p];
+      if (magnitude > peak) { peak = magnitude; }
+    }
+    var gain = 1;
+    if (peak > 0.0001) {
+      gain = Math.min(0.89 / peak, 8);
+    }
+
+    var offset = 44;
+    for (var i = 0; i < frameCount; i++) {
+      var value = samples[i] * gain;
+      if (value > 1) { value = 1; } else if (value < -1) { value = -1; }
+      view.setInt16(offset, Math.round(value * 32767), true);
+      offset += 2;
+    }
+
+    return new Blob([buffer], { type: "audio/wav" });
+  }
+
+  function convertRecording(blob, maxSeconds) {
+    var context = null;
+    return decodeToBuffer(blob).then(function (result) {
+      context = result.ctx;
+      return resampleToMono(result.buffer, maxSeconds);
+    }).then(function (rendered) {
+      if (context && typeof context.close === "function") { context.close(); }
+      return {
+        wav: encodeWav(rendered),
+        seconds: rendered.length / TARGET_SAMPLE_RATE
+      };
+    }).catch(function (error) {
+      if (context && typeof context.close === "function") { context.close(); }
+      throw error;
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Recording
+  // -------------------------------------------------------------------------
+
+  function pickMimeType() {
+    if (typeof MediaRecorder === "undefined" ||
+        typeof MediaRecorder.isTypeSupported !== "function") {
+      return "";
+    }
+    var candidates = [
+      "audio/webm;codecs=opus",
+      "audio/webm",
+      "audio/mp4",
+      "audio/aac",
+      "audio/ogg;codecs=opus"
+    ];
+    for (var i = 0; i < candidates.length; i++) {
+      if (MediaRecorder.isTypeSupported(candidates[i])) { return candidates[i]; }
+    }
+    return "";
+  }
+
+  function startLevelMeter(stream) {
+    try {
+      var ctx = unlockAudio();
+      if (!ctx) { return; }
+      meterSource = ctx.createMediaStreamSource(stream);
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 512;
+      meterSource.connect(analyser);
+
+      var data = new Uint8Array(analyser.frequencyBinCount);
+      var fill = $("meter-fill");
+
+      var draw = function () {
+        analyser.getByteTimeDomainData(data);
+        var peak = 0;
+        for (var i = 0; i < data.length; i++) {
+          var deviation = Math.abs(data[i] - 128);
+          if (deviation > peak) { peak = deviation; }
+        }
+        fill.style.width = Math.min(100, (peak / 128) * 140) + "%";
+        levelRaf = requestAnimationFrame(draw);
+      };
+      draw();
+    } catch (e) {
+      // A missing level meter is cosmetic; recording still works.
+    }
+  }
+
+  function stopLevelMeter() {
+    if (levelRaf) { cancelAnimationFrame(levelRaf); levelRaf = null; }
+    if (meterSource) {
+      try { meterSource.disconnect(); } catch (e) { /* already gone */ }
+      meterSource = null;
+    }
+    if (analyser) {
+      try { analyser.disconnect(); } catch (e) { /* already gone */ }
+      analyser = null;
+    }
+    // sharedCtx is intentionally left open and unlocked for playback.
+  }
+
+  function clearTimers() {
+    if (stopTimer) { clearTimeout(stopTimer); stopTimer = null; }
+    if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+  }
+
+  function releaseStream() {
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(function (track) { track.stop(); });
+      mediaStream = null;
+    }
+  }
+
+  function startRecording() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setStatus("record-status",
+        "This browser cannot record audio. Try Safari or Chrome.", "error");
+      return;
+    }
+
+    setStatus("record-status", "");
+    setAudioSession("play-and-record");
+
+    var button = $("record-btn");
+    button.disabled = true;
+
+    navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: true
+      }
+    }).then(function (stream) {
+      mediaStream = stream;
+      chunks = [];
+
+      var mimeType = pickMimeType();
+      recorder = mimeType ? new MediaRecorder(stream, { mimeType: mimeType })
+                          : new MediaRecorder(stream);
+
+      recorder.ondataavailable = function (event) {
+        if (event.data && event.data.size > 0) { chunks.push(event.data); }
+      };
+
+      recorder.onstop = function () {
+        clearTimers();
+        stopLevelMeter();
+        releaseStream();
+        handleRecordingFinished();
+      };
+
+      recorder.start();
+
+      var limit = Math.min(session.max_duration_seconds || 3, HARD_MAX_SECONDS);
+      var startedAt = Date.now();
+
+      button.classList.add("recording");
+      button.textContent = "Stop";
+      button.setAttribute("aria-label", "Stop recording");
+      button.disabled = false;
+      $("timer").classList.remove("hidden");
+      $("meter").classList.remove("hidden");
+      $("record-hint").textContent = "Recording… tap to stop early.";
+
+      startLevelMeter(stream);
+
+      tickTimer = setInterval(function () {
+        var elapsed = (Date.now() - startedAt) / 1000;
+        var remaining = Math.max(0, limit - elapsed);
+        $("timer").textContent = remaining.toFixed(1) + "s";
+      }, 80);
+
+      stopTimer = setTimeout(function () {
+        if (recorder && recorder.state === "recording") { recorder.stop(); }
+      }, limit * 1000);
+
+    }).catch(function (error) {
+      button.disabled = false;
+      var name = error && error.name ? error.name : "";
+      if (name === "NotAllowedError" || name === "SecurityError") {
+        setStatus("record-status",
+          "Microphone access was blocked. Allow it in your browser settings, then tap Record again.",
+          "error");
+      } else if (name === "NotFoundError") {
+        setStatus("record-status", "No microphone was found on this device.", "error");
+      } else {
+        setStatus("record-status", "Could not start recording. " + (error.message || ""), "error");
+      }
+    });
+  }
+
+  function stopRecording() {
+    if (recorder && recorder.state === "recording") {
+      recorder.stop();
+    }
+  }
+
+  function resetRecordButton() {
+    var button = $("record-btn");
+    button.classList.remove("recording");
+    button.textContent = "Record";
+    button.setAttribute("aria-label", "Start recording");
+    button.disabled = false;
+    $("timer").classList.add("hidden");
+    $("meter").classList.add("hidden");
+    $("meter-fill").style.width = "0%";
+    $("record-hint").textContent = "Tap to record. Recording stops on its own.";
+  }
+
+  function handleRecordingFinished() {
+    var button = $("record-btn");
+    button.disabled = true;
+    button.textContent = "…";
+    setStatus("record-status", "Getting it ready…");
+
+    var limit = Math.min(session.max_duration_seconds || 3, HARD_MAX_SECONDS);
+    var raw = new Blob(chunks, { type: chunks.length && chunks[0].type ? chunks[0].type : "audio/webm" });
+
+    if (raw.size === 0) {
+      resetRecordButton();
+      setStatus("record-status", "Nothing was recorded. Try once more.", "error");
+      return;
+    }
+
+    convertRecording(raw, limit).then(function (result) {
+      recordedWav = result.wav;
+      recordedSeconds = result.seconds;
+      resetRecordButton();
+      setStatus("record-status", "");
+
+      $("review-duration").textContent = recordedSeconds.toFixed(1) + "s";
+      setStatus("review-status", "");
+      $("send-btn").disabled = false;
+      show("review");
+    }).catch(function (error) {
+      resetRecordButton();
+      setStatus("record-status",
+        "Could not process that recording. Please try again.", "error");
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Choosing an existing file
+  //
+  // Goes through exactly the same conversion as a live recording, so whatever
+  // the phone hands over becomes 48 kHz mono WAV like everything else and the
+  // sampler never learns the difference.
+  // -------------------------------------------------------------------------
+
+  // Generous for a phone recording, small enough that decoding it will not
+  // stall an older device. A three-second sound never approaches this.
+  var MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+
+  function handleChosenFile(file) {
+    if (!file) { return; }
+
+    trace("file: " + file.name + ", " + file.size + " bytes, type " + (file.type || "(none)"));
+
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setStatus("record-status",
+        "That file is too big. Please pick one under 25 MB.", "error");
+      return;
+    }
+
+    if (file.size === 0) {
+      setStatus("record-status", "That file seems to be empty.", "error");
+      return;
+    }
+
+    var limit = Math.min(session.max_duration_seconds || 3, HARD_MAX_SECONDS);
+    setStatus("record-status", "Getting it ready\u2026");
+    $("file-btn").disabled = true;
+    $("record-btn").disabled = true;
+
+    convertRecording(file, limit).then(function (result) {
+      recordedWav = result.wav;
+      recordedSeconds = result.seconds;
+
+      $("file-btn").disabled = false;
+      $("record-btn").disabled = false;
+      setStatus("record-status", "");
+
+      $("review-duration").textContent = recordedSeconds.toFixed(1) + "s";
+      setStatus("review-status", "");
+      $("send-btn").disabled = false;
+      show("review");
+    }).catch(function (error) {
+      $("file-btn").disabled = false;
+      $("record-btn").disabled = false;
+      trace("file: FAILED " + (error && error.message ? error.message : error));
+      setStatus("record-status",
+        "That file could not be read. Try a different one, or record instead.",
+        "error");
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Review and send
+  // -------------------------------------------------------------------------
+
+  function stopPlayback() {
+    if (playbackSource) {
+      try { playbackSource.stop(); } catch (e) { /* already finished */ }
+      try { playbackSource.disconnect(); } catch (e) { /* already gone */ }
+      playbackSource = null;
+    }
+    if (previewAudio) {
+      try { previewAudio.pause(); } catch (e) { /* not playing */ }
+      previewAudio = null;
+    }
+    if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
+  }
+
+  // Playback is instrumented because it has failed twice for reasons that were
+  // invisible on a phone. Every stage reports to #audio-trace so the failing
+  // step is visible on screen instead of only in a console nobody can open.
+  function trace(line) {
+    if (window.console && window.console.log) { window.console.log("[crowdloop] " + line); }
+    if (!DEBUG) { return; }
+    var el = $("audio-trace");
+    if (!el) { return; }
+    el.textContent += (el.textContent ? "\n" : "") + line;
+  }
+
+  function clearTrace() {
+    var el = $("audio-trace");
+    if (el) { el.textContent = ""; }
+  }
+
+  function describeCtx(ctx) {
+    if (!ctx) { return "no AudioContext"; }
+    return "ctx state=" + ctx.state + " rate=" + ctx.sampleRate + "Hz";
+  }
+
+  // Same context and same output as playBack, but nothing is decoded. If this
+  // is audible and the recording is not, the problem is the audio data. If
+  // neither is audible, the problem is the context or the output route.
+  function playTestTone() {
+    clearTrace();
+    setAudioSession("playback");
+    var ctx = unlockAudio();
+    trace("tone: " + describeCtx(ctx));
+    trace("tone: " + describeSession());
+
+    if (!ctx) {
+      trace("tone: FAILED, no Web Audio on this browser");
+      return;
+    }
+
+    try {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.frequency.value = 440;
+      gain.gain.value = 0.2;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.6);
+      trace("tone: started 440Hz for 0.6s");
+      osc.onended = function () { trace("tone: finished, state=" + ctx.state); };
+    } catch (error) {
+      trace("tone: THREW " + (error.message || error));
+    }
+  }
+
+  function playBack() {
+    clearTrace();
+
+    if (!recordedWav) {
+      trace("play: nothing recorded yet");
+      return;
+    }
+    trace("play: blob " + recordedWav.size + " bytes, type " + (recordedWav.type || "(none)"));
+
+    stopPlayback();
+    setAudioSession("playback");
+    var ctx = unlockAudio();
+    trace("play: " + describeCtx(ctx));
+    trace("play: " + describeSession());
+
+    if (!ctx) {
+      trace("play: no Web Audio, using <audio> fallback");
+      playBackFallback();
+      return;
+    }
+
+    recordedWav.arrayBuffer().then(function (data) {
+      trace("play: read " + data.byteLength + " bytes");
+      return new Promise(function (resolve, reject) {
+        var maybe = ctx.decodeAudioData(data, resolve, reject);
+        if (maybe && typeof maybe.then === "function") {
+          maybe.then(resolve).catch(reject);
+        }
+      });
+    }).then(function (buffer) {
+      trace("play: decoded " + buffer.duration.toFixed(2) + "s, " +
+            buffer.numberOfChannels + "ch @ " + buffer.sampleRate + "Hz");
+
+      var source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.onended = function () {
+        playbackSource = null;
+        trace("play: finished");
+      };
+      source.start(0);
+      playbackSource = source;
+
+      trace("play: started, ctx state=" + ctx.state);
+      if (ctx.state !== "running") {
+        trace("play: context is NOT running — no sound will come out");
+      }
+    }).catch(function (error) {
+      trace("play: FAILED " + (error && error.message ? error.message : error));
+      trace("play: trying <audio> fallback");
+      if (window.console) { console.error(error); }
+      playBackFallback();
+    });
+  }
+
+  // Only reached if Web Audio is unavailable or the decode fails.
+  function playBackFallback() {
+    if (!recordedWav) { return; }
+    if (previewUrl) { URL.revokeObjectURL(previewUrl); }
+    previewUrl = URL.createObjectURL(recordedWav);
+    previewAudio = new Audio(previewUrl);
+    previewAudio.setAttribute("playsinline", "");
+    previewAudio.playsInline = true;
+
+    previewAudio.onerror = function () {
+      trace("fallback: <audio> could not load the blob");
+    };
+    previewAudio.onplaying = function () {
+      trace("fallback: <audio> is playing");
+    };
+
+    previewAudio.play().then(function () {
+      trace("fallback: play() resolved");
+    }).catch(function (error) {
+      trace("fallback: play() rejected — " + (error && error.name ? error.name : error));
+      setStatus("review-status",
+        "Could not play it back here. You can still send it.", "error");
+    });
+  }
+
+  function send() {
+    if (!recordedWav || !session || sending) { return; }
+    sending = true;
+
+    stopPlayback();
+
+    var sendButton = $("send-btn");
+    sendButton.disabled = true;
+    $("redo-btn").disabled = true;
+    setStatus("review-status", "Sending\u2026");
+
+    var submissionId = uuid();
+    var bytes = recordedWav.size;
+    var chosenLabel = $("label-input").value;
+
+    // Audio first, then the row. A row that exists therefore always has audio
+    // behind it; a failed send leaves at most an unreferenced file.
+    uploadAudio(session.id, submissionId, recordedWav).then(function (path) {
+      return createSubmission(submissionId, session.id, path,
+                              recordedSeconds, bytes, chosenLabel);
+    }).then(function () {
+      sending = false;
+      $("redo-btn").disabled = false;
+      recordedWav = null;
+      show("done");
+    }).catch(function (error) {
+      sending = false;
+      sendButton.disabled = false;
+      $("redo-btn").disabled = false;
+
+      var message = String(error && error.message ? error.message : error);
+      if (message.indexOf("submission limit") !== -1) {
+        setStatus("review-status",
+          "This session has reached its limit. Nothing more can be sent.", "error");
+      } else if (message.indexOf("(403)") !== -1 || message.indexOf("(401)") !== -1) {
+        setStatus("review-status",
+          "This session has closed, so it is not taking sounds any more.", "error");
+      } else {
+        setStatus("review-status", describeError(error), "error");
+      }
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Session resolution
+  // -------------------------------------------------------------------------
+
+  function enterSession(found) {
+    session = found;
+    $("session-title").textContent = found.title || "Record a sound";
+    $("session-prompt").textContent = found.prompt || "";
+    var limit = Math.min(found.max_duration_seconds || 3, HARD_MAX_SECONDS);
+    $("record-hint").textContent =
+      "Tap to record up to " + limit + " seconds. It stops on its own.";
+    $("file-btn").textContent =
+      "Choose a sound file (first " + limit + " seconds)";
+    show("record");
+  }
+
+  function tryCode(code, statusId) {
+    if (!code) {
+      setStatus(statusId, "Enter the code first.", "error");
+      return;
+    }
+
+    setStatus(statusId, "Checking…");
+
+    lookupSession(code).then(function (found) {
+      if (!found) {
+        setStatus(statusId,
+          "No open session with that code. Check the code, or the session may have closed.",
+          "error");
+        return;
+      }
+      enterSession(found);
+    }).catch(function (error) {
+      setStatus(statusId, describeError(error), "error");
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  function boot() {
+    var params = new URLSearchParams(window.location.search);
+    var code = (params.get("c") || params.get("code") || "").toUpperCase().trim();
+
+    if (!code) {
+      show("code");
+      return;
+    }
+
+    show("loading");
+    lookupSession(code).then(function (found) {
+      if (!found) {
+        $("code-input").value = code;
+        show("code");
+        setStatus("code-status",
+          "That session is not open right now. Double-check the code.", "error");
+        return;
+      }
+      enterSession(found);
+    }).catch(function (error) {
+      fail("Could not connect", describeError(error));
+      if (window.console) { console.error(error); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Wiring
+  // -------------------------------------------------------------------------
+
+  $("record-btn").addEventListener("click", function () {
+    unlockAudio();
+    if (recorder && recorder.state === "recording") {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  });
+
+  $("file-btn").addEventListener("click", function () {
+    setStatus("record-status", "");
+    $("file-input").click();
+  });
+
+  $("file-input").addEventListener("change", function (event) {
+    var file = event.target.files && event.target.files[0];
+    // Reset so picking the same file twice still fires a change event.
+    event.target.value = "";
+    handleChosenFile(file);
+  });
+
+  $("play-btn").addEventListener("click", playBack);
+  $("tone-btn").addEventListener("click", playTestTone);
+  $("send-btn").addEventListener("click", send);
+
+  $("redo-btn").addEventListener("click", function () {
+    stopPlayback();
+    $("label-input").value = "";
+    recordedWav = null;
+    setStatus("review-status", "");
+    show("record");
+  });
+
+  $("again-btn").addEventListener("click", function () {
+    stopPlayback();
+    $("label-input").value = "";
+    recordedWav = null;
+    setStatus("record-status", "");
+    setStatus("review-status", "");
+    $("send-btn").disabled = false;
+    show("record");
+  });
+
+  $("retry-btn").addEventListener("click", function () {
+    window.location.reload();
+  });
+
+  $("code-go").addEventListener("click", function () {
+    tryCode($("code-input").value.toUpperCase().trim(), "code-status");
+  });
+
+  $("code-input").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      tryCode($("code-input").value.toUpperCase().trim(), "code-status");
+    }
+  });
+
+  if (DEBUG) {
+    $("tone-btn").classList.remove("hidden");
+  }
+
+  window.addEventListener("pagehide", function () {
+    clearTimers();
+    stopLevelMeter();
+    stopPlayback();
+    releaseStream();
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
