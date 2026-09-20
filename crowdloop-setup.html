@@ -382,6 +382,143 @@ footer a { color: var(--ink-dim); }
 #top.on { opacity: 1; pointer-events: auto; }
 #top:hover { color: var(--accent); border-color: var(--accent-dim); }
 
+/* ---------------------------------------------------------------------------
+   The builder in 5.2.
+
+   A buyer's most likely way to ruin this setup is a text editor: TextEdit
+   opens an .html file as a rendered page rather than as code, saves it back as
+   RTF, and the result looks fine in a Finder window and is broken everywhere
+   else. So the page offers to do the edit itself. Nothing here talks to a
+   server — the recording page is already sitting in the block above.
+   --------------------------------------------------------------------------- */
+.builder {
+  margin: 0 0 22px;
+  border: 1px solid var(--accent-dim);
+  border-radius: 11px;
+  background: linear-gradient(180deg, rgba(242,166,90,0.06), transparent 240px);
+  overflow: hidden;
+}
+
+.builder > header {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.builder > header h4 { margin: 0 0 5px; font-size: 16px; color: var(--accent); }
+
+.builder > header p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  max-width: none;
+}
+
+.builder .fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px 18px;
+  padding: 18px;
+}
+
+.builder .f { display: flex; flex-direction: column; min-width: 0; }
+.builder .f.wide { grid-column: 1 / -1; }
+
+.builder label {
+  font-size: 11.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+
+.builder label .opt {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-faint);
+  opacity: 0.8;
+}
+
+.builder input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 13.5px var(--mono);
+}
+
+.builder input:focus { outline: none; border-color: var(--accent-dim); }
+.builder input.ok { border-color: var(--good); }
+.builder input.bad { border-color: var(--bad); }
+
+.builder .say {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-faint);
+  min-height: 1em;
+}
+
+.builder .say.ok { color: var(--good); }
+.builder .say.bad { color: var(--bad); }
+
+.builder .go {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 18px 18px;
+}
+
+.builder .go button {
+  font: 600 13px/1 var(--sans);
+  padding: 12px 17px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+
+.builder .go button:hover { color: var(--ink); border-color: var(--ink-faint); }
+
+.builder .go button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1206;
+}
+
+.builder .go button.primary:hover { background: #ffb96f; }
+.builder .go button:disabled { opacity: 0.45; cursor: default; }
+
+.builder .result {
+  display: none;
+  margin: 0 18px 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.builder .result.on { display: block; }
+.builder .result.ok  { background: rgba(77,211,119,0.09); border: 1px solid var(--good); color: var(--good); }
+.builder .result.bad { background: rgba(242,90,90,0.09);  border: 1px solid var(--bad);  color: var(--bad); }
+.builder .result.busy { background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-dim); }
+
+.byhand {
+  margin: 26px 0 14px;
+  color: var(--ink-faint);
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 620px) {
+  .builder .fields { grid-template-columns: minmax(0, 1fr); }
+}
+
 @media (max-width: 900px) {
   .layout { grid-template-columns: minmax(0, 1fr); gap: 0; padding-bottom: 64px; }
   nav.toc {
@@ -400,7 +537,11 @@ footer a { color: var(--ink-dim); }
 }
 
 @media print {
-  nav.toc, #top, .block button, .masthead .back { display: none; }
+  nav.toc, #top, .block button, .masthead .back,
+  .builder .go, .builder .result { display: none; }
+  .builder { border-color: #bbb; background: #f7f7f7; }
+  .builder > header { background: #eee; }
+  .builder > header h4, .builder label { color: #111; }
   body { background: #fff; color: #111; font-size: 11pt; }
   .layout { display: block; padding: 0; }
   .block, table, blockquote { border-color: #bbb; background: #f7f7f7; }
@@ -2669,6 +2810,73 @@ paste it into your own editor and save it yourself.</p>
 &lt;/html&gt;
 </code></pre>
 <h3 id="52-put-your-details-in-the-page">5.2 Put your details in the page<a class="headerlink" href="#52-put-your-details-in-the-page" title="Permanent link">#</a></h3>
+<div class="builder" id="builder">
+  <header>
+    <h4>Let the page do it for you</h4>
+    <p>Fill these in, press <strong>Build my page</strong>, and you get a finished
+    <code>index.html</code> with your details already in it. No text editor, so
+    nothing to mistype and nothing to save in the wrong format. Everything you
+    type here stays in this browser &mdash; it is written into the file on your
+    own machine and sent nowhere.</p>
+  </header>
+
+  <div class="fields">
+    <div class="f wide">
+      <label for="cfg-url">Project URL <span class="opt">&mdash; from section 4.6</span></label>
+      <input id="cfg-url" type="url" spellcheck="false" autocomplete="off"
+             autocapitalize="off" placeholder="https://abcdefghijklm.supabase.co">
+      <div class="say" id="say-url"></div>
+    </div>
+
+    <div class="f wide">
+      <label for="cfg-key">Publishable key <span class="opt">&mdash; from section 4.6</span></label>
+      <input id="cfg-key" type="text" spellcheck="false" autocomplete="off"
+             autocapitalize="off" placeholder="sb_publishable_&hellip;">
+      <div class="say" id="say-key"></div>
+    </div>
+
+    <div class="f">
+      <label for="cfg-name">Your show name</label>
+      <input id="cfg-name" type="text" autocomplete="off" placeholder="The Singing Fox">
+      <div class="say" id="say-name">Shown at the top of the page.</div>
+    </div>
+
+    <div class="f">
+      <label for="cfg-venmo">Venmo handle <span class="opt">&mdash; optional</span></label>
+      <input id="cfg-venmo" type="text" spellcheck="false" autocomplete="off"
+             autocapitalize="off" placeholder="empty means no tip button">
+      <div class="say" id="say-venmo">Without the @.</div>
+    </div>
+
+    <div class="f wide">
+      <label for="cfg-done">Confirmation line <span class="opt">&mdash; optional</span></label>
+      <input id="cfg-done" type="text" autocomplete="off">
+      <div class="say">Shown once a recording has been sent. <code>{name}</code> becomes your show name.</div>
+    </div>
+
+    <div class="f wide">
+      <label for="cfg-tip">Tip button wording <span class="opt">&mdash; optional</span></label>
+      <input id="cfg-tip" type="text" autocomplete="off">
+      <div class="say">Ignored unless a Venmo handle is set.</div>
+    </div>
+
+    <div class="f wide">
+      <label for="cfg-priv">Small print at the bottom <span class="opt">&mdash; optional</span></label>
+      <input id="cfg-priv" type="text" autocomplete="off">
+      <div class="say">Keep it true. The page collects no name, email or location, and saying so is the point of the line.</div>
+    </div>
+  </div>
+
+  <div class="go">
+    <button type="button" class="primary" id="cfg-build">Build my page</button>
+    <button type="button" id="cfg-test">Test these values</button>
+  </div>
+
+  <div class="result" id="cfg-result"></div>
+</div>
+
+<p class="byhand">Or do it by hand</p>
+
 <p>Open the file in a plain text editor and find the block near the top of the
 script marked <strong>YOUR DETAILS</strong>. It is the only part you edit:</p>
 <pre><code class="language-javascript">  // From Supabase: Project Settings -&gt; API. Section 4.6 of the guide.
@@ -3365,10 +3573,10 @@ repository, or an AI tool.</p>
 <hr />
 <h2 id="15-privacy-policy">15. Privacy policy<a class="headerlink" href="#15-privacy-policy" title="Permanent link">#</a></h2>
 <blockquote>
-<p><strong>Before you publish this page:</strong> replace <code>mrbradsmusic@gmail.com</code> in <em>Contact</em> below
-with an address you actually read, and check that the effective date is the
-day you put it online. Apple asks for a privacy policy URL, and an address
-nobody answers is worse than no page at all.</p>
+<p><strong>Before you publish this page:</strong> replace <code>REPLACE-WITH-YOUR-SUPPORT-EMAIL</code>
+under <em>Contact</em> below with an address you actually read, and set the effective
+date to the day you put it online. Apple asks for a privacy policy URL, and an
+address nobody answers is worse than no page at all.</p>
 </blockquote>
 <p><strong>Effective 19 September 2026.</strong></p>
 <p>This policy covers the CrowdLoop iOS app and the CrowdLoop recording page.</p>
@@ -3466,7 +3674,7 @@ no marketing tool in either the app or the page.</p>
 <h3 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">#</a></h3>
 <p>Any change appears on this page with a new effective date.</p>
 <h3 id="contact">Contact<a class="headerlink" href="#contact" title="Permanent link">#</a></h3>
-<p>Questions about this policy, or about a recording: <strong>mrbradsmusic@gmail.com</strong></p>
+<p>Questions about this policy, or about a recording: <strong>REPLACE-WITH-YOUR-SUPPORT-EMAIL</strong></p>
   </main>
 </div>
 
@@ -3607,7 +3815,7 @@ no marketing tool in either the app or the page.</p>
   // Any placeholder left in the text gets marked where it sits, so it cannot
   // be published by accident.
   (function () {
-    var TOKEN = "mrbradsmusic@gmail.com";
+    var TOKEN = "REPLACE-WITH-YOUR-SUPPORT-EMAIL";
     var walker = document.createTreeWalker(
       document.body, NodeFilter.SHOW_TEXT, null, false
     );
@@ -3684,6 +3892,269 @@ no marketing tool in either the app or the page.</p>
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
+
+  // ---------------------------------------------------------------------------
+  // The builder in 5.2.
+  //
+  // The entire recording page is already sitting in the block above, so
+  // configuring it needs no server and no upload: read that block's text,
+  // rewrite seven assignments, hand the result back as a file. That matters for
+  // more than convenience — one of the seven is a key, and it never leaves the
+  // browser. It is a publishable key, so it would survive the trip, but a page
+  // that posts somebody's credentials to a server in order to be helpful is a
+  // habit worth not teaching.
+  // ---------------------------------------------------------------------------
+  (function () {
+    var box = document.getElementById("builder");
+    if (!box) { return; }
+
+    // The source is whichever block on this page begins with a doctype.
+    var source = null;
+    Array.prototype.forEach.call(document.querySelectorAll("pre code"), function (code) {
+      if (!source && code.textContent.slice(0, 15).toUpperCase() === "<!DOCTYPE HTML>") {
+        source = code;
+      }
+    });
+    if (!source) {
+      // No template on the page means nothing to configure. Say so rather than
+      // leaving a form that quietly does nothing.
+      box.parentNode.removeChild(box);
+      return;
+    }
+
+    var by = function (id) { return document.getElementById(id); };
+    var fUrl = by("cfg-url"), fKey = by("cfg-key"), fName = by("cfg-name"),
+        fVenmo = by("cfg-venmo"), fDone = by("cfg-done"), fTip = by("cfg-tip"),
+        fPriv = by("cfg-priv");
+    var result = by("cfg-result");
+
+    // Locate  var NAME = "…";  and return the bounds of the quoted literal.
+    // Hand-walked rather than matched with a regular expression because the
+    // literals contain their own backslash escapes, and a regex that handles
+    // those correctly is harder to read than this loop.
+    function span(src, varName) {
+      var needle = "var " + varName + " = ";
+      var at = src.indexOf(needle);
+      if (at === -1) { return null; }
+      var open = at + needle.length;
+      if (src.charAt(open) !== "\"") { return null; }
+      var i = open + 1;
+      while (i < src.length) {
+        var c = src.charAt(i);
+        if (c === "\\") { i += 2; continue; }
+        if (c === "\"") { return { open: open, close: i }; }
+        i += 1;
+      }
+      return null;
+    }
+
+    // The template's own value, decoded. Used to seed the optional fields, so
+    // the defaults on this form can never drift from the defaults in the file.
+    function current(varName) {
+      var src = source.textContent;
+      var s = span(src, varName);
+      if (!s) { return ""; }
+      var raw = src.slice(s.open, s.close + 1);
+      try { return JSON.parse(raw); } catch (e) { return raw.slice(1, -1); }
+    }
+
+    function setVar(src, varName, value) {
+      var s = span(src, varName);
+      if (!s) {
+        throw new Error("Could not find " + varName + " in the page source. " +
+                        "Edit the file by hand instead.");
+      }
+      return src.slice(0, s.open) + JSON.stringify(String(value)) + src.slice(s.close + 1);
+    }
+
+    fDone.value = current("DONE_NOTE");
+    fTip.value = current("VENMO_TITLE");
+    fPriv.value = current("PRIVACY_LINE");
+
+    function say(field, id, state, text) {
+      var line = by(id);
+      if (line) {
+        line.className = "say" + (state ? " " + state : "");
+        line.textContent = text;
+      }
+      if (field) { field.className = state === "bad" ? "bad" : (state === "ok" ? "ok" : ""); }
+    }
+
+    function projectURL() {
+      return fUrl.value.trim().replace(/\/+$/, "");
+    }
+
+    function checkURL() {
+      var v = projectURL();
+      if (!v) { return say(fUrl, "say-url", "", ""); }
+      if (!/^https:\/\//i.test(v)) {
+        return say(fUrl, "say-url", "bad", "Must begin with https://");
+      }
+      if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(v)) {
+        return say(fUrl, "say-url", "bad",
+          "Expected the project URL on its own, ending .supabase.co, with no path after it.");
+      }
+      say(fUrl, "say-url", "ok", "Looks right.");
+    }
+
+    // The one field where a mistake is dangerous rather than merely broken.
+    // service_role bypasses every policy in section 4.2, and this page ends up
+    // readable by anybody who opens it.
+    function checkKey() {
+      var v = fKey.value.trim();
+      var danger = "That key bypasses every rule protecting your recordings, and " +
+                   "this page is readable by anyone who opens it. Use the one " +
+                   "labelled anon or publishable (section 4.6).";
+      if (!v) { return say(fKey, "say-key", "", ""); }
+      if (/^sb_secret/i.test(v)) {
+        return say(fKey, "say-key", "bad", "That is the secret key. " + danger);
+      }
+      if (/^eyJ/.test(v)) {
+        var role = "";
+        try {
+          var part = v.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+          while (part.length % 4) { part += "="; }
+          role = (JSON.parse(atob(part)) || {}).role || "";
+        } catch (e) { role = ""; }
+        if (role === "service_role") {
+          return say(fKey, "say-key", "bad", "This key decodes to service_role. " + danger);
+        }
+        if (role && role !== "anon") {
+          return say(fKey, "say-key", "bad", "This key is for the role " + role + ", not anon.");
+        }
+        return say(fKey, "say-key", "ok", "Looks right.");
+      }
+      if (/^sb_publishable_/.test(v)) {
+        return say(fKey, "say-key", "ok", "Looks right.");
+      }
+      say(fKey, "say-key", "bad", "Expected a key beginning sb_publishable_ or eyJ.");
+    }
+
+    function checkName() {
+      var v = fName.value.trim();
+      if (!v) { return say(fName, "say-name", "", "Shown at the top of the page."); }
+      say(fName, "say-name", "ok", "Shown at the top of the page.");
+    }
+
+    function checkVenmo() {
+      var v = fVenmo.value.trim().replace(/^@/, "");
+      if (!v) { return say(fVenmo, "say-venmo", "", "Empty means no tip button at all."); }
+      if (!/^[A-Za-z0-9_-]{3,30}$/.test(v)) {
+        return say(fVenmo, "say-venmo", "bad", "A Venmo handle is letters, numbers, dashes and underscores.");
+      }
+      say(fVenmo, "say-venmo", "ok", "Tip button will appear.");
+    }
+
+    function show(state, text) {
+      result.className = "result on " + state;
+      result.textContent = text;
+    }
+
+    function build() {
+      checkURL(); checkKey(); checkName(); checkVenmo();
+
+      var missing = [];
+      if (!projectURL()) { missing.push("the project URL"); }
+      if (!fKey.value.trim()) { missing.push("the publishable key"); }
+      if (!fName.value.trim()) { missing.push("your show name"); }
+      if (missing.length) {
+        return show("bad", "Still needed: " + missing.join(", ") + ".");
+      }
+      if (fUrl.className === "bad" || fKey.className === "bad" || fVenmo.className === "bad") {
+        return show("bad", "Fix what is marked in red first.");
+      }
+
+      var out;
+      try {
+        out = source.textContent;
+        out = setVar(out, "SUPABASE_URL", projectURL());
+        out = setVar(out, "SUPABASE_KEY", fKey.value.trim());
+        out = setVar(out, "PERFORMER_NAME", fName.value.trim());
+        out = setVar(out, "DONE_NOTE", fDone.value);
+        out = setVar(out, "VENMO_HANDLE", fVenmo.value.trim().replace(/^@/, ""));
+        out = setVar(out, "VENMO_TITLE", fTip.value);
+        out = setVar(out, "PRIVACY_LINE", fPriv.value);
+      } catch (e) {
+        return show("bad", e.message);
+      }
+
+      // Belt and braces. A surviving placeholder is the exact failure this
+      // whole form exists to prevent, so it is worth one more look.
+      if (out.indexOf("YOUR-PROJECT.supabase.co") !== -1 ||
+          out.indexOf("YOUR-PUBLISHABLE-KEY") !== -1 ||
+          out.indexOf("Your Show Name") !== -1) {
+        return show("bad", "Something went wrong and a placeholder survived. " +
+                           "Do not deploy this — edit the file by hand instead.");
+      }
+
+      var blob = new Blob([out], { type: "text/html;charset=utf-8" });
+      var href = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = href;
+      link.download = "index.html";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function () { URL.revokeObjectURL(href); }, 4000);
+
+      show("ok", "Saved as index.html, " + Math.round(out.length / 1024) + " KB, " +
+                 "with your details already in it. Put it in a folder called " +
+                 "crowdloop and drag that folder onto Netlify — section 5.3.");
+    }
+
+    // Asks the project the same question the recording page asks. A 200 proves
+    // four things at once: the URL resolves, the project is awake, the key is
+    // accepted, and the schema from section 4.2 is actually installed.
+    function test() {
+      checkURL(); checkKey();
+      var u = projectURL(), k = fKey.value.trim();
+      if (!u || !k) {
+        return show("bad", "Fill in the project URL and the publishable key first.");
+      }
+
+      var button = by("cfg-test");
+      button.disabled = true;
+      show("busy", "Asking your project\u2026");
+
+      var done = function (state, text) {
+        button.disabled = false;
+        show(state, text);
+      };
+
+      fetch(u + "/rest/v1/rpc/get_open_session", {
+        method: "POST",
+        headers: { "apikey": k, "Content-Type": "application/json" },
+        body: JSON.stringify({ code: "ZZZZZZ" })
+      }).then(function (r) {
+        if (r.status === 200) {
+          return done("ok", "Your project answered, the key was accepted, and the " +
+                            "schema from section 4.2 is installed. That is everything " +
+                            "the recording page needs.");
+        }
+        if (r.status === 401 || r.status === 403) {
+          return done("bad", "The project answered but refused the key. Check you " +
+                             "pasted the one labelled anon or publishable — section 4.6.");
+        }
+        if (r.status === 404) {
+          return done("bad", "The project answered, but get_open_session is not there. " +
+                             "The schema in section 4.2 has not been run on this project.");
+        }
+        done("bad", "The project answered with status " + r.status + ". Re-run " +
+                    "section 4.2, then try again.");
+      }, function () {
+        done("bad", "Could not reach that address at all. Check the URL for a typo, " +
+                    "and check the project is not paused — Supabase pauses a free " +
+                    "project after 7 days idle, and it does not wake on its own.");
+      });
+    }
+
+    fUrl.addEventListener("input", checkURL);
+    fKey.addEventListener("input", checkKey);
+    fName.addEventListener("input", checkName);
+    fVenmo.addEventListener("input", checkVenmo);
+    by("cfg-build").addEventListener("click", build);
+    by("cfg-test").addEventListener("click", test);
+  }());
 
   update();
 }());
