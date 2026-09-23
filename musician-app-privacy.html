@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Musician App Privacy Policy</title>
+<meta name="description" content="Privacy Policy for Musician, the gig, client, and income tracker for independent performers by Mr. Brad's Music.">
+<link rel="canonical" href="https://mrbradsmusic.com/musician-app-privacy">
+<style>
+  :root {
+    --ground: #fbfbf9;
+    --surface: #f1f2ee;
+    --ink: #1d211f;
+    --ink-soft: #4a524e;
+    --rule: #d9ddd8;
+    --accent: #1f6b4f;
+    --accent-soft: #e3efe9;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #121614;
+      --surface: #1b201e;
+      --ink: #e8ece9;
+      --ink-soft: #a9b3ae;
+      --rule: #2e3532;
+      --accent: #6fcca3;
+      --accent-soft: #1c2c25;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    padding-inline: max(20px, env(safe-area-inset-left, 0px));
+    padding-block: max(40px, env(safe-area-inset-top, 0px)) max(64px, env(safe-area-inset-bottom, 0px));
+  }
+  main { max-width: 42rem; margin: 0 auto; }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 0.5rem;
+  }
+  h1 { font-size: clamp(2rem, 6vw, 2.6rem); line-height: 1.15; margin: 0 0 0.75rem; text-wrap: balance; letter-spacing: -0.01em; }
+  .meta { color: var(--ink-soft); font-size: 0.95rem; margin: 0; }
+  h2 {
+    font-size: 1.3rem; line-height: 1.3; margin: 2.75rem 0 0.75rem; text-wrap: balance;
+    scroll-margin-top: 1.5rem;
+  }
+  h3 { font-size: 1.05rem; margin: 1.75rem 0 0.4rem; }
+  p, ul, ol { margin: 0 0 1rem; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  strong { font-weight: 600; }
+  .summary {
+    background: var(--accent-soft); border-radius: 12px; padding: 1.25rem 1.4rem; margin: 0 0 2rem;
+  }
+  .summary h2 { margin-top: 0; font-size: 1.1rem; }
+  .summary ul { margin-bottom: 0; }
+  nav.toc { border: 1px solid var(--rule); border-radius: 12px; padding: 1rem 1.4rem; margin-bottom: 1rem; }
+  nav.toc p { font-weight: 600; margin-bottom: 0.4rem; }
+  nav.toc ol { margin: 0; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  nav.toc li { break-inside: avoid; margin-bottom: 0.25rem; }
+  .table-wrap { overflow-x: auto; margin: 0 0 1.25rem; border: 1px solid var(--rule); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.93rem; min-width: 34rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--rule); }
+  th { background: var(--surface); font-weight: 600; }
+  tr:last-child td { border-bottom: 0; }
+  .note { color: var(--ink-soft); font-size: 0.95rem; }
+  address { font-style: normal; background: var(--surface); border-radius: 10px; padding: 1rem 1.25rem; }
+  footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="eyebrow">Mr. Brad's Music</p>
+  <h1>Musician App Privacy Policy</h1>
+  <p class="meta">Effective September 23, 2026 · Last updated September 23, 2026</p>
+</header>
+
+<section class="summary" aria-labelledby="summary-heading">
+  <h2 id="summary-heading">The short version</h2>
+  <ul>
+    <li><strong>We don't collect your data.</strong> Everything you enter in Musician (clients, jobs, income, expenses, invoices, contracts, receipts, mileage) is stored on your device and, if you use iCloud, in your own private iCloud account. We have no server that receives it and no way to see it.</li>
+    <li><strong>No accounts, no ads, no tracking.</strong> Musician has no sign-up, shows no advertising, contains no analytics or third-party tracking code, and never sells or shares your information.</li>
+    <li><strong>Musician does not connect to your bank.</strong> It never asks for bank logins and never links to financial institutions. Every figure in the app is one you entered or imported.</li>
+    <li><strong>You're in control.</strong> You can export your data, restore it from a backup, or delete it at any time.</li>
+  </ul>
+</section>
+
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#who">Who we are</a></li>
+    <li><a href="#scope">What this policy covers</a></li>
+    <li><a href="#data">Information you store in Musician</a></li>
+    <li><a href="#storage">Where your data is stored</a></li>
+    <li><a href="#collect">What we collect (nothing)</a></li>
+    <li><a href="#permissions">Device permissions</a></li>
+    <li><a href="#apple">Apple services the app uses</a></li>
+    <li><a href="#sharing">Exports, invoices, and sharing</a></li>
+    <li><a href="#widgets">Widgets and on-screen visibility</a></li>
+    <li><a href="#security">Security</a></li>
+    <li><a href="#financial">Financial data and limits of the app</a></li>
+    <li><a href="#others">Information about other people</a></li>
+    <li><a href="#retention">Retention and deletion</a></li>
+    <li><a href="#rights">Your privacy rights</a></li>
+    <li><a href="#children">Children's privacy</a></li>
+    <li><a href="#international">International users</a></li>
+    <li><a href="#changes">Changes to this policy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</nav>
+
+<h2 id="who">1. Who we are</h2>
+<p>Musician is developed and published by Brad Myers, doing business as Mr. Brad's Music, based in Safety Harbor, Florida, USA ("we," "us," or "our"). In this policy, "you" means the person using the app.</p>
+
+<h2 id="scope">2. What this policy covers</h2>
+<p>This policy covers the Musician app for iPhone and iPad, including its Home Screen and Lock Screen widgets. It explains what information the app handles, where that information lives, and the choices you have. It does not cover Apple's services (such as iCloud, the App Store, or Apple Maps), which are governed by <a href="https://www.apple.com/legal/privacy/">Apple's Privacy Policy</a>, or any app, website, or person you choose to send exported files to.</p>
+
+<h2 id="data">3. Information you store in Musician</h2>
+<p>Musician is a business record-keeping tool. Depending on the features you use, the information you enter may include:</p>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Category</th><th scope="col">Examples</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Your business profile</td><td>Business and legal name, owner name, address, phone, email, website, logo, invoice defaults, payment instructions, tax rate and estimated-tax set-aside percentage</td></tr>
+    <tr><td>Clients and contacts</td><td>Names, contact people, email addresses, phone numbers, billing and venue addresses, websites, payment methods and terms, rates, tags, notes</td></tr>
+    <tr><td>Jobs and events</td><td>Dates, times, venues, event types, fees, status, series, notes</td></tr>
+    <tr><td>Income and expenses</td><td>Amounts, dates, descriptions, categories, payment methods, tax-deductible and reimbursable flags, split transactions</td></tr>
+    <tr><td>Financial accounts</td><td>Account nicknames, account type, institution name, the <strong>last four digits</strong> of an account number (optional), opening balance</td></tr>
+    <tr><td>Invoices and payments</td><td>Line items, totals, tax, payments received, generated invoice PDFs</td></tr>
+    <tr><td>Estimated taxes</td><td>Estimated tax payments you record</td></tr>
+    <tr><td>Documents</td><td>Contracts, receipts, photos, PDFs, and other files you attach</td></tr>
+    <tr><td>Mileage</td><td>Addresses of stops and the driving distance between them</td></tr>
+  </tbody>
+</table>
+</div>
+<p>All of this is information <strong>you</strong> choose to enter. Musician does not gather it from anywhere else on your device.</p>
+<p class="note">Musician never asks for full bank account numbers, card numbers, Social Security numbers, or passwords, and you should not enter them in notes or other free-text fields.</p>
+
+<h2 id="storage">4. Where your data is stored</h2>
+<h3>On your device</h3>
+<p>Your records are stored in the app's private storage on your iPhone or iPad, inside an app group shared only with Musician's own widgets.</p>
+<h3>In your private iCloud database</h3>
+<p>If you are signed in to iCloud with iCloud enabled for Musician, your records and attached files sync between your devices through Apple's CloudKit. They are stored in the <strong>private database of your own iCloud account</strong>. By Apple's design, the developer of an app cannot read, access, or download data in a user's private CloudKit database. We cannot see your records, and we cannot recover them for you.</p>
+<p>iCloud storage is provided by Apple under Apple's terms and privacy policy, and counts against your iCloud storage quota. To stop syncing, turn off iCloud for Musician in the iOS Settings app (Settings › [your name] › iCloud). Data already on the device stays there.</p>
+<h3>Nowhere else</h3>
+<p>Musician does not send your records to any server run by us or by any third party.</p>
+
+<h2 id="collect">5. What we collect</h2>
+<p>We do not collect, receive, or store any personal information from Musician. Specifically, the app contains:</p>
+<ul>
+  <li>no user accounts or sign-in;</li>
+  <li>no analytics, usage tracking, or telemetry SDKs;</li>
+  <li>no advertising or ad identifiers (the app never requests App Tracking Transparency permission, because it does not track you);</li>
+  <li>no third-party software development kits of any kind;</li>
+  <li>no in-app purchases or payment processing.</li>
+</ul>
+<h3>Crash reports from Apple</h3>
+<p>If you have turned on <em>Share with App Developers</em> in iOS Settings › Privacy &amp; Security › Analytics &amp; Improvements, Apple may give us anonymized crash reports and diagnostic information. These do not include your records. You can turn this off at any time in the same place.</p>
+<h3>If you contact us</h3>
+<p>If you email us for support, we receive whatever you include in your message, such as your email address and description of the issue. We use it only to answer you and do not add you to any mailing list. Please don't send screenshots or files containing financial details unless they are needed to solve the problem.</p>
+
+<h2 id="permissions">6. Device permissions</h2>
+<p>Musician asks for a permission only when you use a feature that needs it. You can decline, and you can change your choice later in the iOS Settings app. Declining only turns off that feature.</p>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Permission</th><th scope="col">Used for</th><th scope="col">What Musician does with it</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Camera</td>
+      <td>Photographing receipts</td>
+      <td>Saves the photo you take to the record you are working on. It does not access the camera at any other time.</td>
+    </tr>
+    <tr>
+      <td>Photos</td>
+      <td>Choosing receipt images, documents, or an invoice logo</td>
+      <td>Uses the system photo picker, which shows Musician only the photos you select. The app has no access to the rest of your library.</td>
+    </tr>
+    <tr>
+      <td>Calendars</td>
+      <td>Adding jobs to your calendar</td>
+      <td>Lists your calendars so you can choose one, then adds, updates, or removes the events Musician created for your jobs. Musician does not read, copy, or upload your other events.</td>
+    </tr>
+    <tr>
+      <td>Files</td>
+      <td>Attaching documents and importing backups or CSV files</td>
+      <td>Opens only the file you choose in the system file picker.</td>
+    </tr>
+    <tr>
+      <td>Notifications (background)</td>
+      <td>iCloud sync</td>
+      <td>Silent, invisible notifications from Apple tell the app that your records changed on another device, so it can sync. Musician does not send you marketing notifications.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>Musician does <strong>not</strong> request access to your location, contacts, microphone, health data, or Bluetooth.</p>
+
+<h2 id="apple">7. Apple services the app uses</h2>
+<p>Some features rely on Apple frameworks that talk to Apple's servers. Those exchanges are between your device and Apple and are covered by <a href="https://www.apple.com/legal/privacy/">Apple's Privacy Policy</a>; we receive none of the information.</p>
+<ul>
+  <li><strong>iCloud / CloudKit</strong> syncs your records, as described above.</li>
+  <li><strong>Apple Maps.</strong> When you calculate mileage or open directions, the addresses of those stops are sent to Apple to look up their location and driving distance. This happens only when you ask for it. Musician does not use your device's GPS location.</li>
+  <li><strong>The App Store</strong> handles downloads and updates.</li>
+</ul>
+
+<h2 id="sharing">8. Exports, invoices, and sharing</h2>
+<p>Musician lets you create files from your data, including invoice PDFs, CSV and Excel exports, and JSON backups. These files are created on your device, and they leave it only when <strong>you</strong> send them through the iOS share sheet, save them to Files, email them, or open them in another app.</p>
+<p>Once you share a file, the app or person you share it with controls it, under their own privacy practices. Please keep in mind:</p>
+<ul>
+  <li>Backups and exports contain your complete financial and client records in readable form. They are not encrypted by Musician. Store them somewhere you trust and delete copies you no longer need.</li>
+  <li>An invoice includes the business details, payment instructions, and client information you entered. Check it before you send it.</li>
+  <li>Backups do not include attached documents (receipts, contracts, PDFs). Restoring with <em>Replace Everything</em> deletes the documents already in the app, and the backup can't bring them back. Save copies of important documents separately.</li>
+</ul>
+
+<h2 id="widgets">9. Widgets and on-screen visibility</h2>
+<p>Musician's widgets can show your income and expense totals and top categories. Widget content is prepared on your device from your own data. If you add a widget to your Lock Screen or Home Screen, anyone who can see your screen may see that information, even when your device is locked. Remove or change the widget if that's a concern.</p>
+
+<h2 id="security">10. Security</h2>
+<p>Your information is protected by the security built into iOS, iPadOS, and iCloud:</p>
+<ul>
+  <li>On your device, app data is encrypted by iOS Data Protection whenever your device is locked with a passcode, Face ID, or Touch ID.</li>
+  <li>Data in transit to iCloud is encrypted, and data at rest in iCloud is encrypted by Apple. If you turn on Apple's <em>Advanced Data Protection for iCloud</em>, more categories of iCloud data are end-to-end encrypted. See Apple's <a href="https://support.apple.com/102651">iCloud data security overview</a> for details.</li>
+  <li>Because we operate no servers holding your data, there is no Musician database that could be breached.</li>
+</ul>
+<p>Your data's security also depends on your device and Apple Account. We strongly recommend that you use a device passcode, turn on two-factor authentication for your Apple Account, keep iOS up to date, and protect any exported files.</p>
+<p>No method of storage or transmission is completely secure, and we cannot guarantee absolute security.</p>
+
+<h2 id="financial">11. Financial data and limits of the app</h2>
+<ul>
+  <li>Musician is a record-keeping tool. It is not a bank, payment processor, lender, tax preparer, or financial institution, and it does not move money.</li>
+  <li>Musician does not connect to bank, card, or payment accounts and does not import data from them automatically. Balances and totals are calculated only from the entries you make.</li>
+  <li>Estimated-tax figures, deductible flags, mileage totals, and other summaries are for your own organization. They are not tax, legal, or financial advice. Check with a qualified professional before relying on them for filings.</li>
+  <li>Please don't store full account numbers, card numbers, government ID numbers, or passwords in Musician. The account field is designed for the last four digits only.</li>
+</ul>
+
+<h2 id="others">12. Information about other people</h2>
+<p>When you enter details about your clients, students, venues, or other contacts, you are the one collecting and keeping that information, and it stays under your control on your devices and in your iCloud account. We never receive it. You are responsible for handling it lawfully and in line with any promises you've made to those people, including honoring their requests to update or delete their information.</p>
+<p>If your clients include children, such as music students, we recommend recording only what you need to run your business (for example, a parent or guardian as the contact person).</p>
+
+<h2 id="retention">13. Retention and deletion</h2>
+<p>Your data stays until you delete it. You can:</p>
+<ul>
+  <li><strong>Delete individual records</strong> in the app. Deleted transactions and certain other items first move to <em>Recently Deleted</em>, where you can restore them or remove them permanently.</li>
+  <li><strong>Delete everything on a device</strong> by deleting the Musician app. If iCloud sync is on, your synced data remains in your iCloud account until you remove it.</li>
+  <li><strong>Delete your iCloud data</strong> for Musician in iOS Settings › [your name] › iCloud › Manage Account Storage (the exact path varies by iOS version). Deleting it there removes it from all your devices and cannot be undone.</li>
+</ul>
+<p>We hold no copy of your data, so we can't delete it for you or restore it after you delete it. We keep support emails only as long as needed to help you, then delete them.</p>
+
+<h2 id="rights">14. Your privacy rights</h2>
+<p>Depending on where you live, laws such as the EU and UK General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA/CPRA), and other U.S. state privacy laws give you rights to access, correct, delete, or obtain a copy of your personal information, and to opt out of its sale or sharing.</p>
+<p>Because your Musician data never reaches us, you can exercise these rights directly in the app: view and edit your records, export them (Settings › Export Records), and delete them. For personal information we do hold, which is limited to support emails you've sent us, contact us at the address below and we will respond within the time required by law, and in any case within 30 days.</p>
+<ul>
+  <li>We do not sell your personal information and do not share it for cross-context behavioral advertising.</li>
+  <li>We do not use your information for automated decision-making or profiling.</li>
+  <li>We will not discriminate against you for exercising any privacy right.</li>
+</ul>
+<p>If you are in the EU or UK, you may also lodge a complaint with your local data protection authority.</p>
+
+<h2 id="children">15. Children's privacy</h2>
+<p>Musician is a business tool for adults. It is not directed to children under 13 (or the equivalent minimum age where you live), and we do not knowingly collect personal information from children. If you believe a child has sent us personal information by email, contact us and we will delete it.</p>
+
+<h2 id="international">16. International users</h2>
+<p>We are based in the United States. Because we do not receive your app data, it is not transferred to us. Your data is stored on your devices and in iCloud data centers chosen by Apple under its own terms.</p>
+
+<h2 id="changes">17. Changes to this policy</h2>
+<p>If we change how Musician handles information, we will update this page and the "Last updated" date at the top. If a change is significant, such as adding any collection of data, we will also tell you in the app or in the App Store release notes before the change takes effect.</p>
+
+<h2 id="contact">18. Contact</h2>
+<p>Questions or requests about this policy or your privacy:</p>
+<address>
+  <strong>Mr. Brad's Music</strong> (Brad Myers)<br>
+  Safety Harbor, Florida, USA<br>
+  Email: <a href="mailto:mrbradsmusic@gmail.com">mrbradsmusic@gmail.com</a><br>
+  Web: <a href="https://mrbradsmusic.com">mrbradsmusic.com</a>
+</address>
+
+<footer>
+  <p>© 2026 Mr. Brad's Music. Musician is not affiliated with or endorsed by Apple Inc. iCloud, iPhone, iPad, and Apple Maps are trademarks of Apple Inc.</p>
+</footer>
+
+</main>
+</body>
+</html>
