@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Support and Privacy Policy for MIDIHuman Drums, Bass, Comp and Lead by Mr. Brad's Music.">
+  <title>MIDIHuman Support &amp; Privacy Policy | Mr. Brad's Music</title>
+  <style>
+    :root {
+      --cream: #fbf5e6;
+      --paper: #fffdf8;
+      --ink: #213657;
+      --muted: #65728a;
+      --coral: #e96959;
+      --coral-dark: #bc4f45;
+      --sun: #f4c650;
+      --mint: #b7daca;
+      --sky: #b9d9e8;
+      --line: rgba(33, 54, 87, .14);
+      --shadow: 0 18px 45px rgba(33, 54, 87, .10);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 7%, rgba(244, 198, 80, .24), transparent 22rem),
+        radial-gradient(circle at 92% 16%, rgba(185, 217, 232, .32), transparent 25rem),
+        var(--cream);
+      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: var(--coral-dark); }
+    a:hover { color: var(--ink); }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 46px;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 4px 2px 28px;
+    }
+
+    .brand, .back-link { text-decoration: none; }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink);
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .brand-notes { font-size: 1.35rem; letter-spacing: -.35em; padding-right: 7px; }
+    .brand-name { font-family: Georgia, "Times New Roman", serif; font-size: 1.16rem; }
+
+    .back-link {
+      color: var(--ink);
+      border-bottom: 2px solid var(--sun);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 6vw, 72px);
+      border: 2px solid var(--ink);
+      border-radius: 34px;
+      background: linear-gradient(135deg, rgba(255,253,248,.96), rgba(255,248,220,.96));
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "♬";
+      position: absolute;
+      right: 5%;
+      bottom: -28px;
+      color: rgba(233, 105, 89, .13);
+      font: 180px/1 Georgia, serif;
+      transform: rotate(-14deg);
+    }
+
+    .hero-sticker, .eyebrow {
+      color: var(--coral-dark);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .hero-sticker {
+      display: inline-block;
+      margin-bottom: 24px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--ink);
+      letter-spacing: .09em;
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      align-items: end;
+      gap: 34px;
+    }
+
+    h1, h2, h3 { margin: 0; font-family: Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
+    h1 { max-width: 700px; font-size: clamp(3rem, 8vw, 6.6rem); line-height: .92; }
+    h1 span { color: var(--coral); }
+    h2 { margin-bottom: 12px; font-size: clamp(1.55rem, 3vw, 2.2rem); line-height: 1.1; }
+    h3 { margin-bottom: 6px; font-size: 1.16rem; }
+
+    .lead {
+      max-width: 680px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+    }
+
+    .hero-note {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      border-radius: 23px;
+      background: var(--ink);
+      color: var(--paper);
+      transform: rotate(3deg);
+      box-shadow: 8px 9px 0 var(--sun);
+    }
+
+    .note-symbol { display: block; color: var(--sun); font-size: 2.8rem; line-height: 1; }
+    .note-copy { display: block; margin-top: 12px; font-weight: 800; line-height: 1.35; }
+    .note-copy em { color: var(--sky); font-family: Georgia, "Times New Roman", serif; font-size: 1.15rem; }
+
+    /* Jump links. This page carries both Support and Privacy, and the privacy
+       URL filed with Apple points at #privacy, so the two need to be reachable
+       from the top. Pill shape matches .hero-sticker and .contact-button. */
+    .page-nav { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 0; }
+
+    .page-nav a {
+      padding: 9px 16px;
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,253,248,.72);
+      color: var(--ink);
+      font-size: .9rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .page-nav a:hover { border-color: var(--coral); color: var(--coral-dark); }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .quick-facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .fact {
+      padding: 18px 20px;
+      border: 2px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,253,248,.72);
+    }
+
+    .fact strong, .fact span { display: block; }
+    .fact strong { color: var(--coral-dark); font-size: .95rem; }
+    .fact span { color: var(--muted); font-size: .9rem; line-height: 1.45; }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .policy-card, .side-card {
+      border: 2px solid var(--line);
+      border-radius: 26px;
+      background: rgba(255,253,248,.9);
+      box-shadow: 0 10px 28px rgba(33, 54, 87, .055);
+    }
+
+    .policy-card { padding: clamp(24px, 4vw, 44px); }
+    .side-card { padding: 24px; position: sticky; top: 18px; }
+
+    .section + .section { margin-top: 38px; padding-top: 34px; border-top: 1px dashed var(--line); }
+    .section p:last-child, .section ul:last-child { margin-bottom: 0; }
+    .section[id] { scroll-margin-top: 18px; }
+    .policy-card h3 { margin-top: 26px; }
+    .policy-card .section > h3:first-of-type { margin-top: 18px; }
+    p { margin: 0 0 14px; }
+    ul { margin: 10px 0 0; padding-left: 21px; }
+    li + li { margin-top: 9px; }
+
+    .callout {
+      margin: 18px 0 0;
+      padding: 18px 20px;
+      border-left: 6px solid var(--coral);
+      border-radius: 15px;
+      background: #fff2df;
+    }
+
+    .policy-meta { color: var(--muted); font-size: .95rem; }
+
+    .email-line {
+      margin: 10px 0 8px;
+      font-size: 1.22rem;
+      font-weight: 800;
+      word-break: break-word;
+    }
+
+    .side-card h3 { font-size: 1.35rem; margin-top: 0; }
+    .side-card p { color: var(--muted); font-size: .95rem; }
+    .side-card .mini { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); font-size: .86rem; }
+    .contact-button {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--coral);
+      color: #fff;
+      font-size: .9rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .contact-button:hover { background: var(--ink); color: #fff; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 30px;
+      padding: 0 4px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    @media (max-width: 760px) {
+      .site-header, footer { align-items: flex-start; flex-direction: column; }
+      .hero-layout, .content-grid { grid-template-columns: 1fr; }
+      .hero-note { max-width: 230px; }
+      .side-card { position: static; }
+    }
+
+    @media (max-width: 520px) {
+      .page { width: min(100% - 20px, 1120px); padding-top: 12px; }
+      .quick-facts, .app-grid { grid-template-columns: 1fr; }
+      .hero { border-radius: 24px; padding: 28px 22px 36px; }
+      h1 { font-size: clamp(2.75rem, 16vw, 4.5rem); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <a class="brand" href="https://mrbradsmusic.com/" aria-label="Mr. Brad's Music home">
+        <span class="brand-notes" aria-hidden="true">🎻🎸🪕</span>
+        <span class="brand-name">Mr. Brad's Music</span>
+      </a>
+      <a class="back-link" href="https://mrbradsmusic.com/">Back to mrbradsmusic.com ↗</a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-sticker">Support &amp; privacy policy · Effective October 1, 2026</div>
+        <div class="hero-layout">
+          <div>
+            <p class="eyebrow">Music tools with no backstage data grab</p>
+            <h1 id="page-title">MIDI<span>Human</span></h1>
+            <p class="lead">Four AUv3 MIDI processors for iPad and iPhone that make a looped part feel played &mdash; a little different every time round.</p>
+            <nav class="page-nav" aria-label="On this page">
+              <a href="#support">Support</a>
+              <a href="#privacy">Privacy policy</a>
+            </nav>
+          </div>
+          <div class="hero-note" aria-hidden="true">
+            <span class="note-symbol">♬</span>
+            <span class="note-copy">Make music.<br><em>Keep your privacy.</em></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-grid" aria-label="The MIDIHuman apps">
+        <div class="fact"><strong>MIDIHuman Drums</strong><span>Makes your drum part feel played.</span></div>
+        <div class="fact"><strong>MIDIHuman Bass</strong><span>Makes your bass line feel played.</span></div>
+        <div class="fact"><strong>MIDIHuman Comp</strong><span>Makes your chords feel played.</span></div>
+        <div class="fact"><strong>MIDIHuman Lead</strong><span>Makes your melody feel played.</span></div>
+      </section>
+
+      <section class="quick-facts" aria-label="Privacy at a glance">
+        <div class="fact"><strong>No data collected</strong><span>Nothing you do in the apps is sent to me or to anyone else.</span></div>
+        <div class="fact"><strong>No account</strong><span>There is no sign-in or registration anywhere in the apps.</span></div>
+        <div class="fact"><strong>No network</strong><span>The apps never go online, so nothing leaves your device.</span></div>
+      </section>
+
+      <div class="content-grid">
+        <article class="policy-card">
+
+          <section class="section" id="support">
+            <h2>Support</h2>
+            <p>Each MIDIHuman app is an AUv3 MIDI processor plug-in that runs inside a host app, plus a small container app that only shows instructions. The plug-ins make no sound of their own: each one sits on the MIDI path between a part &mdash; a looper, sequencer or keyboard &mdash; and an instrument, and varies the part slightly each time round. They run on iPad and iPhone.</p>
+            <p>MIDIHuman Drums ships first. Bass, Comp and Lead follow.</p>
+
+            <div class="callout">
+              <strong>Questions, problems or ideas &mdash; email me:</strong>
+              <p class="email-line"><a href="mailto:mrbradsmusic@gmail.com?subject=MIDIHuman%20support">mrbradsmusic@gmail.com</a></p>
+              <p style="margin-bottom:0">It helps to include which MIDIHuman app you are using, your device, its iOS or iPadOS version, and which host app you are running it in.</p>
+            </div>
+
+            <h3>Where's the manual?</h3>
+            <p>Inside each plug-in: tap the gear, then <strong>User Guide</strong>. It has a search field on its first page.</p>
+
+            <h3>I don't hear anything.</h3>
+            <p>These are MIDI processors, so they make no sound themselves. In your host, route the plug-in's MIDI output to an instrument.</p>
+
+            <h3>It humanizes, but nothing learns, varies or fills.</h3>
+            <p>Learning, quantize, swing, variations and fills follow the host's tempo and transport. Start the transport. Without it, the plug-ins only humanize.</p>
+
+            <h3>The apps aren't syncing with each other.</h3>
+            <p>Load them in the same host session and leave <strong>SYNC</strong> on in each one. They find each other on the device automatically, with no network or account involved.</p>
+
+            <h3>Which hosts does it work in?</h3>
+            <p>Any host that runs AUv3 MIDI processors. MIDIHuman is developed and tested in <strong>Loopy Pro</strong>.</p>
+
+            <h3>New device, or reinstalling?</h3>
+            <p>Download the app again from the App Store with the same Apple Account. There is no login inside the apps.</p>
+          </section>
+
+          <section class="section" id="privacy">
+            <h2>Privacy policy</h2>
+            <p class="policy-meta">Applies to MIDIHuman Drums, MIDIHuman Bass, MIDIHuman Comp and MIDIHuman Lead. Effective October 1, 2026.</p>
+
+            <h3>The short version</h3>
+            <p>MIDIHuman collects no data. Nothing you do in the apps is sent to me or to anyone else.</p>
+            <div class="callout"><strong>In plain English:</strong> the apps never go online, so there is nothing to collect and nowhere for it to go.</div>
+
+            <h3>What the apps don't do</h3>
+            <ul>
+              <li>No accounts, sign-ins or registration.</li>
+              <li>No analytics, advertising, tracking or third-party SDKs.</li>
+              <li>No network connections &mdash; the apps never go online.</li>
+              <li>No access to your contacts, location, photos, microphone or camera.</li>
+            </ul>
+
+            <h3>What stays on your device</h3>
+            <p>Your settings, presets and saved songs are stored on your device, in an App Group folder shared only by the four MIDIHuman apps, which is what lets them sync with each other on the same device. This data stays on your device, and in any device backups you make. Deleting the apps deletes it.</p>
+            <p>When you save a session in your host app, the host stores the plug-in's settings in its own project files. That is covered by the host's own privacy policy.</p>
+
+            <h3>Purchases</h3>
+            <p>Purchases and downloads go through Apple's App Store. I never receive your payment details.</p>
+
+            <h3>If you email me</h3>
+            <p>If you email support, I receive your address and your message, and use them only to reply to you. I don't share them.</p>
+
+            <h3>Children</h3>
+            <p>The apps collect no personal information from anyone, including children.</p>
+
+            <h3>Changes</h3>
+            <p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
+
+            <h3>Contact</h3>
+            <p>Mr. Brad's Music &mdash; <a href="mailto:mrbradsmusic@gmail.com">mrbradsmusic@gmail.com</a></p>
+          </section>
+
+        </article>
+
+        <aside class="side-card">
+          <h3>Questions?</h3>
+          <p>Mr. Brad reads every message personally. For a support or privacy question about MIDIHuman, email is the fastest way to reach me.</p>
+          <a class="contact-button" href="mailto:mrbradsmusic@gmail.com?subject=MIDIHuman%20support">Email MIDIHuman support ↗</a>
+          <p class="mini"><strong>Mr. Brad's Music</strong><br><a href="https://mrbradsmusic.com/">mrbradsmusic.com</a></p>
+        </aside>
+      </div>
+    </main>
+
+    <footer>
+      <span>© 2026 Mr. Brad's Music</span>
+      <span>Made for music, movement, and curious minds.</span>
+    </footer>
+  </div>
+</body>
+</html>
